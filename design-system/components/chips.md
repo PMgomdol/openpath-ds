@@ -1,151 +1,57 @@
-# Chips 컴포넌트
-
-## 개요
-
-칩은 **필터링**, **선택**, **입력 태그** 용도로 사용하는 소형 인터랙티브 엘리먼트입니다.
-
+---
+# Chips — OPENPATH DS
+> CLAUDE.md 토큰 기준. 이 파일만 읽으면 해당 컴포넌트 구현 가능.
 ---
 
-## 변형 (Variant)
+### Chips
 
-| Variant | 용도 | 선택 시 |
+#### Types — 언제 무엇을 쓰는가
+
+| Type | 설명 | 사용 시점 |
 |---|---|---|
-| Filter Chip | 목록 필터링 (복수 선택) | `--color-bg-brand` bg + `--color-border-brand` border |
-| Choice Chip | 단일 선택 (라디오 대체) | `--color-brand` bg + white text |
-| Input Chip | 입력 태그 (삭제 가능) | 항상 선택됨 상태 + X 버튼 |
-| Suggestion Chip | 제안 액션 | 선택 없음 (버튼처럼 동작) |
+| **Assist** | 액션을 제안하는 칩. 아이콘 선택 가능 | 컨텍스트에 맞는 빠른 액션 제공 (예: "지도 열기") |
+| **Filter** | 콘텐츠 필터링. 선택 시 체크 표시 | 목록/검색 결과 필터 (예: 카테고리, 태그) |
+| **Input** | 입력된 값을 태그처럼 표시. X 버튼 포함 | 선택한 항목 시각화 (예: 이메일 수신자, 검색 태그) |
+| **Suggestion** | AI/시스템이 제안하는 자동완성 칩 | 검색창 아래 추천어, 챗봇 빠른 답변 |
 
----
+**States:** Enabled / Hover / Focused / Pressed / Dragged / Disabled  
+(Filter만 추가로 Selected 상태 있음)
 
-## 크기
+#### Color Tokens
 
-| 크기 | Height | Padding H | Font | Radius |
-|---|---|---|---|---|
-| Small | 28px | 10px | 12px / 500 | 9999px |
-| Medium | 36px | 14px | 14px / 500 | 9999px |
-
-> Radius는 항상 `--radius-pill` (9999px)
-
----
-
-## 상태
-
-### Filter / Choice Chip
-
-| 상태 | 배경 | 테두리 | 텍스트 |
+| 속성 | State | Token | Value |
 |---|---|---|---|
-| Default | `--color-bg` | `--color-border` | `--color-text` |
-| Hover | `--color-bg-subtle` | `--color-border-hover` | `--color-text` |
-| Selected | `--color-bg-brand` | `--color-border-brand` | `--color-brand` |
-| Selected + Hover | `--color-bg-brand` | `--color-brand-hover` | `--color-brand-hover` |
-| Disabled | `--color-bg-subtle` | `--color-border` | `--color-text-disabled` |
+| bg | Enabled | `color/bg/default` | White `#FFFFFF` |
+| bg | Hover | `color/bg/subtle` | N20 `#F4F5F5` |
+| bg | Pressed | `color/bg/subtle` | N20 `#F4F5F5` |
+| bg | Selected (Filter) | `color/bg/brand` | M20 `#F3FCFC` |
+| bg | Disabled | `color/bg/subtle` | N20 `#F4F5F5` |
+| border | Enabled | `color/border/default` | N100 `#D8DCDE` |
+| border | Hover | `color/border/hover` | N300 `#889298` |
+| border | Focused | `color/border/brand` | M300 `#28D7D2` |
+| border | Selected (Filter) | `color/border/brand` | M300 `#28D7D2` |
+| border | Disabled | `color/border/default` | N100 `#D8DCDE` |
+| label | Enabled | `color/text/default` | N600 `#29363D` |
+| label | Selected (Filter) | `color/brand/primary` | M300 `#28D7D2` |
+| label | Disabled | `color/text/disabled` | N100 `#D8DCDE` |
+| icon / check | Selected (Filter) | `color/brand/primary` | M300 `#28D7D2` |
+| icon (X) | Input | `color/text/subtle` | N300 `#889298` |
 
-### Input Chip (태그)
+#### Size 수치
 
-- 항상 Selected 상태 외관
-- 오른쪽에 X (16px) 버튼, `--space-01` (4px) 간격
-- X 클릭 시 칩 제거
+| 속성 | Value | Token |
+|---|---|---|
+| 높이 | 32px | — |
+| Padding 좌우 | 12px | `space/03` |
+| 아이콘 크기 | 18px | — |
+| 아이콘 + 라벨 간격 | 4px | `space/01` |
+| Radius | 9999px | `radius/component/chip` |
+| 폰트 | 14px Medium | `type/label/md` |
 
----
+#### Do / Don't
 
-## 구조
-
-```
-┌────────────────────────────────────┐
-│ [Leading Icon]  [Label]  [X / Dropdown] │
-└────────────────────────────────────┘
-```
-
-- Leading Icon: 16px, 라벨과 `--space-01` (4px) 간격
-- Trailing X: 16px, 라벨과 `--space-01` (4px) 간격
-
----
-
-## 토큰 참조
-
-```css
-/* Default */
-height: 36px;
-padding: 0 var(--space-03);    /* 12px */
-border-radius: var(--radius-pill);
-background: var(--color-bg);
-border: 1px solid var(--color-border);
-color: var(--color-text);
-font-size: 14px;
-font-weight: 500;
-
-/* Hover */
-background: var(--color-bg-subtle);
-border-color: var(--color-border-hover);
-
-/* Selected (Filter) */
-background: var(--color-bg-brand);
-border-color: var(--color-border-brand);
-color: var(--color-brand);
-
-/* Selected (Choice) */
-background: var(--color-brand);
-color: var(--color-text-on-brand);
-```
-
----
-
-## 코드 스니펫
-
-```tsx
-// Filter Chip
-<button
-  className={`op-chip op-chip--filter ${selected ? "op-chip--selected" : ""}`}
-  onClick={() => setSelected(!selected)}
->
-  {selected && <Check size={14} />}
-  전체
-</button>
-
-// Choice Chip (단일 선택)
-<div className="op-chip-group" role="radiogroup">
-  {["전체", "진행 중", "완료"].map(label => (
-    <button
-      key={label}
-      className={`op-chip op-chip--choice ${active === label ? "op-chip--selected" : ""}`}
-      onClick={() => setActive(label)}
-    >
-      {label}
-    </button>
-  ))}
-</div>
-
-// Input Chip (태그)
-<div className="op-chip op-chip--input op-chip--selected">
-  <span>수학</span>
-  <button onClick={() => removeTag("수학")} aria-label="수학 제거">
-    <X size={14} />
-  </button>
-</div>
-```
-
----
-
-## 그룹 레이아웃
-
-- 칩 그룹 간격: `--space-02` (8px)
-- 줄바꿈: `flex-wrap: wrap`
-- 가로 스크롤 시: `overflow-x: auto`, `flex-wrap: nowrap`
-
----
-
-## Do / Don't
-
-| Do | Don't |
+| ✅ Do | ❌ Don't |
 |---|---|
-| 필터 칩은 복수 선택 허용 | 필터 칩을 단일 선택에 오용 |
-| 라벨 간결하게 (1~3단어) | 긴 문장 라벨 |
-| 아이콘은 의미 있을 때만 | 모든 칩에 아이콘 추가 |
-
----
-
-## 접근성
-
-- Filter/Choice Chip: `role="checkbox"` 또는 `role="radio"` + `aria-checked`
-- Input Chip X 버튼: `aria-label="[태그명] 제거"`
-- 키보드: Space/Enter로 선택, Delete/Backspace로 Input Chip 제거
+| Filter Chip은 복수 선택 가능하게 | Filter Chip을 Radio처럼 단일 선택 강제 |
+| Input Chip은 반드시 X 버튼으로 삭제 가능하게 | Input Chip을 클릭해도 삭제 안 되게 |
+| Chip 라벨은 짧게 (최대 2~3 단어) | 긴 문장을 Chip 라벨로 사용 |

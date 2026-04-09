@@ -1,165 +1,55 @@
-# Card 컴포넌트
-
-## 개요
-
-카드는 관련 정보를 그룹화하는 컨테이너입니다. 리스트, 그리드, 대시보드에서 사용합니다.
-
+---
+# Card — OPENPATH DS
+> CLAUDE.md 토큰 기준. 이 파일만 읽으면 해당 컴포넌트 구현 가능.
 ---
 
-## 변형 (Variant)
+### Card
 
-| Variant | 배경 | 테두리 | 그림자 |
-|---|---|---|---|
-| Elevated | `--color-bg` | 없음 | `--shadow-01` |
-| Outlined | `--color-bg` | `--color-border` | 없음 |
-| Filled | `--color-bg-subtle` | 없음 | 없음 |
-| Brand | `--color-bg-brand` | `--color-border-brand` | 없음 |
+#### Variants
 
----
+| Variant | 구성 요소 | 사용 시점 |
+|---|---|---|
+| **Basic** | 이미지 + 제목 + 본문 + 액션 버튼 | 일반 콘텐츠 카드 |
+| **Expand** | Basic + 펼치기/접기 버튼 | 긴 본문이 있는 카드 |
+| **Overflow Menu** | Basic + 우측 상단 ⋮ 버튼 | 카드 레벨 액션이 여러 개일 때 |
+| **Stars to Rate** | Basic + 별점 입력 | 리뷰·평가 카드 |
+| **With Chips** | Basic + Chip 그룹 | 태그·카테고리 표시 |
+| **With Slider** | Basic + Slider | 미디어 플레이어, 범위 설정 |
 
-## 크기 & 간격
+#### Elevation
 
-| 속성 | 값 |
+| 속성 | Token | Value |
+|---|---|---|
+| 기본 shadow | `elevation/surface/raised` → `shadow/01` | 0 1px 4px |
+| Hover shadow | `elevation/surface/overlay` → `shadow/02` | 0 2px 8px |
+| radius | `radius/component/card/md` | 16px |
+
+#### Color Tokens
+
+| 속성 | Token | Value |
+|---|---|---|
+| bg | `color/bg/default` | White `#FFFFFF` |
+| border (선택) | `color/border/default` | N100 `#D8DCDE` |
+| title | `color/text/default` | N600 `#29363D` |
+| body text | `color/text/subtle` | N300 `#889298` |
+| icon (Overflow) | `color/text/subtle` | N300 `#889298` |
+| divider | `color/border/default` | N100 `#D8DCDE` |
+| star (filled) | `color/status/warning` | `#EE706B` |
+| star (empty) | `color/border/default` | N100 `#D8DCDE` |
+
+#### Size 수치
+
+| 속성 | Value | Token |
+|---|---|---|
+| 내부 패딩 | 16px | `space/04` |
+| 콘텐츠 간격 | 8px | `space/02` |
+| 액션 버튼 상단 간격 | 16px | `space/04` |
+| 소형 카드 radius | 12px | `radius/component/card/sm` |
+
+#### Do / Don't
+
+| ✅ Do | ❌ Don't |
 |---|---|
-| Radius (기본) | `--radius-lg` (16px) |
-| Radius (소형) | `--radius-md` (12px) |
-| Padding (기본) | `--space-06` (24px) |
-| Padding (소형) | `--space-04` (16px) |
-| Padding (대형) | `--space-07` (32px) |
-
----
-
-## 카드 구조 (Anatomy)
-
-```
-┌──────────────────────────────────────┐
-│ [Media / 상단 이미지]                 │
-├──────────────────────────────────────┤
-│ [Header]                              │
-│   [Category / Eyebrow]  [Chip]       │
-│   [Title]                            │
-│   [Subtitle]                         │
-├──────────────────────────────────────┤
-│ [Body]                                │
-│   [Description text]                 │
-│   [Metadata items]                   │
-├──────────────────────────────────────┤
-│ [Footer]                              │
-│   [Action Buttons]    [Date / Info]  │
-└──────────────────────────────────────┘
-```
-
-- **Category (Eyebrow)**: 12px / 500, `--color-text-subtle`, `--space-01` 아래 간격
-- **Title**: 18px / 700 (Title SM)
-- **Subtitle**: 14px / 400, `--color-text-subtle`
-- **Body**: 14px / 400, `--color-text-subtle`, line-height 1.6
-- **Footer**: Card 하단 `--space-04` 상단 패딩, border-top `--color-border`
-
----
-
-## 상태
-
-| 상태 | 변화 |
-|---|---|
-| Default | 기본 |
-| Hover (클릭 가능) | `--shadow-02` + `translateY(-2px)` |
-| Pressed | `translateY(0)` |
-| Selected | `--color-border-brand` + `--color-bg-brand` |
-| Disabled | `opacity: 0.5` |
-
-> 클릭 가능한 카드에만 Hover/Pressed 상태 적용.
-
----
-
-## 토큰 참조
-
-```css
-/* Elevated */
-background: var(--color-bg);
-border-radius: var(--radius-lg);
-padding: var(--space-06);
-box-shadow: var(--shadow-01);
-
-/* Hover (clickable) */
-box-shadow: var(--shadow-02);
-transform: translateY(-2px);
-transition: all 0.2s ease;
-
-/* Outlined */
-background: var(--color-bg);
-border: 1px solid var(--color-border);
-border-radius: var(--radius-lg);
-
-/* Media image */
-border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-overflow: hidden;
-```
-
----
-
-## 코드 스니펫
-
-```tsx
-// Elevated Card (기본)
-<div className="op-card op-card--elevated">
-  <div className="op-card__header">
-    <p className="op-card__eyebrow">수학</p>
-    <h3 className="op-card__title">함수의 극한</h3>
-    <p className="op-card__subtitle">미적분 · 고2</p>
-  </div>
-  <div className="op-card__body">
-    <p>극한의 정의와 활용법을 예제와 함께 학습합니다.</p>
-  </div>
-  <div className="op-card__footer">
-    <button className="op-btn op-btn--text op-btn--sm">자세히 보기</button>
-    <span className="op-card__meta">2024.01.15</span>
-  </div>
-</div>
-
-// Clickable Card
-<a href="/course/123" className="op-card op-card--elevated op-card--clickable">
-  <img className="op-card__media" src="/thumbnail.jpg" alt="강의 썸네일" />
-  <div className="op-card__header">
-    <h3 className="op-card__title">수능 수학 완성</h3>
-  </div>
-</a>
-```
-
----
-
-## 그리드 레이아웃
-
-```css
-/* 2열 */
-.op-card-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-04);
-}
-
-/* 3열 (데스크탑) */
-@media (min-width: 1024px) {
-  .op-card-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-```
-
----
-
-## Do / Don't
-
-| Do | Don't |
-|---|---|
-| 같은 그리드의 카드는 동일 변형 | 혼재 사용 |
-| 클릭 가능 카드에는 명확한 CTA | 클릭 영역 불명확 |
-| 이미지는 16:9 또는 3:2 비율 | 비율 제각각 |
-| 카드 내 액션은 최대 2개 | 카드 안에 버튼 5개+ |
-
----
-
-## 접근성
-
-- 클릭 가능한 카드: `<a>` 또는 `<button>` 래퍼
-- 이미지: `alt` 속성 필수 (장식 이미지는 `alt=""`)
-- 그리드: `role="list"` + `role="listitem"` 또는 시맨틱 `<ul>/<li>`
+| 카드 안에 Primary 버튼은 1개만 | 카드 하나에 Primary 버튼 여러 개 |
+| Overflow Menu는 액션 3개 이상일 때만 | 액션 1~2개인데 Overflow Menu 사용 |
+| Expand Card는 접힌 상태가 기본 | 기본이 펼쳐진 상태인 Expand Card |
