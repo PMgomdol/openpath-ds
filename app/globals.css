@@ -143,3 +143,122 @@
   .sidebar-bg     { background-color: var(--color-sidebar-bg); }
   .header-bg      { background-color: var(--color-header-bg); }
 }
+
+@layer components {
+  /* ─── Button Base ────────────────────────────────── */
+  .op-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-02);
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    transition: background-color 0.15s ease, border-color 0.15s ease,
+      color 0.15s ease;
+    white-space: nowrap;
+    text-decoration: none;
+    outline: none;
+    flex-shrink: 0;
+  }
+
+  .op-btn:focus-visible {
+    outline: 2px solid var(--color-border-brand);
+    outline-offset: 2px;
+  }
+
+  /* ─── Sizes ──────────────────────────────────────── */
+  .op-btn--sm {
+    height: 32px;
+    padding: 0 var(--space-03);
+    font-size: 13px;
+    border-radius: var(--radius-button-sm);
+  }
+  .op-btn--md {
+    height: 40px;
+    padding: 0 var(--space-04);
+    font-size: 14px;
+    border-radius: var(--radius-button-md);
+  }
+  .op-btn--lg {
+    height: 48px;
+    padding: 0 var(--space-05);
+    font-size: 15px;
+    border-radius: var(--radius-button-md);
+  }
+
+  /* ─── Primary ────────────────────────────────────── */
+  .op-btn--primary {
+    background-color: var(--color-interactive-primary);
+    color: var(--color-text-on-brand);
+    border-color: transparent;
+  }
+  .op-btn--primary:hover:not(:disabled) {
+    background-color: var(--color-interactive-hover);
+  }
+  .op-btn--primary:active:not(:disabled) {
+    background-color: var(--color-interactive-pressed);
+  }
+  .op-btn--primary:disabled {
+    background-color: var(--color-interactive-disabled);
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+  }
+
+  /* ─── Outlined ───────────────────────────────────── */
+  .op-btn--outlined {
+    background-color: transparent;
+    color: var(--color-brand-primary);
+    border-color: var(--color-border-brand);
+  }
+  .op-btn--outlined:hover:not(:disabled) {
+    background-color: var(--color-bg-brand);
+    border-color: var(--color-interactive-hover);
+    color: var(--color-interactive-hover);
+  }
+  .op-btn--outlined:active:not(:disabled) {
+    border-color: var(--color-interactive-pressed);
+    color: var(--color-interactive-pressed);
+  }
+  .op-btn--outlined:disabled {
+    border-color: var(--color-interactive-disabled);
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+  }
+
+  /* ─── Text ───────────────────────────────────────── */
+  .op-btn--text {
+    background-color: transparent;
+    color: var(--color-brand-primary);
+    border-color: transparent;
+  }
+  .op-btn--text:hover:not(:disabled) {
+    background-color: var(--color-bg-brand);
+    color: var(--color-interactive-hover);
+  }
+  .op-btn--text:active:not(:disabled) {
+    background-color: var(--color-bg-subtle);
+    color: var(--color-interactive-pressed);
+  }
+  .op-btn--text:disabled {
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+  }
+
+  /* ─── Loading Spinner ────────────────────────────── */
+  .op-btn__spinner {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    animation: op-spin 0.65s linear infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes op-spin {
+    to { transform: rotate(360deg); }
+  }
+}
