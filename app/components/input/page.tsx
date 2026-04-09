@@ -560,6 +560,227 @@ function DosDonts() {
   );
 }
 
+// ─── Code Section ─────────────────────────────────────────────
+
+const INPUT_SNIPPETS = [
+  {
+    label: "Filled",
+    code: `// Filled Text Field — Inactive 상태
+<div
+  style={{
+    background: 'var(--color-bg-subtle)',         // N20 #F4F5F5
+    borderBottom: '1px solid var(--color-border-default)', // N100
+    borderRadius: '8px 8px 0 0',
+    padding: '16px 16px 8px',
+    position: 'relative',
+  }}
+>
+  {/* Floating label (Focused/Activated: 12px Medium) */}
+  <label
+    style={{
+      display: 'block',
+      fontSize: 12,
+      fontWeight: 500,
+      color: 'var(--color-text-subtle)',           // N300
+      marginBottom: 4,
+    }}
+  >
+    이름
+  </label>
+  <input
+    type="text"
+    placeholder="홍길동"
+    style={{
+      display: 'block',
+      width: '100%',
+      background: 'transparent',
+      border: 'none',
+      outline: 'none',
+      fontSize: 16,                                // type/body/md
+      color: 'var(--color-text-default)',          // N600
+    }}
+  />
+</div>`,
+  },
+  {
+    label: "Outlined",
+    code: `// Outlined Text Field — Inactive 상태
+<div
+  style={{
+    background: 'transparent',
+    border: '1px solid var(--color-border-default)', // N100 #D8DCDE
+    borderRadius: 8,                                 // radius/component/input
+    padding: 16,
+    position: 'relative',
+  }}
+>
+  <label
+    style={{
+      display: 'block',
+      fontSize: 12,
+      fontWeight: 500,
+      color: 'var(--color-text-subtle)',
+      marginBottom: 4,
+    }}
+  >
+    이메일
+  </label>
+  <input
+    type="email"
+    placeholder="example@email.com"
+    style={{
+      display: 'block',
+      width: '100%',
+      background: 'transparent',
+      border: 'none',
+      outline: 'none',
+      fontSize: 16,
+      color: 'var(--color-text-default)',
+    }}
+  />
+</div>`,
+  },
+  {
+    label: "Focused",
+    code: `// Focused 상태 — border 2px, label color/brand/primary
+<div
+  style={{
+    background: 'var(--color-bg-subtle)',
+    borderBottom: '2px solid var(--color-border-brand)', // M300 #28D7D2
+    borderRadius: '8px 8px 0 0',
+    padding: '16px 16px 8px',
+  }}
+>
+  <label
+    style={{
+      display: 'block',
+      fontSize: 12,
+      fontWeight: 500,
+      color: 'var(--color-brand-primary)',   // M300 #28D7D2
+      marginBottom: 4,
+    }}
+  >
+    이름
+  </label>
+  <input
+    autoFocus
+    type="text"
+    style={{
+      display: 'block',
+      width: '100%',
+      background: 'transparent',
+      border: 'none',
+      outline: 'none',
+      fontSize: 16,
+      color: 'var(--color-text-default)',
+    }}
+  />
+</div>`,
+  },
+  {
+    label: "Error",
+    code: `// Error 상태 — border color/status/error, helper text 필수
+<div>
+  <div
+    style={{
+      background: 'var(--color-bg-subtle)',
+      borderBottom: '2px solid var(--color-status-error)', // #FF3257
+      borderRadius: '8px 8px 0 0',
+      padding: '16px 16px 8px',
+    }}
+  >
+    <label
+      style={{
+        display: 'block',
+        fontSize: 12,
+        fontWeight: 500,
+        color: 'var(--color-status-error)',   // #FF3257
+        marginBottom: 4,
+      }}
+    >
+      이메일
+    </label>
+    <input
+      type="email"
+      value="잘못된@형식"
+      style={{
+        display: 'block',
+        width: '100%',
+        background: 'transparent',
+        border: 'none',
+        outline: 'none',
+        fontSize: 16,
+        color: 'var(--color-text-default)',
+      }}
+    />
+  </div>
+  {/* Helper text — Error 시 반드시 표시 */}
+  <p style={{ fontSize: 12, color: 'var(--color-status-error)', marginTop: 4 }}>
+    올바른 이메일 형식을 입력해 주세요.
+  </p>
+</div>`,
+  },
+];
+
+function InputCodeSection() {
+  const [active, setActive] = useState(0);
+  const [copied, setCopied] = useState(false);
+
+  const copy = () => {
+    navigator.clipboard.writeText(INPUT_SNIPPETS[active].code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <section className="mb-16">
+      <div className="mb-5">
+        <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Code</p>
+        <h2 className="text-[20px] font-bold text-[var(--color-text-primary)]">코드 스니펫</h2>
+        <p className="text-[13px] mt-1 text-[var(--color-text-secondary)]">CSS 변수 기반 React 코드 예시 · State별 스타일 처리 방법</p>
+      </div>
+
+      <div className="flex border-b border-[var(--color-border)] mb-0">
+        {INPUT_SNIPPETS.map((s, i) => (
+          <button
+            key={s.label}
+            onClick={() => setActive(i)}
+            style={{ height: 40, padding: "0 16px" }}
+            className={`relative text-[13px] font-medium tracking-[0.04em] transition-all shrink-0
+              ${active === i ? "text-[var(--color-brand-primary)]" : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"}`}
+          >
+            {s.label}
+            {active === i && (
+              <span className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full" style={{ background: "var(--color-brand-primary)" }} />
+            )}
+          </button>
+        ))}
+      </div>
+
+      <div className="relative rounded-b-xl rounded-tr-xl overflow-hidden border border-t-0 border-[var(--color-border)]" style={{ background: "#1a2028" }}>
+        <button
+          onClick={copy}
+          className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[12px] font-medium transition-all"
+          style={{
+            background: copied ? "rgba(40,215,210,0.15)" : "rgba(255,255,255,0.08)",
+            color: copied ? "#28D7D2" : "rgba(255,255,255,0.6)",
+            border: `1px solid ${copied ? "rgba(40,215,210,0.3)" : "rgba(255,255,255,0.12)"}`,
+          }}
+        >
+          {copied ? (
+            <><svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>복사됨</>
+          ) : (
+            <><svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>복사</>
+          )}
+        </button>
+        <pre className="p-5 text-[13px] leading-relaxed overflow-x-auto" style={{ color: "#e2e8f0", fontFamily: "'SF Mono', 'Fira Code', monospace" }}>
+          <code>{INPUT_SNIPPETS[active].code}</code>
+        </pre>
+      </div>
+    </section>
+  );
+}
+
 // ─── Page ─────────────────────────────────────────────────────
 
 export default function InputPage() {
@@ -604,6 +825,7 @@ export default function InputPage() {
       <VariantGallery />
       <SpecTable />
       <DosDonts />
+      <InputCodeSection />
     </div>
   );
 }

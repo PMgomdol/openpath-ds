@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight, Zap, Layers, User } from "lucide-react";
+import { useState } from "react";
 
 const principles = [
   {
@@ -183,6 +186,9 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Theme Switch Demo */}
+      <ThemeDemo />
+
       {/* Footer note */}
       <div className="mt-16 pt-8 border-t border-[var(--color-border)]">
         <p className="text-[13px] text-[var(--color-text-secondary)]">
@@ -190,5 +196,165 @@ export default function HomePage() {
         </p>
       </div>
     </div>
+  );
+}
+
+// ─── Theme Demo ───────────────────────────────────────────────
+
+type Theme = "openpath" | "duotone";
+
+const THEME_VARS: Record<Theme, Record<string, string>> = {
+  openpath: {
+    "--demo-primary":        "#28D7D2",
+    "--demo-primary-hover":  "#1BB8B3",
+    "--demo-primary-pressed":"#0F9490",
+    "--demo-primary-light":  "#F3FCFC",
+    "--demo-primary-border": "#28D7D2",
+    "--demo-primary-dark":   "#156565",
+  },
+  duotone: {
+    "--demo-primary":        "#FE6565",
+    "--demo-primary-hover":  "#E54D4D",
+    "--demo-primary-pressed":"#C93838",
+    "--demo-primary-light":  "#FFF1F1",
+    "--demo-primary-border": "#FE6565",
+    "--demo-primary-dark":   "#A02828",
+  },
+};
+
+function ThemeDemo() {
+  const [theme, setTheme] = useState<Theme>("openpath");
+  const vars = THEME_VARS[theme];
+
+  const isOpenpath = theme === "openpath";
+
+  return (
+    <section className="mb-16 mt-4">
+      <div className="border-t border-[var(--color-border)] pt-12 mb-8">
+        <p className="text-[12px] font-semibold uppercase tracking-widest mb-1" style={{ color: vars["--demo-primary"] }}>
+          Multi-Theme
+        </p>
+        <h2 className="text-[24px] font-bold text-[var(--color-text-primary)] mb-2">
+          테마 전환 데모
+        </h2>
+        <p className="text-[14px] text-[var(--color-text-secondary)] max-w-[480px]">
+          오픈패스 DS는 <strong>Openpath (민트)</strong> / <strong>Duotone (코랄)</strong> 두 테마를 지원합니다.
+          CSS 변수 교체만으로 모든 컴포넌트 색상이 실시간 전환됩니다.
+        </p>
+      </div>
+
+      {/* Toggle */}
+      <div className="flex gap-2 mb-8">
+        {(["openpath", "duotone"] as Theme[]).map(t => {
+          const isActive = theme === t;
+          const color = THEME_VARS[t]["--demo-primary"];
+          return (
+            <button
+              key={t}
+              onClick={() => setTheme(t)}
+              style={{
+                padding: "8px 20px",
+                borderRadius: 9999,
+                fontSize: 14,
+                fontWeight: 600,
+                cursor: "pointer",
+                transition: "all 0.2s",
+                background: isActive ? color : "transparent",
+                color: isActive ? "#FFFFFF" : "var(--color-text-subtle)",
+                border: `2px solid ${isActive ? color : "var(--color-border-default)"}`,
+              }}
+            >
+              {t === "openpath" ? "Openpath (민트)" : "Duotone (코랄)"}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Live preview */}
+      <div
+        className="rounded-2xl border border-[var(--color-border)] p-6 transition-all duration-300"
+        style={{ ...(vars as React.CSSProperties), background: "var(--color-bg-subtle)" }}
+      >
+        <div className="grid sm:grid-cols-3 gap-4">
+          {/* Card */}
+          <div
+            className="rounded-xl p-5 col-span-1 sm:col-span-2"
+            style={{ background: "var(--color-bg-default)", boxShadow: "var(--shadow-02)" }}
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <div
+                className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold"
+                style={{ background: vars["--demo-primary"] }}
+              >
+                O
+              </div>
+              <div>
+                <p className="text-[14px] font-bold" style={{ color: "var(--color-text-default)" }}>
+                  {isOpenpath ? "오픈패스 DS" : "듀오톤 DS"}
+                </p>
+                <p className="text-[12px]" style={{ color: "var(--color-text-subtle)" }}>
+                  {isOpenpath ? "Mint #28D7D2" : "Coral #FE6565"}
+                </p>
+              </div>
+            </div>
+            <p className="text-[13px] leading-relaxed mb-4" style={{ color: "var(--color-text-subtle)" }}>
+              토큰 기반 멀티 테마 시스템. CSS 변수 교체만으로 브랜드 색상이 전체 컴포넌트에 즉시 반영됩니다.
+            </p>
+            <div className="flex gap-2 flex-wrap">
+              <button
+                className="px-4 py-2 rounded-lg text-[13px] font-semibold text-white transition-all"
+                style={{ background: vars["--demo-primary"] }}
+                onMouseEnter={e => { (e.target as HTMLButtonElement).style.background = vars["--demo-primary-hover"]; }}
+                onMouseLeave={e => { (e.target as HTMLButtonElement).style.background = vars["--demo-primary"]; }}
+              >
+                시작하기
+              </button>
+              <button
+                className="px-4 py-2 rounded-lg text-[13px] font-semibold transition-all"
+                style={{
+                  background: "transparent",
+                  color: vars["--demo-primary"],
+                  border: `1px solid ${vars["--demo-primary-border"]}`,
+                }}
+                onMouseEnter={e => { (e.target as HTMLButtonElement).style.background = vars["--demo-primary-light"]; }}
+                onMouseLeave={e => { (e.target as HTMLButtonElement).style.background = "transparent"; }}
+              >
+                더 알아보기
+              </button>
+            </div>
+          </div>
+
+          {/* Color swatches */}
+          <div className="flex flex-col gap-2">
+            {[
+              { label: "Primary",  key: "--demo-primary" },
+              { label: "Hover",    key: "--demo-primary-hover" },
+              { label: "Pressed",  key: "--demo-primary-pressed" },
+              { label: "Light",    key: "--demo-primary-light" },
+            ].map(({ label, key }) => (
+              <div key={key} className="flex items-center gap-3 rounded-lg px-3 py-2" style={{ background: "var(--color-bg-default)" }}>
+                <div className="w-7 h-7 rounded-md shrink-0 border border-[var(--color-border-default)]" style={{ background: vars[key] }} />
+                <div>
+                  <p className="text-[11px] font-semibold" style={{ color: "var(--color-text-default)" }}>{label}</p>
+                  <p className="text-[10px] font-mono" style={{ color: "var(--color-text-subtle)" }}>{vars[key]}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Token note */}
+        <div
+          className="mt-4 rounded-lg px-4 py-3 text-[12px] font-mono"
+          style={{
+            background: vars["--demo-primary-light"],
+            color: vars["--demo-primary-pressed"],
+            border: `1px solid ${vars["--demo-primary-border"]}20`,
+          }}
+        >
+          {`--color-brand-primary: ${vars["--demo-primary"]}`}
+        </div>
+      </div>
+    </section>
   );
 }

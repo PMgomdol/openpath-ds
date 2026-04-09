@@ -658,6 +658,150 @@ function DosDonts() {
   );
 }
 
+// ─── Code Section ────────────────────────────────────────────
+
+const BUTTON_SNIPPETS = [
+  {
+    label: "Primary",
+    code: `<button
+  style={{
+    background: 'var(--color-brand-primary)',  // M300 #28D7D2
+    color: 'var(--color-text-on-brand)',        // White
+    borderRadius: 'var(--radius-button-md)',    // 8px
+    padding: '10px 16px',
+    fontSize: 14,
+    fontWeight: 500,
+    letterSpacing: '0.04em',
+    border: 'none',
+    cursor: 'pointer',
+  }}
+>
+  저장하기
+</button>`,
+  },
+  {
+    label: "Secondary",
+    code: `<button
+  style={{
+    background: 'transparent',
+    color: 'var(--color-brand-primary)',        // M300 #28D7D2
+    borderRadius: 'var(--radius-button-md)',    // 8px
+    padding: '10px 16px',
+    fontSize: 14,
+    fontWeight: 500,
+    letterSpacing: '0.04em',
+    border: '1px solid var(--color-brand-primary)',
+    cursor: 'pointer',
+  }}
+>
+  취소하기
+</button>`,
+  },
+  {
+    label: "Text",
+    code: `<button
+  style={{
+    background: 'transparent',
+    color: 'var(--color-brand-primary)',        // M300 #28D7D2
+    padding: '10px 16px',
+    fontSize: 14,
+    fontWeight: 500,
+    letterSpacing: '0.04em',
+    border: 'none',
+    cursor: 'pointer',
+  }}
+>
+  더보기
+</button>`,
+  },
+  {
+    label: "Disabled",
+    code: `<button
+  disabled
+  style={{
+    background: 'var(--color-interactive-disabled)', // N100 #D8DCDE
+    color: 'var(--color-text-disabled)',              // N100 #D8DCDE
+    borderRadius: 'var(--radius-button-md)',
+    padding: '10px 16px',
+    fontSize: 14,
+    fontWeight: 500,
+    letterSpacing: '0.04em',
+    border: 'none',
+    cursor: 'not-allowed',
+  }}
+>
+  비활성 버튼
+</button>`,
+  },
+];
+
+function ButtonCodeSection() {
+  const [active, setActive] = useState(0);
+  const [copied, setCopied] = useState(false);
+
+  const copy = () => {
+    navigator.clipboard.writeText(BUTTON_SNIPPETS[active].code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <section className="mb-16">
+      <div className="mb-5">
+        <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Code</p>
+        <h2 className="text-[20px] font-bold text-[var(--color-text-primary)]">코드 스니펫</h2>
+        <p className="text-[13px] mt-1 text-[var(--color-text-secondary)]">CSS 변수 기반 React 코드 예시 · 복사 후 바로 사용 가능</p>
+      </div>
+
+      {/* Tab bar */}
+      <div className="flex border-b border-[var(--color-border)] mb-0">
+        {BUTTON_SNIPPETS.map((s, i) => (
+          <button
+            key={s.label}
+            onClick={() => setActive(i)}
+            style={{ height: 40, padding: "0 16px" }}
+            className={`relative text-[13px] font-medium tracking-[0.04em] transition-all shrink-0
+              ${active === i ? "text-[var(--color-brand-primary)]" : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"}`}
+          >
+            {s.label}
+            {active === i && (
+              <span className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full" style={{ background: "var(--color-brand-primary)" }} />
+            )}
+          </button>
+        ))}
+      </div>
+
+      {/* Code block */}
+      <div className="relative rounded-b-xl rounded-tr-xl overflow-hidden border border-t-0 border-[var(--color-border)]" style={{ background: "#1a2028" }}>
+        <button
+          onClick={copy}
+          className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[12px] font-medium transition-all"
+          style={{
+            background: copied ? "rgba(40,215,210,0.15)" : "rgba(255,255,255,0.08)",
+            color: copied ? "#28D7D2" : "rgba(255,255,255,0.6)",
+            border: `1px solid ${copied ? "rgba(40,215,210,0.3)" : "rgba(255,255,255,0.12)"}`,
+          }}
+        >
+          {copied ? (
+            <>
+              <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              복사됨
+            </>
+          ) : (
+            <>
+              <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+              복사
+            </>
+          )}
+        </button>
+        <pre className="p-5 text-[13px] leading-relaxed overflow-x-auto" style={{ color: "#e2e8f0", fontFamily: "'SF Mono', 'Fira Code', monospace" }}>
+          <code>{BUTTON_SNIPPETS[active].code}</code>
+        </pre>
+      </div>
+    </section>
+  );
+}
+
 // ─── Page ────────────────────────────────────────────────────
 
 export default function ButtonPage() {
@@ -707,6 +851,7 @@ export default function ButtonPage() {
       <VariantGallery />
       <SpecTable />
       <DosDonts />
+      <ButtonCodeSection />
 
     </div>
   );
