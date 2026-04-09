@@ -532,7 +532,7 @@ export default function ListPage() {
               ))}
             </ul>
           </div>
-          <div className="rounded-xl border-2 p-5" style={{ borderColor: "rgba(255,50,87,0.3)", background: "#FFF0F3" }}>
+          <div className="rounded-xl border-2 p-5" style={{ borderColor: "var(--color-status-error)", background: "var(--color-bg-error)" }}>
             <p className="text-[14px] font-bold mb-3" style={{ color: "var(--color-status-error)" }}>✕ Don't</p>
             <ul className="space-y-2">
               {["아이콘/아바타/체크박스 혼용", "모든 아이템 아래 Divider 표시", "제목을 14px 미만으로 축소", "Three-line 아이템에 4줄 이상 서브텍스트"].map((t, i) => (

@@ -284,7 +284,7 @@ export default function NavigationDrawerPage() {
               ))}
             </ul>
           </div>
-          <div className="rounded-xl border-2 p-5" style={{ borderColor: "rgba(255,50,87,0.3)", background: "#FFF0F3" }}>
+          <div className="rounded-xl border-2 p-5" style={{ borderColor: "var(--color-status-error)", background: "var(--color-bg-error)" }}>
             <p className="text-[14px] font-bold mb-3" style={{ color: "var(--color-status-error)" }}>✕ Don't</p>
             <ul className="space-y-2">
               {["여러 항목 동시에 Active", "Scrim 없이 Modal Drawer 표시", "아이템 높이 56px 미만 축소", "Drawer 위에 또 다른 오버레이 표시"].map((t, i) => (

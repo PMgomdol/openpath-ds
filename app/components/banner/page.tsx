@@ -38,10 +38,10 @@ const BANNER_CONFIG: Record<BannerType, BannerConfig> = {
     ),
   },
   Warning: {
-    bg: "#FFF8F0",
+    bg: "var(--color-bg-warning)",
     accent: "var(--color-status-warning)",
-    titleColor: "#7A4000",
-    bodyColor: "#9A5200",
+    titleColor: "var(--color-status-warning)",
+    bodyColor: "var(--color-text-default)",
     icon: (
       <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: 20, height: 20 }}>
         <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
@@ -49,10 +49,10 @@ const BANNER_CONFIG: Record<BannerType, BannerConfig> = {
     ),
   },
   Error: {
-    bg: "#FFF0F3",
+    bg: "var(--color-bg-error)",
     accent: "var(--color-status-error)",
-    titleColor: "#8B0021",
-    bodyColor: "#A00028",
+    titleColor: "var(--color-status-error)",
+    bodyColor: "var(--color-text-default)",
     icon: (
       <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: 20, height: 20 }}>
         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
@@ -309,7 +309,7 @@ export default function BannerPage() {
               ))}
             </ul>
           </div>
-          <div className="rounded-xl border-2 p-5" style={{ borderColor: "rgba(255,50,87,0.3)", background: "#FFF0F3" }}>
+          <div className="rounded-xl border-2 p-5" style={{ borderColor: "var(--color-status-error)", background: "var(--color-bg-error)" }}>
             <p className="text-[14px] font-bold mb-3" style={{ color: "var(--color-status-error)" }}>✕ Don't</p>
             <ul className="space-y-2">
               {["닫기 없이 영구 노출", "콘텐츠 중간에 Banner 삽입", "같은 페이지에 Banner 2개 이상", "긴 본문 텍스트 (Dialog 사용)"].map((t, i) => (

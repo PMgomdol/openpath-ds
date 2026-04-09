@@ -264,7 +264,7 @@ export default function BottomNavigationPage() {
               ))}
             </ul>
           </div>
-          <div className="rounded-xl border-2 p-5" style={{ borderColor: "rgba(255,50,87,0.3)", background: "#FFF0F3" }}>
+          <div className="rounded-xl border-2 p-5" style={{ borderColor: "var(--color-status-error)", background: "var(--color-bg-error)" }}>
             <p className="text-[14px] font-bold mb-3" style={{ color: "var(--color-status-error)" }}>✕ Don't</p>
             <ul className="space-y-2">
               {["탭 2개 이하 또는 6개 이상", "긴 라벨로 탭 간격 붕괴", "Badge 없이 알림 표시", "Bottom Nav를 스크롤에 가리게 배치"].map((t, i) => (

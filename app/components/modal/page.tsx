@@ -31,11 +31,11 @@ function ModalDemo() {
         <div className="flex flex-col items-center justify-center min-h-[180px] gap-4 bg-[var(--color-bg-subtle)] border-b border-[var(--color-border)] p-8">
           <div className="flex gap-3">
             <button onClick={() => { setVariant("default"); setOpen(true); }}
-              className="px-5 py-2.5 rounded-md bg-mint-300 text-white text-[14px] font-medium hover:bg-mint-400 transition-colors">
+              className="px-5 py-2.5 rounded-md bg-[var(--color-interactive-primary)] text-[var(--color-text-on-brand)] text-[14px] font-medium hover:bg-[var(--color-interactive-hover)] transition-colors">
               모달 열기 (Default)
             </button>
             <button onClick={() => { setVariant("destructive"); setOpen(true); }}
-              className="px-5 py-2.5 rounded-md border border-[#FF3257] text-[#FF3257] text-[14px] font-medium hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors">
+              className="px-5 py-2.5 rounded-md border border-[var(--color-status-error)] text-[var(--color-status-error)] text-[14px] font-medium hover:bg-[var(--color-bg-error)] transition-colors">
               모달 열기 (Destructive)
             </button>
           </div>
@@ -60,7 +60,7 @@ function ModalDemo() {
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setOpen(false)} />
-          <div className="relative z-10 w-full max-w-sm mx-4 bg-[var(--color-bg-base,white)] dark:bg-neutral-600 rounded-xl shadow-[0_8px_24px_-2px_rgba(21,27,30,0.20)] p-7 border border-[var(--color-border)]">
+          <div className="relative z-10 w-full max-w-sm mx-4 bg-[var(--color-bg-default)] rounded-xl [box-shadow:var(--shadow-04)] p-7 border border-[var(--color-border-default)]">
             <h3 className="text-[18px] font-bold text-[var(--color-text-primary)] mb-2">
               {variant === "destructive" ? "정말 삭제하시겠어요?" : "변경 사항을 저장할까요?"}
             </h3>
@@ -77,8 +77,8 @@ function ModalDemo() {
               <button onClick={() => setOpen(false)}
                 className={`px-4 py-2 rounded-md text-[14px] font-medium text-white transition-colors ${
                   variant === "destructive"
-                    ? "bg-[#FF3257] hover:bg-[#e0194a]"
-                    : "bg-mint-300 hover:bg-mint-400"
+                    ? "bg-[var(--color-status-error)] hover:brightness-90"
+                    : "bg-[var(--color-interactive-primary)] hover:bg-[var(--color-interactive-hover)]"
                 }`}>
                 {variant === "destructive" ? "삭제" : "저장하기"}
               </button>

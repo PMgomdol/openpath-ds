@@ -100,10 +100,10 @@ const config: Config = {
         "2xl": "24px",
       },
       boxShadow: {
-        "elevation-1": "0 1px 4px 0 rgba(0,0,0,0.08)",
-        "elevation-2": "0 4px 12px 0 rgba(0,0,0,0.10)",
-        "elevation-3": "0 8px 24px 0 rgba(0,0,0,0.12)",
-        "elevation-4": "0 16px 40px 0 rgba(0,0,0,0.16)",
+        "elevation-1": "var(--shadow-01)",
+        "elevation-2": "var(--shadow-02)",
+        "elevation-3": "var(--shadow-03)",
+        "elevation-4": "var(--shadow-04)",
       },
       maxWidth: {
         content: "1200px",

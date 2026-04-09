@@ -308,7 +308,7 @@ export default function FABPage() {
               ))}
             </ul>
           </div>
-          <div className="rounded-xl border-2 p-5" style={{ borderColor: "rgba(255,50,87,0.3)", background: "#FFF0F3" }}>
+          <div className="rounded-xl border-2 p-5" style={{ borderColor: "var(--color-status-error)", background: "var(--color-bg-error)" }}>
             <p className="text-[14px] font-bold mb-3" style={{ color: "var(--color-status-error)" }}>✕ Don't</p>
             <ul className="space-y-2">
               {["FAB 2개 이상 동시 노출", "스크롤 시 FAB이 콘텐츠 위로 겹침", "Large FAB을 80px로 사용 (96px 준수)", "Shadow 없이 FAB 배치"].map((t, i) => (

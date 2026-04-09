@@ -8,9 +8,9 @@ function Card({ variant = "Default", interactive }: { variant?: CardVariant; int
   const base = `rounded-xl overflow-hidden transition-all duration-200 ${interactive ? "cursor-pointer" : ""}`;
 
   const variantClass = {
-    Default:  "bg-[var(--color-bg-base,white)] dark:bg-neutral-600 shadow-elevation-1",
-    Outlined: "bg-[var(--color-bg-base,white)] dark:bg-neutral-600 border border-[var(--color-border)]",
-    Elevated: "bg-[var(--color-bg-base,white)] dark:bg-neutral-600 shadow-elevation-2",
+    Default:  "bg-[var(--color-bg-default)] shadow-elevation-1",
+    Outlined: "bg-[var(--color-bg-default)] border border-[var(--color-border-default)]",
+    Elevated: "bg-[var(--color-bg-default)] shadow-elevation-2",
     Filled:   "bg-[var(--color-bg-subtle)]",
   }[variant];
 

@@ -3,7 +3,19 @@
     "allow": [
       "Bash(git init:*)",
       "Bash(git remote:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(gh auth:*)",
+      "Bash(git -C /Users/duotne/Desktop/AI/op_ds add app/globals.css app/tokens/page.tsx)",
+      "Bash(git -C /Users/duotne/Desktop/AI/op_ds commit -m ':*)",
+      "Bash(git -C /Users/duotne/Desktop/AI/op_ds push)",
+      "Bash(npm install:*)",
+      "Bash(vercel whoami:*)",
+      "Bash(npm run:*)",
+      "Bash(grep:*)",
+      "Bash(sed -n '54,60p' /Users/duotne/Desktop/AI/op_ds/app/components/snackbar/page.tsx)",
+      "Bash(sed -n '168,172p' /Users/duotne/Desktop/AI/op_ds/app/components/snackbar/page.tsx)"
     ]
   }
 }

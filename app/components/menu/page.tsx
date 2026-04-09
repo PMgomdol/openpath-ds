@@ -317,7 +317,7 @@ export default function MenuPage() {
               ))}
             </ul>
           </div>
-          <div className="rounded-xl border-2 p-5" style={{ borderColor: "rgba(255,50,87,0.3)", background: "#FFF0F3" }}>
+          <div className="rounded-xl border-2 p-5" style={{ borderColor: "var(--color-status-error)", background: "var(--color-bg-error)" }}>
             <p className="text-[14px] font-bold mb-3" style={{ color: "var(--color-status-error)" }}>✕ Don't</p>
             <ul className="space-y-2">
               {["Destructive 항목을 상단 배치", "항목 7개 이상 나열", "아이템 높이 48px 미만 축소", "라벨에 긴 문장 사용"].map((t, i) => (

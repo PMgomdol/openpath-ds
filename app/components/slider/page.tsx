@@ -363,7 +363,7 @@ export default function SliderPage() {
               ))}
             </ul>
           </div>
-          <div className="rounded-xl border-2 p-5" style={{ borderColor: "rgba(255,50,87,0.3)", background: "#FFF0F3" }}>
+          <div className="rounded-xl border-2 p-5" style={{ borderColor: "var(--color-status-error)", background: "var(--color-bg-error)" }}>
             <p className="text-[14px] font-bold mb-3" style={{ color: "var(--color-status-error)" }}>✕ Don't</p>
             <ul className="space-y-2">
               {["정확한 숫자 입력 필요 시 (Text Field 사용)", "값 표시 없이 Slider 단독 사용", "터치 영역 40px 미만으로 축소", "Disabled 표현에 opacity 0.5 사용"].map((t, i) => (

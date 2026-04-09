@@ -44,11 +44,11 @@ function getFieldClasses(type: FieldType, state: FieldState) {
 
   const borderWidth = (isFocused || isError) ? "border-2" : "border";
   const borderColor =
-    isError    ? "border-[#FF3257]"
-    : isFocused ? "border-mint-300"
-    : isHover   ? "border-neutral-300"
-    : isDisabled ? (isFilled ? "border-transparent" : "border-neutral-100")
-    : "border-neutral-100";
+    isError    ? "border-[var(--color-status-error)]"
+    : isFocused ? "border-[var(--color-border-brand)]"
+    : isHover   ? "border-[var(--color-border-default)]"
+    : isDisabled ? (isFilled ? "border-transparent" : "border-[var(--color-border-default)]")
+    : "border-[var(--color-border-default)]";
 
   const radius = isFilled ? "rounded-t-md" : "rounded-md";
 
@@ -56,16 +56,16 @@ function getFieldClasses(type: FieldType, state: FieldState) {
 }
 
 function getLabelColor(state: FieldState): string {
-  if (state === "Error")    return "text-[#FF3257]";
-  if (state === "Focused")  return "text-mint-300";
-  if (state === "Disabled") return "text-neutral-200";
-  return "text-neutral-300";
+  if (state === "Error")    return "text-[var(--color-status-error)]";
+  if (state === "Focused")  return "text-[var(--color-border-brand)]";
+  if (state === "Disabled") return "text-[var(--color-text-disabled)]";
+  return "text-[var(--color-text-subtle)]";
 }
 
 function getHelperColor(state: FieldState): string {
-  if (state === "Error")    return "text-[#FF3257]";
-  if (state === "Disabled") return "text-neutral-200";
-  return "text-neutral-300";
+  if (state === "Error")    return "text-[var(--color-status-error)]";
+  if (state === "Disabled") return "text-[var(--color-text-disabled)]";
+  return "text-[var(--color-text-subtle)]";
 }
 
 // ─── TextField ────────────────────────────────────────────────
@@ -116,7 +116,7 @@ function TextField({
       >
         {/* Prefix */}
         {prefix && (
-          <span className="pl-4 pr-2 text-[16px] text-neutral-300 shrink-0 select-none pt-5 pb-2">
+          <span className="pl-4 pr-2 text-[16px] text-[var(--color-text-subtle)] shrink-0 select-none pt-5 pb-2">
             {prefix}
           </span>
         )}
@@ -129,7 +129,7 @@ function TextField({
               absolute left-0 transition-all duration-150 pointer-events-none select-none
               ${isFloating
                 ? "top-2 text-[11px] font-medium tracking-[0.04em] " + labelColor
-                : "top-1/2 -translate-y-1/2 text-[16px] font-normal text-neutral-300"
+                : "top-1/2 -translate-y-1/2 text-[16px] font-normal text-[var(--color-text-subtle)]"
               }
               ${!prefix ? (type === "Filled" ? "left-4" : "left-4") : ""}
             `}
@@ -149,7 +149,7 @@ function TextField({
               w-full bg-transparent outline-none text-[16px]
               ${type === "Filled" ? "pt-6 pb-2 px-4" : "pt-5 pb-3 px-4"}
               ${prefix ? "px-0 pr-4" : ""}
-              ${isDisabled ? "cursor-not-allowed text-neutral-200" : "text-[var(--color-text-primary)]"}
+              ${isDisabled ? "cursor-not-allowed text-[var(--color-text-disabled)]" : "text-[var(--color-text-default)]"}
               ${dropdown ? "cursor-pointer text-left" : ""}
             `}
           />
@@ -157,7 +157,7 @@ function TextField({
 
         {/* Suffix or Dropdown icon */}
         {(suffix || dropdown) && (
-          <span className={`pr-4 shrink-0 text-[16px] ${effectState === "Focused" ? "text-mint-300" : "text-neutral-300"} pt-3 pb-2`}>
+          <span className={`pr-4 shrink-0 text-[16px] ${effectState === "Focused" ? "text-[var(--color-border-brand)]" : "text-[var(--color-text-subtle)]"} pt-3 pb-2`}>
             {dropdown ? (
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="6 9 12 15 18 9" />
@@ -536,10 +536,10 @@ function DosDonts() {
 
         <div className="rounded-xl border-2 border-system-error/30 bg-red-50 dark:bg-red-950/20 p-5">
           <div className="flex items-center gap-2 mb-4">
-            <div className="w-5 h-5 rounded-full bg-[#FF3257] flex items-center justify-center shrink-0">
+            <div className="w-5 h-5 rounded-full bg-[var(--color-status-error)] flex items-center justify-center shrink-0">
               <svg viewBox="0 0 24 24" className="w-3 h-3" fill="white"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
             </div>
-            <span className="text-[14px] font-bold text-[#FF3257]">Don&apos;t</span>
+            <span className="text-[14px] font-bold text-[var(--color-status-error)]">Don&apos;t</span>
           </div>
           <ul className="space-y-3">
             {[
@@ -550,7 +550,7 @@ function DosDonts() {
               "Filled와 Outlined를 한 폼 내에서 혼용하지 마세요.",
             ].map((t, i) => (
               <li key={i} className="flex items-start gap-2 text-[13px] text-red-700 dark:text-red-300">
-                <span className="font-bold shrink-0 text-[#FF3257]">✕</span>{t}
+                <span className="font-bold shrink-0 text-[var(--color-status-error)]">✕</span>{t}
               </li>
             ))}
           </ul>
