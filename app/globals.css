@@ -1,0 +1,60 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-text-primary:   #1a2428;
+    --color-text-secondary: #889298;
+    --color-bg-base:        #ffffff;
+    --color-bg-subtle:      #F4F5F5;
+    --color-sidebar-bg:     #ffffff;
+    --color-border:         #D8DCDE;
+    --color-header-bg:      rgba(255,255,255,0.85);
+  }
+
+  .dark {
+    --color-text-primary:   #f0f4f4;
+    --color-text-secondary: #889298;
+    --color-bg-base:        #111a1a;
+    --color-bg-subtle:      #1a2428;
+    --color-sidebar-bg:     #141f1f;
+    --color-border:         #2a3a3a;
+    --color-header-bg:      rgba(17,26,26,0.85);
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: "Noto Sans KR", system-ui, sans-serif;
+    background-color: var(--color-bg-base);
+    color: var(--color-text-primary);
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  ::selection {
+    background-color: #A8EBEA;
+    color: #156565;
+  }
+}
+
+@layer utilities {
+  .text-primary   { color: var(--color-text-primary); }
+  .text-secondary { color: var(--color-text-secondary); }
+  .bg-base        { background-color: var(--color-bg-base); }
+  .bg-subtle      { background-color: var(--color-bg-subtle); }
+  .border-default { border-color: var(--color-border); }
+  .sidebar-bg     { background-color: var(--color-sidebar-bg); }
+  .header-bg      { background-color: var(--color-header-bg); }
+}
