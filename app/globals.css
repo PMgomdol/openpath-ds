@@ -6,23 +6,108 @@
 
 @layer base {
   :root {
-    --color-text-primary:   #1a2428;
+    /* ── Legacy aliases (기존 컴포넌트 호환) ── */
+    --color-text-primary:   #29363D;
     --color-text-secondary: #889298;
-    --color-bg-base:        #ffffff;
+    --color-bg-base:        #FFFFFF;
     --color-bg-subtle:      #F4F5F5;
-    --color-sidebar-bg:     #ffffff;
+    --color-sidebar-bg:     #FFFFFF;
     --color-border:         #D8DCDE;
     --color-header-bg:      rgba(255,255,255,0.85);
+
+    /* ── Color — Interactive ── */
+    --color-interactive-primary:  #28D7D2;
+    --color-interactive-hover:    #1BB8B3;
+    --color-interactive-pressed:  #0F9490;
+    --color-interactive-disabled: #D8DCDE;
+
+    /* ── Color — Text ── */
+    --color-text-default:   #29363D;
+    --color-text-subtle:    #889298;
+    --color-text-disabled:  #D8DCDE;
+    --color-text-on-brand:  #FFFFFF;
+
+    /* ── Color — Background ── */
+    --color-bg-default:     #FFFFFF;
+    --color-bg-brand:       #F3FCFC;
+
+    /* ── Color — Border ── */
+    --color-border-default: #D8DCDE;
+    --color-border-brand:   #28D7D2;
+
+    /* ── Color — Brand ── */
+    --color-brand-primary:  #28D7D2;
+
+    /* ── Color — Status ── */
+    --color-status-error:   #FF3257;
+    --color-status-success: #28D7D2;
+    --color-status-warning: #EE706B;
+
+    /* ── Spacing ── */
+    --space-01: 4px;
+    --space-02: 8px;
+    --space-03: 12px;
+    --space-04: 16px;
+    --space-05: 20px;
+    --space-06: 24px;
+    --space-07: 32px;
+    --space-08: 40px;
+    --space-09: 48px;
+
+    /* ── Radius ── */
+    --radius-button-sm: 4px;
+    --radius-button-md: 8px;
+    --radius-input:     8px;
+    --radius-chip:      9999px;
+    --radius-fab:       9999px;
+    --radius-snackbar:  8px;
+    --radius-card-sm:   12px;
+    --radius-card-md:   16px;
+    --radius-dialog:    16px;
+    --radius-tooltip:   4px;
+
+    /* ── Shadow ── */
+    --shadow-01: 0 1px 4px rgba(21,27,30,0.08);
+    --shadow-02: 0 2px 8px rgba(21,27,30,0.12);
+    --shadow-03: 0 4px 16px rgba(21,27,30,0.12);
+    --shadow-04: 0 8px 24px rgba(21,27,30,0.20);
   }
 
   .dark {
-    --color-text-primary:   #f0f4f4;
-    --color-text-secondary: #889298;
-    --color-bg-base:        #111a1a;
-    --color-bg-subtle:      #1a2428;
-    --color-sidebar-bg:     #141f1f;
-    --color-border:         #2a3a3a;
-    --color-header-bg:      rgba(17,26,26,0.85);
+    /* ── Legacy aliases (기존 컴포넌트 호환) ── */
+    --color-text-primary:   #FFFFFF;
+    --color-text-secondary: #B0B8BC;
+    --color-bg-base:        #29363D;
+    --color-bg-subtle:      #3D5060;
+    --color-sidebar-bg:     #29363D;
+    --color-border:         #60707A;
+    --color-header-bg:      rgba(41,54,61,0.85);
+
+    /* ── Color — Interactive ── */
+    --color-interactive-primary:  #28D7D2;
+    --color-interactive-hover:    #6DDEDD;
+    --color-interactive-pressed:  #A8EBEA;
+    --color-interactive-disabled: #60707A;
+
+    /* ── Color — Text ── */
+    --color-text-default:   #FFFFFF;
+    --color-text-subtle:    #B0B8BC;
+    --color-text-disabled:  #60707A;
+    --color-text-on-brand:  #FFFFFF;
+
+    /* ── Color — Background ── */
+    --color-bg-default:     #29363D;
+    --color-bg-brand:       #156565;
+
+    /* ── Color — Border ── */
+    --color-border-default: #60707A;
+    --color-border-brand:   #28D7D2;
+
+    /* ── Shadow (다크모드 shadow는 opacity 0) ── */
+    --shadow-01: 0 1px 4px rgba(0,0,0,0);
+    --shadow-02: 0 2px 8px rgba(0,0,0,0);
+    --shadow-03: 0 4px 16px rgba(0,0,0,0);
+    --shadow-04: 0 8px 24px rgba(0,0,0,0);
   }
 
   * {
@@ -38,8 +123,8 @@
 
   body {
     font-family: "Noto Sans KR", system-ui, sans-serif;
-    background-color: var(--color-bg-base);
-    color: var(--color-text-primary);
+    background-color: var(--color-bg-default);
+    color: var(--color-text-default);
     transition: background-color 0.2s ease, color 0.2s ease;
   }
 
