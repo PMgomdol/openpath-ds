@@ -6,7 +6,13 @@
 - Disabled 처리는 opacity 아닌 `--color-text-disabled` / `--color-interactive-disabled` 사용
 - 한 화면에 Primary 버튼 1개만
 - 다크모드는 컴포넌트 복제 금지. CSS 변수 교체로 처리
-- Shadow는 다크모드에서 opacity 0 처리 (`--shadow-*` 변수로 관리)
+- Shadow는 다크모드에서 `none` 처리 (`--shadow-*` 변수로 관리)
+
+## Accessibility 규칙
+- 터치 영역 최소 48dp 이상 (`::after` 또는 `min-height`로 확보)
+- 아이콘 전용 버튼은 반드시 `aria-label` 지정
+- 색상만으로 상태를 표현하지 않음 (아이콘 또는 텍스트 보조)
+- 포커스 링: `outline: 2px solid var(--color-border-brand); outline-offset: 2px`
 
 ---
 
@@ -28,7 +34,7 @@
 --color-text:               #29363D;
 --color-text-subtle:        #889298;
 --color-text-disabled:      #D8DCDE;
---color-text-on-brand:      #FFFFFF;
+--color-text-on-brand:      #29363D;   /* N600 — WCAG AA/AAA on M300 (~7.8:1). White는 ~1.85:1로 실패. */
 ```
 
 ### Background
@@ -100,6 +106,29 @@
 --radius-md:   12px;
 --radius-lg:   16px;
 --radius-pill: 9999px;
+```
+
+### Shape (컴포넌트 모서리 시스템)
+```css
+--shape-xs:   4px;
+--shape-sm:   8px;
+--shape-md:   12px;
+--shape-lg:   16px;
+--shape-xl:   28px;
+--shape-full: 9999px;   /* pill — Button, Chip, Badge, FAB */
+```
+
+### Motion
+```css
+/* Easing */
+--motion-standard:    cubic-bezier(0.2, 0, 0, 1.0);   /* 기본 전환 (가장 많이 사용) */
+--motion-decelerate:  cubic-bezier(0, 0, 0, 1.0);      /* 요소 진입 (Enter) */
+--motion-accelerate:  cubic-bezier(0.3, 0, 1, 1);      /* 요소 퇴장 (Exit) */
+
+/* Duration */
+--duration-short:  100ms;   /* 마이크로 인터랙션 (hover, ripple) */
+--duration-medium: 250ms;   /* 표준 전환 (modal, dropdown) */
+--duration-long:   400ms;   /* 복잡한 레이아웃 변화 */
 ```
 
 ### Typography
