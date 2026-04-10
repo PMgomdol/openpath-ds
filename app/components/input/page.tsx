@@ -49,7 +49,7 @@ function InteractiveDemo() {
       <div className="mb-5">
         <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">Interactive Demo</p>
         <h2 className="text-[20px] font-bold text-[var(--color-text-default)]">라이브 미리보기</h2>
-        <p className="text-[13px] text-[var(--color-text-subtle)] mt-1">직접 클릭하여 Hover · Focus · Activated 상태를 확인하세요.</p>
+        <p className="text-[13px] text-[var(--color-text-subtle)] mt-1">직접 클릭하여 Hover · Focus · Populated 상태를 확인하세요.</p>
       </div>
 
       <div className="rounded-xl border border-[var(--color-border-default)] overflow-hidden">
@@ -250,7 +250,7 @@ function StateReference() {
       node: <TextField variant="filled" label="이름" placeholder="홍길동" helperText="8자 이내로 입력하세요." />,
     },
     {
-      label: "Activated (값 입력됨)",
+      label: "Populated (값 입력됨)",
       node: <TextField variant="filled" label="이름" placeholder="홍길동" defaultValue="김민준" helperText="8자 이내로 입력하세요." />,
     },
     {
@@ -305,7 +305,7 @@ function SpecTable() {
     { attr: "Label 폰트 (Float)",          value: "12px Medium",              token: "type/label/sm" },
     { attr: "Input 폰트",                  value: "16px Regular",             token: "type/body/md" },
     { attr: "Helper 폰트",                 value: "12px Regular",             token: "type/caption" },
-    { attr: "Border (기본·Activated)",     value: "1px",                      token: "—" },
+    { attr: "Border (기본·Populated)",     value: "1px",                      token: "—" },
     { attr: "Border (Focused·Error)",     value: "2px (box-shadow 기법)",    token: "—" },
     { attr: "Radius (Filled)",            value: "4px top-left / top-right", token: "shape/xs" },
     { attr: "Radius (Outlined)",          value: "4px 전체",                  token: "shape/xs" },
@@ -316,7 +316,7 @@ function SpecTable() {
     { state: "Inactive",  bg: "color/bg/subtle",  border: "color/border/default", label: "color/text/subtle",    bw: "1px" },
     { state: "Hover",     bg: "color/bg/subtle",  border: "color/text/subtle",    label: "color/text/subtle",    bw: "1px" },
     { state: "Focused",   bg: "color/bg/subtle",  border: "color/border/brand",   label: "color/brand/primary",  bw: "2px" },
-    { state: "Activated", bg: "color/bg/subtle",  border: "color/border/default", label: "color/text/subtle",    bw: "1px" },
+    { state: "Populated", bg: "color/bg/subtle",  border: "color/border/default", label: "color/text/subtle",    bw: "1px" },
     { state: "Error",     bg: "color/bg/subtle",  border: "color/status/error",   label: "color/status/error",   bw: "2px" },
     { state: "Disabled",  bg: "color/bg/subtle",  border: "transparent",          label: "color/text/disabled",  bw: "1px" },
   ];
