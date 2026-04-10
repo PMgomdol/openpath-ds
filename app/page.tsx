@@ -38,10 +38,14 @@ const principles = [
 ];
 
 const quickLinks = [
-  { label: "컬러 팔레트", href: "/foundation/color", desc: "민트 팔레트 & 중립색" },
-  { label: "타이포그래피", href: "/foundation/typography", desc: "Headline · Body · Label" },
-  { label: "버튼 컴포넌트", href: "/components/button", desc: "라이브 데모 + 스펙" },
-  { label: "전체 토큰", href: "/tokens", desc: "복사 가능한 토큰 테이블" },
+  { label: "Color",       href: "/foundation/color",           desc: "민트 팔레트 & 중립색 · Style" },
+  { label: "Shape",       href: "/style/shape",                desc: "M3 Shape Scale 6단계 · Style" },
+  { label: "Principles",  href: "/foundation/principles",      desc: "Clarity · Scalability · Autonomy · Foundation" },
+  { label: "Design Token",href: "/foundation/design-token",    desc: "3단계 토큰 구조 · Foundation" },
+  { label: "Accessibility",href:"/foundation/accessibility",   desc: "WCAG AA · 터치 48dp · Foundation" },
+  { label: "Button",      href: "/components/button",          desc: "라이브 데모 + 스펙 · Components" },
+  { label: "FAB",         href: "/components/fab",             desc: "Rounded Square shape/lg · Components" },
+  { label: "전체 토큰",   href: "/tokens",                     desc: "복사 가능한 토큰 테이블" },
 ];
 
 export default function HomePage() {
@@ -145,6 +149,59 @@ export default function HomePage() {
               <p className="text-[14px] text-[var(--color-text-secondary)] leading-relaxed">
                 {p.description}
               </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* DS Structure Overview */}
+      <section className="mb-16">
+        <div className="mb-6">
+          <p className="text-[12px] font-semibold text-mint-300 uppercase tracking-widest mb-1">
+            M3 Structure
+          </p>
+          <h2 className="text-[24px] font-bold text-[var(--color-text-primary)]">
+            디자인 시스템 구조
+          </h2>
+        </div>
+        <div className="grid sm:grid-cols-3 gap-4">
+          {[
+            {
+              category: "Style",
+              desc: "시각 요소",
+              color: "text-mint-500 dark:text-mint-300",
+              bg: "bg-mint-20 dark:bg-mint-600/10",
+              border: "border-mint-100 dark:border-mint-600/30",
+              items: ["Color", "Typography", "Spacing", "Shape", "Elevation", "Iconography"],
+            },
+            {
+              category: "Foundation",
+              desc: "환경·원칙·기반",
+              color: "text-purple-600 dark:text-purple-400",
+              bg: "bg-[#F5F2FF] dark:bg-[#7B61FF]/10",
+              border: "border-[#D6CCFF] dark:border-[#7B61FF]/30",
+              items: ["Environment", "Principles", "Naming", "Design Token", "Accessibility", "Motion"],
+            },
+            {
+              category: "Components",
+              desc: "UI 구성 요소",
+              color: "text-[var(--color-text-secondary)]",
+              bg: "bg-[var(--color-bg-subtle)]",
+              border: "border-[var(--color-border)]",
+              items: ["Button", "Input", "Card", "FAB", "Bottom Navigation", "…16종"],
+            },
+          ].map((cat) => (
+            <div key={cat.category} className={`rounded-xl p-5 border ${cat.bg} ${cat.border}`}>
+              <p className={`text-[11px] font-bold uppercase tracking-widest mb-0.5 ${cat.color}`}>{cat.category}</p>
+              <p className="text-[13px] text-[var(--color-text-secondary)] mb-3">{cat.desc}</p>
+              <ul className="space-y-1">
+                {cat.items.map((item) => (
+                  <li key={item} className="flex items-center gap-1.5 text-[13px] text-[var(--color-text-primary)]">
+                    <span className={`w-1 h-1 rounded-full shrink-0 ${cat.color.replace("text-", "bg-")}`} />
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>
