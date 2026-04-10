@@ -59,9 +59,20 @@ function ModalDemo() {
       {/* Modal overlay */}
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setOpen(false)} />
-          <div className="relative z-10 w-full max-w-sm mx-4 bg-[var(--color-bg-default)] rounded-xl [box-shadow:var(--shadow-04)] p-7 border border-[var(--color-border-default)]">
-            <h3 className="text-[18px] font-bold text-[var(--color-text-primary)] mb-2">
+          {/* Backdrop — click outside to dismiss */}
+          <div
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            onClick={() => setOpen(false)}
+            aria-hidden="true"
+          />
+          {/* Dialog panel */}
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-title"
+            className="relative z-10 w-full max-w-sm mx-4 bg-[var(--color-bg-default)] rounded-xl [box-shadow:var(--shadow-04)] p-7 border border-[var(--color-border-default)]"
+          >
+            <h3 id="modal-title" className="text-[18px] font-bold text-[var(--color-text-primary)] mb-2">
               {variant === "destructive" ? "정말 삭제하시겠어요?" : "변경 사항을 저장할까요?"}
             </h3>
             <p className="text-[14px] text-[var(--color-text-secondary)] leading-relaxed mb-6">

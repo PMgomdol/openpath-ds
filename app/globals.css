@@ -25,18 +25,22 @@
     --color-text-default:   #29363D;
     --color-text-subtle:    #889298;
     --color-text-disabled:  #D8DCDE;
-    --color-text-on-brand:  #FFFFFF;
+    --color-text-on-brand:  #29363D;   /* N600 — WCAG ~7.8:1 on M300 mint */
 
     /* ── Color — Background ── */
     --color-bg-default:     #FFFFFF;
     --color-bg-brand:       #F3FCFC;
+    --color-bg-error:       #FFF0F3;
+    --color-bg-warning:     #FFF8F0;
 
     /* ── Color — Border ── */
     --color-border-default: #D8DCDE;
     --color-border-brand:   #28D7D2;
+    --color-border-hover:   #889298;
 
     /* ── Color — Brand ── */
     --color-brand-primary:  #28D7D2;
+    --color-brand-subtle:   #D6F5F5;
 
     /* ── Color — Status ── */
     --color-status-error:   #FF3257;
@@ -66,6 +70,22 @@
     --radius-dialog:    16px;
     --radius-tooltip:   4px;
 
+    /* ── Shape (컴포넌트 모서리 시스템) ── */
+    --shape-xs:   4px;
+    --shape-sm:   8px;
+    --shape-md:   12px;
+    --shape-lg:   16px;
+    --shape-xl:   24px;
+    --shape-full: 9999px;
+
+    /* ── Motion ── */
+    --motion-standard:   cubic-bezier(0.2, 0, 0, 1.0);
+    --motion-decelerate: cubic-bezier(0, 0, 0, 1.0);
+    --motion-accelerate: cubic-bezier(0.3, 0, 1, 1);
+    --duration-short:    100ms;
+    --duration-medium:   250ms;
+    --duration-long:     400ms;
+
     /* ── Shadow ── */
     --shadow-01: 0 1px 4px rgba(21,27,30,0.08);
     --shadow-02: 0 2px 8px rgba(21,27,30,0.12);
@@ -93,27 +113,40 @@
     --color-text-default:   #FFFFFF;
     --color-text-subtle:    #B0B8BC;
     --color-text-disabled:  #60707A;
-    --color-text-on-brand:  #FFFFFF;
+    --color-text-on-brand:  #29363D;   /* N600 — 다크모드도 민트 배경 위이므로 동일 */
 
     /* ── Color — Background ── */
     --color-bg-default:     #29363D;
     --color-bg-brand:       #156565;
+    --color-bg-error:       rgba(255,50,87,0.12);
+    --color-bg-warning:     rgba(238,112,107,0.12);
 
     /* ── Color — Border ── */
     --color-border-default: #60707A;
     --color-border-brand:   #28D7D2;
+    --color-border-hover:   #B0B8BC;
 
-    /* ── Shadow (다크모드 shadow는 opacity 0) ── */
-    --shadow-01: 0 1px 4px rgba(0,0,0,0);
-    --shadow-02: 0 2px 8px rgba(0,0,0,0);
-    --shadow-03: 0 4px 16px rgba(0,0,0,0);
-    --shadow-04: 0 8px 24px rgba(0,0,0,0);
+    /* ── Color — Brand ── */
+    --color-brand-subtle:   rgba(40,215,210,0.18);
+
+    /* ── Shadow (다크모드 — 전부 none) ── */
+    --shadow-01: none;
+    --shadow-02: none;
+    --shadow-03: none;
+    --shadow-04: none;
   }
 
   * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+  }
+
+  /* ── Accessibility: global focus ring ── */
+  :focus-visible {
+    outline: 3px solid var(--color-border-brand);
+    outline-offset: 2px;
+    border-radius: inherit;
   }
 
   html {
@@ -125,7 +158,8 @@
     font-family: "Noto Sans KR", system-ui, sans-serif;
     background-color: var(--color-bg-default);
     color: var(--color-text-default);
-    transition: background-color 0.2s ease, color 0.2s ease;
+    transition: background-color var(--duration-medium) var(--motion-standard),
+                color            var(--duration-medium) var(--motion-standard);
   }
 
   ::selection {
@@ -142,11 +176,23 @@
   .border-default { border-color: var(--color-border); }
   .sidebar-bg     { background-color: var(--color-sidebar-bg); }
   .header-bg      { background-color: var(--color-header-bg); }
+
+  /* ── Accessibility utilities ── */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;   /* prevent line breaks causing layout shift */
+    border-width: 0;
+  }
 }
 
 @layer components {
   /* ─── Button Base ────────────────────────────────── */
   .op-btn {
+    position: relative;      /* 터치 영역 ::after 기준점 */
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -156,12 +202,24 @@
     font-family: inherit;
     font-weight: 500;
     letter-spacing: 0.04em;
-    transition: background-color 0.15s ease, border-color 0.15s ease,
-      color 0.15s ease;
+    transition: background-color var(--duration-short) var(--motion-standard),
+                border-color     var(--duration-short) var(--motion-standard),
+                color            var(--duration-short) var(--motion-standard);
     white-space: nowrap;
     text-decoration: none;
     outline: none;
     flex-shrink: 0;
+  }
+
+  /* 터치 영역 48dp 확보 (시각 높이 변경 없이) */
+  .op-btn::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 48px;
+    transform: translateY(-50%);
   }
 
   .op-btn:focus-visible {
@@ -174,19 +232,19 @@
     height: 32px;
     padding: 0 var(--space-03);
     font-size: 13px;
-    border-radius: var(--radius-button-sm);
+    border-radius: var(--shape-full);
   }
   .op-btn--md {
     height: 40px;
     padding: 0 var(--space-04);
     font-size: 14px;
-    border-radius: var(--radius-button-md);
+    border-radius: var(--shape-full);
   }
   .op-btn--lg {
     height: 48px;
     padding: 0 var(--space-05);
     font-size: 15px;
-    border-radius: var(--radius-button-md);
+    border-radius: var(--shape-full);
   }
 
   /* ─── Primary ────────────────────────────────────── */
@@ -278,14 +336,15 @@
     align-items: stretch;
     height: 56px;
     cursor: text;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    transition: border-color var(--duration-short) var(--motion-standard),
+                box-shadow  var(--duration-short) var(--motion-standard);
   }
 
   /* ── Filled ── */
   .op-field--filled .op-field__box {
     background-color: var(--color-bg-subtle);
     border-bottom: 1px solid var(--color-border-default);
-    border-radius: var(--radius-input) var(--radius-input) 0 0;
+    border-radius: var(--shape-xs) var(--shape-xs) 0 0;
   }
   .op-field--filled .op-field__box:not([data-error]):not([data-disabled]):hover {
     border-bottom-color: var(--color-text-subtle);
@@ -306,7 +365,7 @@
   .op-field--outlined .op-field__box {
     background-color: transparent;
     border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-input);
+    border-radius: var(--shape-xs);
   }
   .op-field--outlined .op-field__box:not([data-error]):not([data-disabled]):hover {
     border-color: var(--color-text-subtle);
@@ -357,10 +416,11 @@
     padding-left: var(--space-01);
     color: var(--color-text-subtle);
     flex-shrink: 0;
-    transition: color 0.15s ease;
+    transition: color var(--duration-short) var(--motion-standard);
   }
   .op-field__trail-icon--chevron {
-    transition: color 0.15s ease, transform 0.15s ease;
+    transition: color     var(--duration-short) var(--motion-standard),
+                transform var(--duration-short) var(--motion-standard);
   }
   .op-field__box:focus-within .op-field__trail-icon--chevron {
     color: var(--color-brand-primary);
@@ -369,12 +429,13 @@
     cursor: pointer;
     background: none;
     border: none;
-    padding: 0;
-    padding-right: var(--space-04);
-    padding-left: var(--space-01);
+    padding: 0 var(--space-04) 0 var(--space-01);
+    min-width: 48px;  /* touch target ≥ 48dp */
     color: var(--color-text-subtle);
     display: flex;
     align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
   }
   .op-field__trail-icon--clear:hover {
     color: var(--color-text-default);
@@ -437,8 +498,11 @@
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 1.2;
-    transition: top 0.15s ease, font-size 0.15s ease,
-                font-weight 0.15s ease, color 0.15s ease, transform 0.15s ease;
+    transition: top         var(--duration-medium) var(--motion-standard),
+                font-size   var(--duration-medium) var(--motion-standard),
+                font-weight var(--duration-medium) var(--motion-standard),
+                color       var(--duration-medium) var(--motion-standard),
+                transform   var(--duration-medium) var(--motion-standard);
   }
   /* No-prefix: input has its own left padding, label matches */
   .op-field__inner--bare .op-field__label {
@@ -452,13 +516,25 @@
     padding-left: 0;
   }
 
-  /* Floating trigger: focused OR has value (placeholder not shown) */
-  .op-field__box:focus-within .op-field__label,
-  .op-field__box:has(.op-field__input:not(:placeholder-shown)) .op-field__label {
+  /* Floating trigger — Filled: label stays inside the box at top */
+  .op-field--filled .op-field__box:focus-within .op-field__label,
+  .op-field--filled .op-field__box:has(.op-field__input:not(:placeholder-shown)) .op-field__label {
     top: 10px;
     transform: translateY(0);
     font-size: 12px;
     font-weight: 500;
+  }
+
+  /* Floating trigger — Outlined (M3): label sits ON the top border with bg mask */
+  .op-field--outlined .op-field__box:focus-within .op-field__label,
+  .op-field--outlined .op-field__box:has(.op-field__input:not(:placeholder-shown)) .op-field__label {
+    top: 0;
+    transform: translateY(-50%);
+    font-size: 12px;
+    font-weight: 500;
+    background: var(--color-bg-default);
+    padding: 0 var(--space-01);   /* 4px — masks the border behind the label */
+    margin-left: calc(-1 * var(--space-01));
   }
 
   /* Label colors by state */
@@ -482,4 +558,732 @@
   }
   .op-field__helper--error    { color: var(--color-status-error); }
   .op-field__helper--disabled { color: var(--color-text-disabled); }
+
+  /* ─── Radio ──────────────────────────────────────── */
+
+  .op-radio {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-02);
+    cursor: pointer;
+    user-select: none;
+    position: relative; /* contain the abs-positioned input */
+  }
+
+  /* Visually-hidden but still in DOM for sibling selectors */
+  .op-radio__input {
+    position: absolute;
+    opacity: 0;
+    width: 48px;   /* touch target ≥ 48dp */
+    height: 48px;
+    margin: 0;
+    cursor: pointer;
+    z-index: 1;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+  }
+  .op-radio__input:disabled { cursor: not-allowed; }
+
+  /* 48×48 touch area + ripple container (visual icon stays 20px) */
+  .op-radio__icon-wrap {
+    position: relative;
+    width: 48px;   /* touch target ≥ 48dp */
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background-color var(--duration-short) var(--motion-standard);
+  }
+
+  /* Hover ripple (skip when disabled) */
+  .op-radio:hover:not(:has(.op-radio__input:disabled)) .op-radio__icon-wrap {
+    background-color: var(--color-bg-brand);
+  }
+  .op-radio:active:not(:has(.op-radio__input:disabled)) .op-radio__icon-wrap {
+    background-color: var(--color-brand-subtle);
+  }
+
+  /* 20×20 outer ring */
+  .op-radio__icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--color-border-default);
+    position: relative;
+    transition: border-color var(--duration-short) var(--motion-standard);
+    flex-shrink: 0;
+  }
+
+  /* Inner dot — hidden by default */
+  .op-radio__icon::after {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    background: var(--color-brand-primary);
+    transform: scale(0);
+    transition: transform var(--duration-short) var(--motion-standard);
+  }
+
+  /* Hover: darken ring */
+  .op-radio:hover:not(:has(.op-radio__input:disabled)) .op-radio__input:not(:checked) + .op-radio__icon-wrap .op-radio__icon {
+    border-color: var(--color-border-hover);
+  }
+
+  /* Checked */
+  .op-radio__input:checked + .op-radio__icon-wrap .op-radio__icon {
+    border-color: var(--color-border-brand);
+  }
+  .op-radio__input:checked + .op-radio__icon-wrap .op-radio__icon::after {
+    transform: scale(1);
+  }
+
+  /* Disabled */
+  .op-radio__input:disabled + .op-radio__icon-wrap .op-radio__icon {
+    border-color: var(--color-interactive-disabled);
+  }
+  .op-radio__input:disabled:checked + .op-radio__icon-wrap .op-radio__icon::after {
+    background: var(--color-interactive-disabled);
+  }
+  .op-radio:has(.op-radio__input:disabled) { cursor: not-allowed; }
+
+  /* Focus ring */
+  .op-radio__input:focus-visible + .op-radio__icon-wrap {
+    outline: 2px solid var(--color-border-brand);
+    outline-offset: 2px;
+  }
+
+  /* Label */
+  .op-radio__label {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--color-text-default);
+    line-height: 1.4;
+    transition: color var(--duration-short) var(--motion-standard);
+  }
+  .op-radio:has(.op-radio__input:disabled) .op-radio__label {
+    color: var(--color-text-disabled);
+  }
+
+  /* ─── Checkbox ───────────────────────────────────── */
+
+  .op-checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-02);
+    cursor: pointer;
+    user-select: none;
+    position: relative; /* contain the abs-positioned input */
+  }
+
+  .op-checkbox__input {
+    position: absolute;
+    opacity: 0;
+    width: 48px;   /* touch target ≥ 48dp */
+    height: 48px;
+    margin: 0;
+    cursor: pointer;
+    z-index: 1;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+  }
+  .op-checkbox__input:disabled { cursor: not-allowed; }
+
+  /* 48×48 touch area + ripple (visual box stays 20px) */
+  .op-checkbox__icon-wrap {
+    position: relative;
+    width: 48px;   /* touch target ≥ 48dp */
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background-color var(--duration-short) var(--motion-standard);
+  }
+
+  .op-checkbox:hover:not(:has(.op-checkbox__input:disabled)) .op-checkbox__icon-wrap {
+    background-color: var(--color-bg-brand);
+  }
+  .op-checkbox:active:not(:has(.op-checkbox__input:disabled)) .op-checkbox__icon-wrap {
+    background-color: var(--color-brand-subtle);
+  }
+
+  /* 20×20 box */
+  .op-checkbox__box {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 2px solid var(--color-border-default);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color     var(--duration-short) var(--motion-standard),
+                background-color var(--duration-short) var(--motion-standard);
+    flex-shrink: 0;
+    overflow: hidden;
+    color: var(--color-text-on-brand);
+  }
+
+  .op-checkbox:hover:not(:has(.op-checkbox__input:disabled)) .op-checkbox__input:not(:checked):not(:indeterminate) + .op-checkbox__icon-wrap .op-checkbox__box {
+    border-color: var(--color-border-hover);
+  }
+
+  /* Checked / Indeterminate */
+  .op-checkbox__input:checked + .op-checkbox__icon-wrap .op-checkbox__box,
+  .op-checkbox__input:indeterminate + .op-checkbox__icon-wrap .op-checkbox__box {
+    background-color: var(--color-brand-primary);
+    border-color: var(--color-brand-primary);
+  }
+
+  /* Disabled */
+  .op-checkbox__input:disabled + .op-checkbox__icon-wrap .op-checkbox__box {
+    border-color: var(--color-interactive-disabled);
+    background-color: transparent;
+  }
+  .op-checkbox__input:disabled:checked + .op-checkbox__icon-wrap .op-checkbox__box,
+  .op-checkbox__input:disabled:indeterminate + .op-checkbox__icon-wrap .op-checkbox__box {
+    background-color: var(--color-interactive-disabled);
+    border-color: var(--color-interactive-disabled);
+    color: var(--color-text-disabled);
+  }
+  .op-checkbox:has(.op-checkbox__input:disabled) { cursor: not-allowed; }
+
+  /* Checkmark SVG */
+  .op-checkbox__check,
+  .op-checkbox__dash {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    opacity: 0;
+    transition: opacity var(--duration-short) var(--motion-standard);
+  }
+  .op-checkbox__input:checked + .op-checkbox__icon-wrap .op-checkbox__check { opacity: 1; }
+  .op-checkbox__input:indeterminate + .op-checkbox__icon-wrap .op-checkbox__dash { opacity: 1; }
+
+  /* Focus ring */
+  .op-checkbox__input:focus-visible + .op-checkbox__icon-wrap {
+    outline: 2px solid var(--color-border-brand);
+    outline-offset: 2px;
+    border-radius: 8px;
+  }
+
+  /* Label */
+  .op-checkbox__label {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--color-text-default);
+    line-height: 1.4;
+    transition: color var(--duration-short) var(--motion-standard);
+  }
+  .op-checkbox:has(.op-checkbox__input:disabled) .op-checkbox__label {
+    color: var(--color-text-disabled);
+  }
+
+  /* ─── Switch ─────────────────────────────────────── */
+
+  .op-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-02);
+    cursor: pointer;
+    user-select: none;
+    position: relative;  /* contain the abs-positioned input */
+    min-height: 48px;    /* touch target ≥ 48dp */
+  }
+
+  .op-switch__input {
+    position: absolute;
+    opacity: 0;
+    width: 52px;
+    height: 48px;  /* touch target ≥ 48dp — track is 32px, this centers 8px above/below */
+    margin: 0;
+    cursor: pointer;
+    z-index: 1;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+  }
+  .op-switch__input:disabled { cursor: not-allowed; }
+
+  /* Track 52×32px */
+  .op-switch__track {
+    position: relative;
+    width: 52px;
+    height: 32px;
+    border-radius: 9999px;
+    background: var(--color-border-default);
+    flex-shrink: 0;
+    transition: background-color 200ms var(--motion-standard);
+  }
+
+  /* Thumb */
+  .op-switch__thumb {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    box-shadow: var(--shadow-01);
+    transition: left   200ms var(--motion-standard),
+                width  200ms var(--motion-standard),
+                height 200ms var(--motion-standard),
+                top    200ms var(--motion-standard);
+  }
+
+  /* Off Hover */
+  .op-switch:hover:not(:has(.op-switch__input:disabled)) .op-switch__input:not(:checked) + .op-switch__track {
+    background: var(--color-border-hover);
+  }
+
+  /* Checked (On) — thumb: 28px, centered vertically, right-aligned */
+  .op-switch__input:checked + .op-switch__track {
+    background: var(--color-brand-primary);
+  }
+  .op-switch__input:checked + .op-switch__track .op-switch__thumb {
+    left: 20px;    /* 52 - 4 - 28 = 20 */
+    width: 28px;
+    height: 28px;
+    top: 2px;      /* (32 - 28) / 2 = 2 */
+  }
+
+  /* On Hover */
+  .op-switch:hover:not(:has(.op-switch__input:disabled)) .op-switch__input:checked + .op-switch__track {
+    background: var(--color-interactive-hover);
+  }
+
+  /* Disabled */
+  .op-switch__input:disabled + .op-switch__track {
+    background: var(--color-interactive-disabled);
+  }
+  .op-switch__input:disabled + .op-switch__track .op-switch__thumb {
+    background: var(--color-bg-subtle);
+  }
+  .op-switch:has(.op-switch__input:disabled) { cursor: not-allowed; }
+
+  /* Focus ring */
+  .op-switch__input:focus-visible + .op-switch__track {
+    outline: 2px solid var(--color-border-brand);
+    outline-offset: 2px;
+  }
+
+  /* Label */
+  .op-switch__label {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--color-text-default);
+    line-height: 1.4;
+    transition: color var(--duration-short) var(--motion-standard);
+  }
+  .op-switch:has(.op-switch__input:disabled) .op-switch__label {
+    color: var(--color-text-disabled);
+  }
+
+  /* ─── Chip ───────────────────────────────────────── */
+
+  .op-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-01);          /* 4px icon-label gap */
+    height: 32px;
+    padding: 0 var(--space-03);    /* 12px H */
+    border-radius: var(--radius-chip);
+    border: 1px solid var(--color-border-default);
+    background: var(--color-bg-default);
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    color: var(--color-text-default);
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: background-color var(--duration-short) var(--motion-standard),
+                border-color     var(--duration-short) var(--motion-standard),
+                color            var(--duration-short) var(--motion-standard);
+    outline: none;
+  }
+
+  /* Hover */
+  .op-chip:not(:disabled):not(.op-chip--input):hover {
+    background: var(--color-bg-subtle);
+    border-color: var(--color-border-hover);
+  }
+
+  /* Focus-visible */
+  .op-chip:focus-visible {
+    border-color: var(--color-border-brand);
+    outline: 2px solid var(--color-border-brand);
+    outline-offset: 2px;
+  }
+
+  /* Disabled */
+  .op-chip:disabled,
+  .op-chip[aria-disabled="true"] {
+    background: var(--color-bg-subtle);
+    color: var(--color-text-disabled);
+    border-color: var(--color-border-default);
+    cursor: not-allowed;
+  }
+
+  /* ── Filter: selected ── */
+  .op-chip--filter[aria-pressed="true"] {
+    background: var(--color-bg-brand);
+    border-color: var(--color-border-brand);
+    color: var(--color-brand-primary);
+  }
+  /* Selected hover keeps brand border (just subtle bg change) */
+  .op-chip--filter[aria-pressed="true"]:not(:disabled):hover {
+    background: var(--color-brand-subtle);
+    border-color: var(--color-border-brand);
+  }
+
+  /* ── Input chip: display only, no button hover ── */
+  .op-chip--input {
+    cursor: default;
+    padding-right: var(--space-01);
+  }
+
+  /* ── Icon slot (leading) ── */
+  .op-chip__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  /* ── Remove button (Input chip) ── */
+  .op-chip__remove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    color: var(--color-text-subtle);
+    transition: color            var(--duration-short) var(--motion-standard),
+                background-color var(--duration-short) var(--motion-standard);
+    flex-shrink: 0;
+    margin-left: 2px;
+  }
+  .op-chip__remove:hover {
+    color: var(--color-text-default);
+    background: var(--color-bg-subtle);
+  }
+  .op-chip__remove:focus-visible {
+    outline: 2px solid var(--color-border-brand);
+    outline-offset: 1px;
+    border-radius: 50%;
+  }
+
+  /* ─── Card ───────────────────────────────────────── */
+
+  .op-card {
+    position: relative;
+    background: var(--color-bg-default);
+    border-radius: var(--shape-lg);
+    box-shadow: var(--shadow-01);
+    overflow: hidden;
+    transition: box-shadow 200ms var(--motion-standard);
+  }
+
+  .op-card--interactive {
+    cursor: pointer;
+  }
+  .op-card--interactive:hover {
+    box-shadow: var(--shadow-02);
+  }
+
+  /* Media slot */
+  .op-card__media {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+  }
+  .op-card__media--placeholder {
+    background: linear-gradient(135deg, var(--color-bg-brand) 0%, var(--color-brand-subtle) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-brand-primary);
+    opacity: 0.7;
+  }
+
+  /* Content area */
+  .op-card__content {
+    padding: var(--space-04);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-02);
+  }
+
+  .op-card__overline {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 1;
+  }
+
+  .op-card__title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-text-default);
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  .op-card__body {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--color-text-subtle);
+    line-height: 1.6;
+    margin: 0;
+  }
+  .op-card__body--clamped {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+
+  .op-card__divider {
+    height: 1px;
+    background: var(--color-border-default);
+  }
+
+  /* Actions */
+  .op-card__actions {
+    display: flex;
+    gap: var(--space-02);
+    padding-top: var(--space-04);
+  }
+
+  /* Expand toggle */
+  .op-card__expand-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: inherit;
+    color: var(--color-brand-primary);
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+    min-height: 48px; /* touch target ≥ 48dp */
+    transition: color var(--duration-short) var(--motion-standard);
+    align-self: flex-start;
+  }
+  .op-card__expand-btn:hover { color: var(--color-interactive-hover); }
+  .op-card__expand-btn:focus-visible {
+    outline: 2px solid var(--color-border-brand);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Trailing slot (⋮ button area) */
+  .op-card__trailing {
+    position: absolute;
+    top: var(--space-03);
+    right: var(--space-03);
+    z-index: 1;
+  }
+
+  /* Overflow ⋮ button */
+  .op-card__overflow-btn {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--color-text-subtle);
+    transition: background-color var(--duration-short) var(--motion-standard),
+                color            var(--duration-short) var(--motion-standard);
+  }
+  /* Extend touch target to 48dp without enlarging the visual button */
+  .op-card__overflow-btn::after {
+    content: "";
+    position: absolute;
+    inset: -8px; /* (48 - 32) / 2 = 8 */
+  }
+  .op-card__overflow-btn:hover {
+    background: var(--color-bg-subtle);
+    color: var(--color-text-default);
+  }
+  .op-card__overflow-btn:focus-visible {
+    outline: 2px solid var(--color-border-brand);
+    outline-offset: 2px;
+  }
+
+  /* Overflow dropdown */
+  .op-card__overflow-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    min-width: 160px;
+    background: var(--color-bg-default);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-button-md);
+    box-shadow: var(--shadow-03);
+    z-index: 20;
+    overflow: hidden;
+  }
+  .op-card__overflow-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 48px; /* touch target ≥ 48dp */
+    padding: 0 var(--space-04);
+    text-align: left;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--color-text-default);
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: background-color var(--duration-short) var(--motion-standard);
+  }
+  .op-card__overflow-item:hover { background: var(--color-bg-subtle); }
+  .op-card__overflow-item--danger { color: var(--color-status-error); }
+
+  /* Star rating */
+  .op-card__stars {
+    display: flex;
+    gap: 4px;
+  }
+  .op-card__star {
+    position: relative;
+    color: var(--color-border-default);
+    cursor: pointer;
+    transition: color     var(--duration-short) var(--motion-standard),
+                transform var(--duration-short) var(--motion-standard);
+    background: none;
+    border: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+  }
+  /* Extend touch target to 48dp — icon is 24px, extend 12px each side */
+  .op-card__star::after {
+    content: "";
+    position: absolute;
+    inset: -12px;
+  }
+  .op-card__star:hover { transform: scale(1.15); }
+  .op-card__star--filled { color: var(--color-status-warning); }
+
+  /* Chips row */
+  .op-card__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-01);
+  }
+
+  /* Slider */
+  .op-card__slider-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--color-text-subtle);
+    margin-bottom: 6px;
+  }
+  .op-card__slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    border-radius: 9999px;
+    background: var(--color-border-default);
+    outline: none;
+    cursor: pointer;
+  }
+  .op-card__slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--color-brand-primary);
+    cursor: pointer;
+    box-shadow: var(--shadow-01);
+    transition: transform var(--duration-short) var(--motion-standard);
+  }
+  .op-card__slider::-webkit-slider-thumb:hover { transform: scale(1.25); }
+  .op-card__slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--color-brand-primary);
+    cursor: pointer;
+    border: none;
+    box-shadow: var(--shadow-01);
+  }
+  .op-card__slider:focus-visible::-webkit-slider-thumb {
+    outline: 2px solid var(--color-border-brand);
+    outline-offset: 2px;
+  }
+
+  /* ─── IconButton ─────────────────────────────────── */
+
+  .op-icon-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 50%;
+    color: var(--color-text-subtle);
+    transition: background-color var(--duration-short) var(--motion-standard),
+                color            var(--duration-short) var(--motion-standard);
+    outline: none;
+    flex-shrink: 0;
+  }
+
+  /* 48dp 터치 영역 확보 */
+  .op-icon-btn::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 48px;
+    min-height: 48px;
+    transform: translate(-50%, -50%);
+  }
+
+  .op-icon-btn:hover:not(:disabled) {
+    background: var(--color-bg-subtle);
+    color: var(--color-text-default);
+  }
+
+  .op-icon-btn:disabled {
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+  }
+
+  .op-icon-btn--sm { width: 32px; height: 32px; font-size: 16px; }
+  .op-icon-btn--md { width: 40px; height: 40px; font-size: 20px; }
+  .op-icon-btn--lg { width: 48px; height: 48px; font-size: 24px; }
 }

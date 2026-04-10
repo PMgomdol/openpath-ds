@@ -1,183 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-
-// ─── Types ────────────────────────────────────────────────────
-
-type FieldType  = "Filled" | "Outlined";
-type FieldState = "Inactive" | "Hover" | "Focused" | "Activated" | "Error" | "Disabled";
-
-// ─── Token Map ────────────────────────────────────────────────
-
-const TOKENS = {
-  filled: {
-    Inactive:  { bg: "color/bg/subtle",   border: "color/border/default", label: "color/text/subtle",    text: "color/text/default",   helper: "color/text/subtle"   },
-    Hover:     { bg: "color/bg/subtle",   border: "color/text/subtle",    label: "color/text/subtle",    text: "color/text/default",   helper: "color/text/subtle"   },
-    Focused:   { bg: "color/bg/subtle",   border: "color/border/brand",   label: "color/brand/primary",  text: "color/text/default",   helper: "color/text/subtle"   },
-    Activated: { bg: "color/bg/subtle",   border: "color/border/default", label: "color/text/subtle",    text: "color/text/default",   helper: "color/text/subtle"   },
-    Error:     { bg: "color/bg/subtle",   border: "color/status/error",   label: "color/status/error",   text: "color/text/default",   helper: "color/status/error"  },
-    Disabled:  { bg: "color/bg/subtle",   border: "transparent",          label: "color/text/disabled",  text: "color/text/disabled",  helper: "color/text/disabled" },
-  },
-  outlined: {
-    Inactive:  { bg: "transparent",       border: "color/border/default", label: "color/text/subtle",    text: "color/text/default",   helper: "color/text/subtle"   },
-    Hover:     { bg: "transparent",       border: "color/text/subtle",    label: "color/text/subtle",    text: "color/text/default",   helper: "color/text/subtle"   },
-    Focused:   { bg: "transparent",       border: "color/border/brand",   label: "color/brand/primary",  text: "color/text/default",   helper: "color/text/subtle"   },
-    Activated: { bg: "transparent",       border: "color/border/default", label: "color/text/subtle",    text: "color/text/default",   helper: "color/text/subtle"   },
-    Error:     { bg: "transparent",       border: "color/status/error",   label: "color/status/error",   text: "color/text/default",   helper: "color/status/error"  },
-    Disabled:  { bg: "transparent",       border: "color/border/default", label: "color/text/disabled",  text: "color/text/disabled",  helper: "color/text/disabled" },
-  },
-} as const;
-
-// ─── CSS Variable helpers ──────────────────────────────────────
-
-// State → Tailwind classes (border, bg, label color 등)
-function getFieldClasses(type: FieldType, state: FieldState) {
-  const isFilled   = type === "Filled";
-  const isDisabled = state === "Disabled";
-  const isFocused  = state === "Focused";
-  const isError    = state === "Error";
-  const isHover    = state === "Hover";
-
-  const bgClass = isFilled
-    ? "bg-[var(--color-bg-subtle)]"
-    : "bg-transparent";
-
-  const borderWidth = (isFocused || isError) ? "border-2" : "border";
-  const borderColor =
-    isError    ? "border-[var(--color-status-error)]"
-    : isFocused ? "border-[var(--color-border-brand)]"
-    : isHover   ? "border-[var(--color-border-default)]"
-    : isDisabled ? (isFilled ? "border-transparent" : "border-[var(--color-border-default)]")
-    : "border-[var(--color-border-default)]";
-
-  const radius = isFilled ? "rounded-t-md" : "rounded-md";
-
-  return { bgClass, borderWidth, borderColor, radius };
-}
-
-function getLabelColor(state: FieldState): string {
-  if (state === "Error")    return "text-[var(--color-status-error)]";
-  if (state === "Focused")  return "text-[var(--color-border-brand)]";
-  if (state === "Disabled") return "text-[var(--color-text-disabled)]";
-  return "text-[var(--color-text-subtle)]";
-}
-
-function getHelperColor(state: FieldState): string {
-  if (state === "Error")    return "text-[var(--color-status-error)]";
-  if (state === "Disabled") return "text-[var(--color-text-disabled)]";
-  return "text-[var(--color-text-subtle)]";
-}
-
-// ─── TextField ────────────────────────────────────────────────
-
-function TextField({
-  type,
-  state,
-  label      = "레이블",
-  placeholder = "텍스트를 입력하세요",
-  helperText,
-  prefix,
-  suffix,
-  dropdown,
-}: {
-  type:       FieldType;
-  state:      FieldState;
-  label?:     string;
-  placeholder?: string;
-  helperText?: string;
-  prefix?:    string;
-  suffix?:    string;
-  dropdown?:  boolean;
-}) {
-  const [hover, setHover]   = useState(false);
-  const [focus, setFocus]   = useState(false);
-  const [value, setValue]   = useState(state === "Activated" ? "입력된 값 예시" : "");
-
-  const isDisabled   = state === "Disabled";
-  const effectState: FieldState = isDisabled ? "Disabled"
-    : state === "Error"    ? "Error"
-    : state === "Activated" ? "Activated"
-    : focus                ? "Focused"
-    : hover                ? "Hover"
-    : value               ? "Activated"
-    : "Inactive";
-
-  const isFloating   = focus || value.length > 0 || state === "Activated" || state === "Error";
-  const { bgClass, borderWidth, borderColor, radius } = getFieldClasses(type, effectState);
-  const labelColor   = getLabelColor(effectState);
-  const helperColor  = getHelperColor(effectState);
-
-  return (
-    <div className="w-full max-w-sm">
-      <div
-        className={`relative flex items-center ${bgClass} ${borderWidth} ${borderColor} ${radius} transition-all duration-150 overflow-hidden`}
-        onMouseEnter={() => !isDisabled && setHover(true)}
-        onMouseLeave={() => !isDisabled && setHover(false)}
-      >
-        {/* Prefix */}
-        {prefix && (
-          <span className="pl-4 pr-2 text-[16px] text-[var(--color-text-subtle)] shrink-0 select-none pt-5 pb-2">
-            {prefix}
-          </span>
-        )}
-
-        {/* Input + floating label */}
-        <div className="relative flex-1">
-          {/* Floating label */}
-          <label
-            className={`
-              absolute left-0 transition-all duration-150 pointer-events-none select-none
-              ${isFloating
-                ? "top-2 text-[11px] font-medium tracking-[0.04em] " + labelColor
-                : "top-1/2 -translate-y-1/2 text-[16px] font-normal text-[var(--color-text-subtle)]"
-              }
-              ${!prefix ? (type === "Filled" ? "left-4" : "left-4") : ""}
-            `}
-          >
-            {label}
-          </label>
-
-          <input
-            type={dropdown ? "button" : "text"}
-            disabled={isDisabled}
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            onFocus={() => !isDisabled && setFocus(true)}
-            onBlur={() => !isDisabled && setFocus(false)}
-            placeholder=""
-            className={`
-              w-full bg-transparent outline-none text-[16px]
-              ${type === "Filled" ? "pt-6 pb-2 px-4" : "pt-5 pb-3 px-4"}
-              ${prefix ? "px-0 pr-4" : ""}
-              ${isDisabled ? "cursor-not-allowed text-[var(--color-text-disabled)]" : "text-[var(--color-text-default)]"}
-              ${dropdown ? "cursor-pointer text-left" : ""}
-            `}
-          />
-        </div>
-
-        {/* Suffix or Dropdown icon */}
-        {(suffix || dropdown) && (
-          <span className={`pr-4 shrink-0 text-[16px] ${effectState === "Focused" ? "text-[var(--color-border-brand)]" : "text-[var(--color-text-subtle)]"} pt-3 pb-2`}>
-            {dropdown ? (
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
-            ) : (
-              suffix
-            )}
-          </span>
-        )}
-      </div>
-
-      {/* Helper text */}
-      {helperText && (
-        <p className={`mt-1.5 text-[11px] leading-relaxed ${helperColor} px-1`}>
-          {helperText}
-        </p>
-      )}
-    </div>
-  );
-}
+import { useState } from "react";
+import TextField from "@/components/ui/TextField";
 
 // ─── TokenBadge ───────────────────────────────────────────────
 
@@ -190,11 +14,11 @@ function TokenBadge({ token, value }: { token: string; value: string }) {
         setCopied(true);
         setTimeout(() => setCopied(false), 1500);
       }}
-      className="group flex items-center gap-2 px-3 py-1.5 rounded-md bg-[var(--color-bg-subtle)] border border-[var(--color-border)] hover:border-mint-300 transition-all duration-150 text-left w-full"
+      className="group flex items-center gap-2 px-3 py-1.5 rounded-md bg-[var(--color-bg-subtle)] border border-[var(--color-border-default)] hover:border-[var(--color-border-brand)] transition-all text-left w-full"
     >
-      <code className="text-[11px] font-mono text-mint-500 dark:text-mint-300 flex-1 truncate">{token}</code>
-      <span className="text-[11px] text-[var(--color-text-secondary)] shrink-0">{value}</span>
-      <span className="text-[10px] text-[var(--color-text-secondary)] opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+      <code className="text-[11px] font-mono text-[var(--color-brand-primary)] flex-1 truncate">{token}</code>
+      <span className="text-[11px] text-[var(--color-text-subtle)] shrink-0">{value}</span>
+      <span className="text-[10px] text-[var(--color-text-subtle)] opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
         {copied ? "복사됨" : "복사"}
       </span>
     </button>
@@ -204,93 +28,102 @@ function TokenBadge({ token, value }: { token: string; value: string }) {
 // ─── Interactive Demo ─────────────────────────────────────────
 
 function InteractiveDemo() {
-  const [fieldType,  setFieldType]  = useState<FieldType>("Filled");
-  const [fieldState, setFieldState] = useState<FieldState>("Inactive");
-
-  const tokenMap = TOKENS[fieldType === "Filled" ? "filled" : "outlined"][fieldState];
+  const [variant, setVariant] = useState<"filled" | "outlined">("filled");
+  const [hasError, setHasError] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [value, setValue] = useState("");
 
   const tokenList = [
-    { token: tokenMap.bg,     label: "Background",   value: fieldType === "Filled" ? "N20 #F4F5F5" : "transparent" },
-    { token: tokenMap.border, label: "Border",       value: fieldState === "Focused" ? "M300 #28D7D2" : fieldState === "Error" ? "#FF3257" : "N100 #D8DCDE" },
-    { token: tokenMap.label,  label: "Label color",  value: fieldState === "Focused" ? "M300" : fieldState === "Error" ? "#FF3257" : "N300" },
-    { token: tokenMap.text,   label: "Input text",   value: "N600 #29363D" },
-    { token: tokenMap.helper, label: "Helper text",  value: fieldState === "Error" ? "#FF3257" : "N300" },
-    { token: "radius/component/input", label: "Radius", value: fieldType === "Filled" ? "8px (top)" : "8px (all)" },
-    { token: "space/04", label: "Padding H", value: "16px" },
-    { token: "type/body/md", label: "Input font", value: "16px Regular" },
+    { token: "color/bg/subtle",      value: variant === "filled" ? "N20 #F4F5F5" : "transparent" },
+    { token: "color/border/default", value: "N100 #D8DCDE" },
+    { token: "color/border/brand",   value: "M300 #28D7D2 (focused)" },
+    { token: "color/text/subtle",    value: "N300 #889298 (label)" },
+    { token: "color/brand/primary",  value: "M300 #28D7D2 (focused label)" },
+    { token: "color/status/error",   value: "#FF3257 (error state)" },
+    { token: "color/text/disabled",  value: "#D8DCDE (disabled)" },
+    { token: "shape/xs",             value: variant === "filled" ? "4px top only" : "4px all" },
   ];
 
   return (
     <section className="mb-16">
       <div className="mb-5">
-        <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Interactive Demo</p>
-        <h2 className="text-[20px] font-bold text-[var(--color-text-primary)]">라이브 미리보기</h2>
+        <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">Interactive Demo</p>
+        <h2 className="text-[20px] font-bold text-[var(--color-text-default)]">라이브 미리보기</h2>
+        <p className="text-[13px] text-[var(--color-text-subtle)] mt-1">직접 클릭하여 Hover · Focus · Activated 상태를 확인하세요.</p>
       </div>
 
-      <div className="rounded-xl border border-[var(--color-border)] overflow-hidden">
-        {/* 미리보기 영역 */}
-        <div className="flex items-center justify-center min-h-[180px] px-8 py-12 bg-[var(--color-bg-subtle)] border-b border-[var(--color-border)]">
-          <TextField
-            type={fieldType}
-            state={fieldState}
-            label="이름"
-            placeholder="홍길동"
-            helperText={
-              fieldState === "Error" ? "올바른 형식으로 입력해 주세요." :
-              fieldState === "Disabled" ? undefined :
-              "8자 이내로 입력하세요."
-            }
-          />
+      <div className="rounded-xl border border-[var(--color-border-default)] overflow-hidden">
+        {/* Preview */}
+        <div className="flex items-center justify-center min-h-[200px] px-8 py-12 bg-[var(--color-bg-subtle)] border-b border-[var(--color-border-default)]">
+          <div className="w-full max-w-sm">
+            <TextField
+              variant={variant}
+              label="이름"
+              placeholder="홍길동"
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              error={hasError ? "올바른 형식으로 입력해 주세요." : undefined}
+              helperText={!hasError ? "8자 이내로 입력하세요." : undefined}
+              disabled={isDisabled}
+            />
+          </div>
         </div>
 
-        {/* 컨트롤 + 토큰 */}
-        <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-[var(--color-border)]">
+        {/* Controls + Tokens */}
+        <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-[var(--color-border-default)]">
           <div className="p-6 space-y-5">
-            {/* Type */}
+            {/* Variant */}
             <div>
-              <p className="text-[11px] font-semibold text-[var(--color-text-secondary)] uppercase tracking-widest mb-2">Type</p>
+              <p className="text-[11px] font-semibold text-[var(--color-text-subtle)] uppercase tracking-widest mb-2">Variant</p>
               <div className="flex gap-2">
-                {(["Filled", "Outlined"] as FieldType[]).map((t) => (
+                {(["filled", "outlined"] as const).map((v) => (
                   <button
-                    key={t}
-                    onClick={() => setFieldType(t)}
-                    className={`px-4 py-1.5 rounded-md text-[13px] font-medium border transition-all duration-100 ${
-                      fieldType === t
-                        ? "bg-mint-300 text-white border-mint-300"
-                        : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-mint-300 hover:text-mint-400"
+                    key={v}
+                    onClick={() => setVariant(v)}
+                    className={`px-4 py-1.5 rounded-md text-[13px] font-medium border transition-all ${
+                      variant === v
+                        ? "bg-[var(--color-brand-primary)] text-[var(--color-text-on-brand)] border-[var(--color-brand-primary)]"
+                        : "border-[var(--color-border-default)] text-[var(--color-text-subtle)] hover:border-[var(--color-border-brand)] hover:text-[var(--color-brand-primary)]"
                     }`}
                   >
-                    {t}
+                    {v.charAt(0).toUpperCase() + v.slice(1)}
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* State */}
+            {/* State overrides */}
             <div>
-              <p className="text-[11px] font-semibold text-[var(--color-text-secondary)] uppercase tracking-widest mb-2">State</p>
+              <p className="text-[11px] font-semibold text-[var(--color-text-subtle)] uppercase tracking-widest mb-2">State Override</p>
               <div className="flex flex-wrap gap-2">
-                {(["Inactive", "Hover", "Focused", "Activated", "Error", "Disabled"] as FieldState[]).map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => setFieldState(s)}
-                    className={`px-3 py-1.5 rounded-md text-[13px] font-medium border transition-all duration-100 ${
-                      fieldState === s
-                        ? "bg-mint-300 text-white border-mint-300"
-                        : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-mint-300 hover:text-mint-400"
-                    }`}
-                  >
-                    {s}
-                  </button>
-                ))}
+                <button
+                  onClick={() => { setHasError(v => !v); setIsDisabled(false); }}
+                  className={`px-3 py-1.5 rounded-md text-[13px] font-medium border transition-all ${
+                    hasError
+                      ? "bg-[var(--color-status-error)] text-white border-[var(--color-status-error)]"
+                      : "border-[var(--color-border-default)] text-[var(--color-text-subtle)] hover:border-[var(--color-status-error)] hover:text-[var(--color-status-error)]"
+                  }`}
+                >
+                  Error
+                </button>
+                <button
+                  onClick={() => { setIsDisabled(v => !v); setHasError(false); }}
+                  className={`px-3 py-1.5 rounded-md text-[13px] font-medium border transition-all ${
+                    isDisabled
+                      ? "bg-[var(--color-text-disabled)] text-white border-[var(--color-text-disabled)]"
+                      : "border-[var(--color-border-default)] text-[var(--color-text-subtle)] hover:border-[var(--color-text-disabled)]"
+                  }`}
+                >
+                  Disabled
+                </button>
               </div>
             </div>
           </div>
 
-          {/* 토큰 */}
+          {/* Tokens */}
           <div className="p-6">
-            <p className="text-[11px] font-semibold text-[var(--color-text-secondary)] uppercase tracking-widest mb-3">
-              적용된 토큰 <span className="text-mint-400">(클릭하여 복사)</span>
+            <p className="text-[11px] font-semibold text-[var(--color-text-subtle)] uppercase tracking-widest mb-3">
+              적용된 토큰 <span className="text-[var(--color-brand-primary)]">(클릭 복사)</span>
             </p>
             <div className="space-y-1.5">
               {tokenList.map((t) => (
@@ -304,97 +137,157 @@ function InteractiveDemo() {
   );
 }
 
-// ─── State Gallery ────────────────────────────────────────────
+// ─── Variant Gallery ──────────────────────────────────────────
 
-function StateGallery() {
-  const [activeType, setActiveType] = useState<FieldType>("Filled");
-  const STATES: { state: FieldState; helper?: string; value?: string }[] = [
-    { state: "Inactive",  helper: "8자 이내로 입력하세요." },
-    { state: "Hover",     helper: "8자 이내로 입력하세요." },
-    { state: "Focused",   helper: "8자 이내로 입력하세요." },
-    { state: "Activated", helper: "8자 이내로 입력하세요." },
-    { state: "Error",     helper: "올바른 형식으로 입력해 주세요." },
-    { state: "Disabled" },
-  ];
+function VariantGallery() {
+  const [clearValue, setClearValue] = useState("지울 수 있는 값");
 
   return (
     <section className="mb-16">
       <div className="mb-5">
-        <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">State Gallery</p>
-        <h2 className="text-[20px] font-bold text-[var(--color-text-primary)]">전체 State 갤러리</h2>
-        <p className="text-[14px] text-[var(--color-text-secondary)] mt-1">Filled / Outlined 타입별 State 시각화</p>
+        <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">Variants</p>
+        <h2 className="text-[20px] font-bold text-[var(--color-text-default)]">Variant 데모</h2>
+        <p className="text-[13px] text-[var(--color-text-subtle)] mt-1">Prefix · Suffix · Clearable · Exposed Dropdown</p>
       </div>
 
-      {/* Tab */}
-      <div className="flex gap-2 mb-6">
-        {(["Filled", "Outlined"] as FieldType[]).map((t) => (
-          <button
-            key={t}
-            onClick={() => setActiveType(t)}
-            className={`px-4 py-1.5 rounded-md text-[13px] font-medium border transition-all duration-100 ${
-              activeType === t
-                ? "bg-mint-300 text-white border-mint-300"
-                : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-mint-300 hover:text-mint-400"
-            }`}
-          >
-            {t}
-          </button>
-        ))}
-      </div>
-
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {STATES.map(({ state, helper }) => (
-          <div key={state} className="rounded-xl border border-[var(--color-border)] p-5 bg-[var(--color-bg-subtle)]">
-            <p className="text-[11px] font-semibold text-[var(--color-text-secondary)] uppercase tracking-widest mb-4">{state}</p>
-            <TextField type={activeType} state={state} label="이름" helperText={helper} />
+      <div className="grid sm:grid-cols-2 gap-6">
+        {/* Prefix */}
+        <div className="rounded-xl border border-[var(--color-border-default)] p-6">
+          <p className="text-[12px] font-semibold text-[var(--color-text-subtle)] mb-1">Prefix</p>
+          <p className="text-[11px] text-[var(--color-text-subtle)] mb-4">고정 단위·프로토콜 좌측 표시</p>
+          <div className="space-y-4">
+            <TextField variant="filled" label="웹사이트" placeholder="example.com" prefix="https://" />
+            <TextField variant="outlined" label="금액" placeholder="0" prefix="₩" />
           </div>
-        ))}
+        </div>
+
+        {/* Suffix */}
+        <div className="rounded-xl border border-[var(--color-border-default)] p-6">
+          <p className="text-[12px] font-semibold text-[var(--color-text-subtle)] mb-1">Suffix</p>
+          <p className="text-[11px] text-[var(--color-text-subtle)] mb-4">단위·액션 아이콘 우측 표시</p>
+          <div className="space-y-4">
+            <TextField variant="filled" label="무게" placeholder="0" suffix="kg" />
+            <TextField variant="outlined" label="이메일" placeholder="user" suffix="@openpath.io" />
+          </div>
+        </div>
+
+        {/* Error + Helper */}
+        <div className="rounded-xl border border-[var(--color-border-default)] p-6">
+          <p className="text-[12px] font-semibold text-[var(--color-text-subtle)] mb-1">Error + Helper</p>
+          <p className="text-[11px] text-[var(--color-text-subtle)] mb-4">
+            Error에는 반드시 Helper text로 사유 명시.{" "}
+            <code className="text-[10px] bg-[var(--color-bg-subtle)] px-1 rounded">aria-describedby</code> 자동 연결
+          </p>
+          <div className="space-y-4">
+            <TextField
+              variant="filled"
+              label="이메일"
+              placeholder="user@example.com"
+              defaultValue="invalid-email"
+              error="올바른 이메일 형식으로 입력해 주세요."
+            />
+            <TextField
+              variant="outlined"
+              label="비밀번호"
+              placeholder="8자 이상"
+              helperText="영문·숫자·특수문자를 포함해 주세요."
+            />
+          </div>
+        </div>
+
+        {/* Clearable + Disabled */}
+        <div className="rounded-xl border border-[var(--color-border-default)] p-6">
+          <p className="text-[12px] font-semibold text-[var(--color-text-subtle)] mb-1">Clearable · Disabled</p>
+          <p className="text-[11px] text-[var(--color-text-subtle)] mb-4">
+            Disabled는 <code className="text-[10px] bg-[var(--color-bg-subtle)] px-1 rounded">color/text/disabled</code> 토큰. opacity 처리 금지
+          </p>
+          <div className="space-y-4">
+            <TextField
+              variant="filled"
+              label="검색"
+              placeholder="검색어를 입력하세요"
+              value={clearValue}
+              onChange={(e) => setClearValue(e.target.value)}
+              clearable
+              onClear={() => setClearValue("")}
+            />
+            <TextField
+              variant="outlined"
+              label="비활성 필드"
+              placeholder="입력 불가"
+              defaultValue="고정된 값"
+              disabled
+            />
+          </div>
+        </div>
+
+        {/* Exposed Dropdown */}
+        <div className="rounded-xl border border-[var(--color-border-default)] p-6 sm:col-span-2">
+          <p className="text-[12px] font-semibold text-[var(--color-text-subtle)] mb-1">Exposed Dropdown</p>
+          <p className="text-[11px] text-[var(--color-text-subtle)] mb-4">
+            우측 chevron-down 아이콘 — 선택형 입력. 포커스 시 아이콘 색상이 brand/primary로 전환
+          </p>
+          <div className="flex flex-wrap gap-6">
+            <div className="w-full max-w-xs">
+              <TextField variant="filled" label="지역 선택" placeholder="선택하세요" dropdown />
+            </div>
+            <div className="w-full max-w-xs">
+              <TextField variant="outlined" label="카테고리" placeholder="선택하세요" dropdown />
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
 }
 
-// ─── Variant Gallery ──────────────────────────────────────────
+// ─── State Reference ─────────────────────────────────────────
 
-function VariantGallery() {
+function StateReference() {
+  const states = [
+    {
+      label: "Inactive",
+      node: <TextField variant="filled" label="이름" placeholder="홍길동" helperText="8자 이내로 입력하세요." />,
+    },
+    {
+      label: "Activated (값 입력됨)",
+      node: <TextField variant="filled" label="이름" placeholder="홍길동" defaultValue="김민준" helperText="8자 이내로 입력하세요." />,
+    },
+    {
+      label: "Error",
+      node: <TextField variant="filled" label="이름" placeholder="홍길동" defaultValue="김@민준" error="특수문자는 사용할 수 없습니다." />,
+    },
+    {
+      label: "Disabled",
+      node: <TextField variant="filled" label="이름" placeholder="홍길동" defaultValue="편집 불가" disabled />,
+    },
+    {
+      label: "Outlined — Inactive",
+      node: <TextField variant="outlined" label="이름" placeholder="홍길동" helperText="8자 이내로 입력하세요." />,
+    },
+    {
+      label: "Outlined — Error",
+      node: <TextField variant="outlined" label="이름" placeholder="홍길동" defaultValue="김@민준" error="특수문자는 사용할 수 없습니다." />,
+    },
+  ];
+
   return (
     <section className="mb-16">
       <div className="mb-5">
-        <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Variants</p>
-        <h2 className="text-[20px] font-bold text-[var(--color-text-primary)]">Variant 데모</h2>
-        <p className="text-[14px] text-[var(--color-text-secondary)] mt-1">Prefix / Suffix / Exposed Dropdown</p>
+        <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">State Reference</p>
+        <h2 className="text-[20px] font-bold text-[var(--color-text-default)]">State 참조</h2>
+        <p className="text-[13px] text-[var(--color-text-subtle)] mt-1">
+          Hover · Focus 상태는 CSS (:hover, :focus-within)가 자동 처리 — 직접 클릭해서 확인
+        </p>
       </div>
 
-      <div className="grid sm:grid-cols-2 gap-8">
-        {/* Prefix */}
-        <div className="rounded-xl border border-[var(--color-border)] p-6">
-          <p className="text-[12px] font-semibold text-[var(--color-text-secondary)] mb-1">Prefix</p>
-          <p className="text-[11px] text-[var(--color-text-secondary)] mb-4">고정 단위·프로토콜 등 좌측 표시</p>
-          <div className="space-y-4">
-            <TextField type="Filled" state="Inactive" label="웹사이트" prefix="https://" />
-            <TextField type="Outlined" state="Inactive" label="금액" prefix="₩" />
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {states.map(({ label, node }) => (
+          <div key={label} className="rounded-xl border border-[var(--color-border-default)] p-5 bg-[var(--color-bg-subtle)]">
+            <p className="text-[11px] font-semibold text-[var(--color-text-subtle)] uppercase tracking-widest mb-4">{label}</p>
+            {node}
           </div>
-        </div>
-
-        {/* Suffix */}
-        <div className="rounded-xl border border-[var(--color-border)] p-6">
-          <p className="text-[12px] font-semibold text-[var(--color-text-secondary)] mb-1">Suffix</p>
-          <p className="text-[11px] text-[var(--color-text-secondary)] mb-4">단위·액션 아이콘 우측 표시</p>
-          <div className="space-y-4">
-            <TextField type="Filled" state="Inactive" label="무게" suffix="kg" />
-            <TextField type="Outlined" state="Inactive" label="이메일" suffix="@" />
-          </div>
-        </div>
-
-        {/* Exposed Dropdown */}
-        <div className="rounded-xl border border-[var(--color-border)] p-6 sm:col-span-2">
-          <p className="text-[12px] font-semibold text-[var(--color-text-secondary)] mb-1">Exposed Dropdown</p>
-          <p className="text-[11px] text-[var(--color-text-secondary)] mb-4">우측 chevron-down 아이콘 — 선택형 입력. 클릭 시 Menu 컴포넌트 트리거</p>
-          <div className="flex flex-wrap gap-6">
-            <TextField type="Filled" state="Inactive" label="지역 선택" dropdown />
-            <TextField type="Outlined" state="Inactive" label="카테고리" dropdown />
-          </div>
-        </div>
+        ))}
       </div>
     </section>
   );
@@ -404,59 +297,58 @@ function VariantGallery() {
 
 function SpecTable() {
   const sizeRows = [
-    { attr: "높이",              value: "56px",        token: "—" },
-    { attr: "Padding 좌우",      value: "16px",        token: "space/04" },
-    { attr: "Padding 상하 (Filled)",  value: "top 16px / bottom 8px", token: "space/04 / space/02" },
-    { attr: "Padding 상하 (Outlined)", value: "16px",   token: "space/04" },
-    { attr: "Label (Inactive)",  value: "16px Regular", token: "type/body/md" },
-    { attr: "Label (Focused·Activated)", value: "12px Medium", token: "type/label/sm" },
-    { attr: "Input 폰트",        value: "16px Regular", token: "type/body/md" },
-    { attr: "Helper 폰트",       value: "11px Regular", token: "type/caption" },
-    { attr: "Border (기본)",     value: "1px",         token: "—" },
-    { attr: "Border (Focused·Error)", value: "2px",    token: "—" },
-    { attr: "Radius (Filled)",   value: "8px top only", token: "radius/component/input" },
-    { attr: "Radius (Outlined)", value: "8px 전체",    token: "radius/component/input" },
+    { attr: "높이",                       value: "56px",                     token: "—" },
+    { attr: "Padding 좌우",               value: "16px",                     token: "space/04" },
+    { attr: "Padding 상하 (Filled)",       value: "top 16px / bottom 8px",   token: "space/04 · space/02" },
+    { attr: "Padding 상하 (Outlined)",     value: "16px",                     token: "space/04" },
+    { attr: "Label 폰트 (Inactive)",       value: "16px Regular",             token: "type/body/md" },
+    { attr: "Label 폰트 (Float)",          value: "12px Medium",              token: "type/label/sm" },
+    { attr: "Input 폰트",                  value: "16px Regular",             token: "type/body/md" },
+    { attr: "Helper 폰트",                 value: "12px Regular",             token: "type/caption" },
+    { attr: "Border (기본·Activated)",     value: "1px",                      token: "—" },
+    { attr: "Border (Focused·Error)",     value: "2px (box-shadow 기법)",    token: "—" },
+    { attr: "Radius (Filled)",            value: "4px top-left / top-right", token: "shape/xs" },
+    { attr: "Radius (Outlined)",          value: "4px 전체",                  token: "shape/xs" },
+    { attr: "Float transition",           value: "250ms motion-standard",    token: "duration/medium · motion/standard" },
   ];
 
   const stateRows = [
-    { state: "Inactive",  bg: "color/bg/subtle",  border: "color/border/default", label: "color/text/subtle",   bw: "1px" },
-    { state: "Hover",     bg: "color/bg/subtle",  border: "color/text/subtle",    label: "color/text/subtle",   bw: "1px" },
-    { state: "Focused",   bg: "color/bg/subtle",  border: "color/border/brand",   label: "color/brand/primary", bw: "2px" },
-    { state: "Activated", bg: "color/bg/subtle",  border: "color/border/default", label: "color/text/subtle",   bw: "1px" },
-    { state: "Error",     bg: "color/bg/subtle",  border: "color/status/error",   label: "color/status/error",  bw: "2px" },
-    { state: "Disabled",  bg: "color/bg/subtle",  border: "transparent",          label: "color/text/disabled", bw: "1px" },
+    { state: "Inactive",  bg: "color/bg/subtle",  border: "color/border/default", label: "color/text/subtle",    bw: "1px" },
+    { state: "Hover",     bg: "color/bg/subtle",  border: "color/text/subtle",    label: "color/text/subtle",    bw: "1px" },
+    { state: "Focused",   bg: "color/bg/subtle",  border: "color/border/brand",   label: "color/brand/primary",  bw: "2px" },
+    { state: "Activated", bg: "color/bg/subtle",  border: "color/border/default", label: "color/text/subtle",    bw: "1px" },
+    { state: "Error",     bg: "color/bg/subtle",  border: "color/status/error",   label: "color/status/error",   bw: "2px" },
+    { state: "Disabled",  bg: "color/bg/subtle",  border: "transparent",          label: "color/text/disabled",  bw: "1px" },
   ];
 
   return (
     <section className="mb-16">
       <div className="mb-5">
-        <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Spec</p>
-        <h2 className="text-[20px] font-bold text-[var(--color-text-primary)]">스펙 테이블</h2>
+        <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">Spec</p>
+        <h2 className="text-[20px] font-bold text-[var(--color-text-default)]">스펙 테이블</h2>
       </div>
 
-      {/* Size spec */}
+      {/* Size */}
       <div className="mb-8">
-        <p className="text-[13px] font-semibold text-[var(--color-text-primary)] mb-3">Size 수치</p>
-        <div className="overflow-x-auto rounded-xl border border-[var(--color-border)]">
+        <p className="text-[13px] font-semibold text-[var(--color-text-default)] mb-3">Size 수치</p>
+        <div className="overflow-x-auto rounded-xl border border-[var(--color-border-default)]">
           <table className="w-full text-[13px]">
             <thead>
-              <tr className="bg-[var(--color-bg-subtle)] border-b border-[var(--color-border)]">
+              <tr className="bg-[var(--color-bg-subtle)] border-b border-[var(--color-border-default)]">
                 {["속성", "Value", "Token"].map((h) => (
-                  <th key={h} className="text-left px-4 py-3 text-[11px] font-semibold text-[var(--color-text-secondary)] uppercase tracking-widest">{h}</th>
+                  <th key={h} className="text-left px-4 py-3 text-[11px] font-semibold text-[var(--color-text-subtle)] uppercase tracking-widest">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {sizeRows.map((row, i) => (
-                <tr key={row.attr} className={`border-b border-[var(--color-border)] last:border-0 ${i % 2 === 1 ? "bg-[var(--color-bg-subtle)]" : ""}`}>
-                  <td className="px-4 py-3 text-[var(--color-text-primary)] font-medium">{row.attr}</td>
-                  <td className="px-4 py-3 font-mono text-[12px] text-mint-500 dark:text-mint-300">{row.value}</td>
+                <tr key={row.attr} className={`border-b border-[var(--color-border-default)] last:border-0 ${i % 2 === 1 ? "bg-[var(--color-bg-subtle)]" : ""}`}>
+                  <td className="px-4 py-3 font-medium text-[var(--color-text-default)]">{row.attr}</td>
+                  <td className="px-4 py-3 font-mono text-[12px] text-[var(--color-brand-primary)]">{row.value}</td>
                   <td className="px-4 py-3">
-                    {row.token !== "—" ? (
-                      <code className="text-[11px] font-mono text-[var(--color-text-secondary)] bg-[var(--color-bg-subtle)] px-2 py-0.5 rounded">{row.token}</code>
-                    ) : (
-                      <span className="text-neutral-300">—</span>
-                    )}
+                    {row.token !== "—"
+                      ? <code className="text-[11px] font-mono text-[var(--color-text-subtle)] bg-[var(--color-bg-subtle)] px-2 py-0.5 rounded">{row.token}</code>
+                      : <span className="text-[var(--color-border-default)]">—</span>}
                   </td>
                 </tr>
               ))}
@@ -465,37 +357,85 @@ function SpecTable() {
         </div>
       </div>
 
-      {/* Color tokens by state (Filled) */}
+      {/* State color tokens (Filled) */}
       <div>
-        <p className="text-[13px] font-semibold text-[var(--color-text-primary)] mb-3">State별 Color Token (Filled 기준)</p>
-        <div className="overflow-x-auto rounded-xl border border-[var(--color-border)]">
+        <p className="text-[13px] font-semibold text-[var(--color-text-default)] mb-3">State별 Color Token — Filled</p>
+        <div className="overflow-x-auto rounded-xl border border-[var(--color-border-default)]">
           <table className="w-full text-[13px]">
             <thead>
-              <tr className="bg-[var(--color-bg-subtle)] border-b border-[var(--color-border)]">
-                {["State", "Background", "Border", "Label", "Border-Width"].map((h) => (
-                  <th key={h} className="text-left px-4 py-3 text-[11px] font-semibold text-[var(--color-text-secondary)] uppercase tracking-widest">{h}</th>
+              <tr className="bg-[var(--color-bg-subtle)] border-b border-[var(--color-border-default)]">
+                {["State", "Background", "Border", "Label", "BW"].map((h) => (
+                  <th key={h} className="text-left px-4 py-3 text-[11px] font-semibold text-[var(--color-text-subtle)] uppercase tracking-widest">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {stateRows.map((row, i) => (
-                <tr key={row.state} className={`border-b border-[var(--color-border)] last:border-0 ${i % 2 === 1 ? "bg-[var(--color-bg-subtle)]" : ""}`}>
-                  <td className="px-4 py-3 font-semibold text-[var(--color-text-primary)]">{row.state}</td>
-                  <td className="px-4 py-3">
-                    <code className="text-[11px] font-mono text-mint-500 dark:text-mint-300">{row.bg}</code>
-                  </td>
-                  <td className="px-4 py-3">
-                    <code className="text-[11px] font-mono text-[var(--color-text-secondary)]">{row.border}</code>
-                  </td>
-                  <td className="px-4 py-3">
-                    <code className="text-[11px] font-mono text-[var(--color-text-secondary)]">{row.label}</code>
-                  </td>
-                  <td className="px-4 py-3 font-mono text-[12px] text-[var(--color-text-secondary)]">{row.bw}</td>
+                <tr key={row.state} className={`border-b border-[var(--color-border-default)] last:border-0 ${i % 2 === 1 ? "bg-[var(--color-bg-subtle)]" : ""}`}>
+                  <td className="px-4 py-3 font-semibold text-[var(--color-text-default)]">{row.state}</td>
+                  <td className="px-4 py-3"><code className="text-[11px] font-mono text-[var(--color-brand-primary)]">{row.bg}</code></td>
+                  <td className="px-4 py-3"><code className="text-[11px] font-mono text-[var(--color-text-subtle)]">{row.border}</code></td>
+                  <td className="px-4 py-3"><code className="text-[11px] font-mono text-[var(--color-text-subtle)]">{row.label}</code></td>
+                  <td className="px-4 py-3 font-mono text-[12px] text-[var(--color-text-subtle)]">{row.bw}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Accessibility ────────────────────────────────────────────
+
+function AccessibilitySection() {
+  return (
+    <section className="mb-16">
+      <div className="mb-5">
+        <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">Accessibility</p>
+        <h2 className="text-[20px] font-bold text-[var(--color-text-default)]">접근성</h2>
+      </div>
+
+      <div className="rounded-xl border border-[var(--color-border-default)] overflow-hidden">
+        {[
+          {
+            attr: "aria-describedby",
+            detail: "helper text / error message를 input과 연결. ID 자동 생성 ({inputId}-helper)",
+            status: "✅ 자동",
+          },
+          {
+            attr: "aria-invalid",
+            detail: "error prop이 있을 때 aria-invalid=\"true\" 자동 설정",
+            status: "✅ 자동",
+          },
+          {
+            attr: "<label htmlFor>",
+            detail: "floating label이 실제 <label> 태그로 구현되어 클릭 시 포커스 이동",
+            status: "✅ 자동",
+          },
+          {
+            attr: "포커스 링",
+            detail: "컨테이너 border 강조(brand color 2px)로 포커스 시각화 — outline: none on input",
+            status: "✅ CSS",
+          },
+          {
+            attr: "Clear 버튼 터치 영역",
+            detail: "min-width: 48px (WCAG 2.5.5 Target Size AA 준수)",
+            status: "✅ 48dp",
+          },
+          {
+            attr: "disabled",
+            detail: "color/text/disabled 토큰 사용. opacity 처리 금지",
+            status: "✅ 토큰",
+          },
+        ].map((row, i) => (
+          <div key={row.attr} className={`flex items-start gap-4 px-5 py-4 border-b border-[var(--color-border-default)] last:border-0 ${i % 2 === 1 ? "bg-[var(--color-bg-subtle)]" : ""}`}>
+            <code className="text-[12px] font-mono text-[var(--color-brand-primary)] shrink-0 pt-0.5 min-w-[140px]">{row.attr}</code>
+            <p className="text-[13px] text-[var(--color-text-subtle)] flex-1">{row.detail}</p>
+            <span className="text-[12px] font-medium text-[var(--color-brand-primary)] shrink-0">{row.status}</span>
+          </div>
+        ))}
       </div>
     </section>
   );
@@ -507,275 +447,44 @@ function DosDonts() {
   return (
     <section className="mb-16">
       <div className="mb-5">
-        <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Guidelines</p>
-        <h2 className="text-[20px] font-bold text-[var(--color-text-primary)]">Do / Don&apos;t</h2>
+        <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">Guidelines</p>
+        <h2 className="text-[20px] font-bold text-[var(--color-text-default)]">Do / Don&apos;t</h2>
       </div>
 
       <div className="grid sm:grid-cols-2 gap-4">
-        <div className="rounded-xl border-2 border-mint-300 bg-mint-20 dark:bg-mint-600/10 p-5">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-5 h-5 rounded-full bg-mint-300 flex items-center justify-center shrink-0">
-              <svg viewBox="0 0 24 24" className="w-3 h-3" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-            </div>
-            <span className="text-[14px] font-bold text-mint-500 dark:text-mint-300">Do</span>
-          </div>
-          <ul className="space-y-3">
+        <div className="rounded-xl border-2 border-[var(--color-border-brand)] p-5" style={{ background: "var(--color-bg-brand)" }}>
+          <p className="text-[14px] font-bold text-[var(--color-brand-primary)] mb-3">✓ Do</p>
+          <ul className="space-y-2">
             {[
-              "Error state에는 반드시 Helper text로 이유를 명시하세요.",
-              "Placeholder는 예시값으로 사용하세요. (예: \"홍길동\", \"example@email.com\")",
-              "Disabled는 반드시 별도 토큰(color/text/disabled)으로 처리하세요.",
-              "Filled는 배경이 있는 폼, Outlined는 카드 위 사용을 권장합니다.",
-              "Label이 Floating될 때 크기·색상 전환을 애니메이션으로 표현하세요.",
+              "Error state에는 반드시 Helper text로 이유 명시",
+              "Placeholder는 예시값으로 (예: \"홍길동\")",
+              "Disabled는 color/text/disabled 토큰 사용",
+              "Filled는 배경 있는 폼, Outlined는 카드 위 사용",
+              "Label floating 시 크기·색상 transition 적용",
             ].map((t, i) => (
-              <li key={i} className="flex items-start gap-2 text-[13px] text-mint-600 dark:text-mint-200">
-                <span className="font-bold shrink-0 text-mint-400">✓</span>{t}
+              <li key={i} className="flex gap-2 text-[13px] text-[var(--color-text-default)]">
+                <span className="text-[var(--color-brand-primary)] font-bold shrink-0">✓</span>{t}
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="rounded-xl border-2 border-system-error/30 bg-red-50 dark:bg-red-950/20 p-5">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-5 h-5 rounded-full bg-[var(--color-status-error)] flex items-center justify-center shrink-0">
-              <svg viewBox="0 0 24 24" className="w-3 h-3" fill="white"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-            </div>
-            <span className="text-[14px] font-bold text-[var(--color-status-error)]">Don&apos;t</span>
-          </div>
-          <ul className="space-y-3">
+        <div className="rounded-xl border-2 p-5" style={{ borderColor: "var(--color-status-error)", background: "var(--color-bg-error)" }}>
+          <p className="text-[14px] font-bold mb-3" style={{ color: "var(--color-status-error)" }}>✕ Don&apos;t</p>
+          <ul className="space-y-2">
             {[
-              "Error border만 변경하고 메시지 없이 끝내지 마세요.",
-              "Placeholder에 Label 역할을 시키지 마세요. 포커스 시 사라져서 혼란을 줍니다.",
-              "Disabled를 opacity: 0.5로 처리하지 마세요. 전용 토큰을 사용하세요.",
-              "색상을 하드코딩하지 마세요. 반드시 토큰을 참조하세요.",
-              "Filled와 Outlined를 한 폼 내에서 혼용하지 마세요.",
+              "Error border만 바꾸고 메시지 없이 끝내기",
+              "Placeholder에 Label 역할 시키기",
+              "opacity: 0.5로 Disabled 처리",
+              "색상 하드코딩 (반드시 CSS 변수 사용)",
+              "한 폼 내에서 Filled + Outlined 혼용",
             ].map((t, i) => (
-              <li key={i} className="flex items-start gap-2 text-[13px] text-red-700 dark:text-red-300">
-                <span className="font-bold shrink-0 text-[var(--color-status-error)]">✕</span>{t}
+              <li key={i} className="flex gap-2 text-[13px]" style={{ color: "var(--color-status-error)" }}>
+                <span className="font-bold shrink-0">✕</span>{t}
               </li>
             ))}
           </ul>
         </div>
-      </div>
-    </section>
-  );
-}
-
-// ─── Code Section ─────────────────────────────────────────────
-
-const INPUT_SNIPPETS = [
-  {
-    label: "Filled",
-    code: `// Filled Text Field — Inactive 상태
-<div
-  style={{
-    background: 'var(--color-bg-subtle)',         // N20 #F4F5F5
-    borderBottom: '1px solid var(--color-border-default)', // N100
-    borderRadius: '8px 8px 0 0',
-    padding: '16px 16px 8px',
-    position: 'relative',
-  }}
->
-  {/* Floating label (Focused/Activated: 12px Medium) */}
-  <label
-    style={{
-      display: 'block',
-      fontSize: 12,
-      fontWeight: 500,
-      color: 'var(--color-text-subtle)',           // N300
-      marginBottom: 4,
-    }}
-  >
-    이름
-  </label>
-  <input
-    type="text"
-    placeholder="홍길동"
-    style={{
-      display: 'block',
-      width: '100%',
-      background: 'transparent',
-      border: 'none',
-      outline: 'none',
-      fontSize: 16,                                // type/body/md
-      color: 'var(--color-text-default)',          // N600
-    }}
-  />
-</div>`,
-  },
-  {
-    label: "Outlined",
-    code: `// Outlined Text Field — Inactive 상태
-<div
-  style={{
-    background: 'transparent',
-    border: '1px solid var(--color-border-default)', // N100 #D8DCDE
-    borderRadius: 8,                                 // radius/component/input
-    padding: 16,
-    position: 'relative',
-  }}
->
-  <label
-    style={{
-      display: 'block',
-      fontSize: 12,
-      fontWeight: 500,
-      color: 'var(--color-text-subtle)',
-      marginBottom: 4,
-    }}
-  >
-    이메일
-  </label>
-  <input
-    type="email"
-    placeholder="example@email.com"
-    style={{
-      display: 'block',
-      width: '100%',
-      background: 'transparent',
-      border: 'none',
-      outline: 'none',
-      fontSize: 16,
-      color: 'var(--color-text-default)',
-    }}
-  />
-</div>`,
-  },
-  {
-    label: "Focused",
-    code: `// Focused 상태 — border 2px, label color/brand/primary
-<div
-  style={{
-    background: 'var(--color-bg-subtle)',
-    borderBottom: '2px solid var(--color-border-brand)', // M300 #28D7D2
-    borderRadius: '8px 8px 0 0',
-    padding: '16px 16px 8px',
-  }}
->
-  <label
-    style={{
-      display: 'block',
-      fontSize: 12,
-      fontWeight: 500,
-      color: 'var(--color-brand-primary)',   // M300 #28D7D2
-      marginBottom: 4,
-    }}
-  >
-    이름
-  </label>
-  <input
-    autoFocus
-    type="text"
-    style={{
-      display: 'block',
-      width: '100%',
-      background: 'transparent',
-      border: 'none',
-      outline: 'none',
-      fontSize: 16,
-      color: 'var(--color-text-default)',
-    }}
-  />
-</div>`,
-  },
-  {
-    label: "Error",
-    code: `// Error 상태 — border color/status/error, helper text 필수
-<div>
-  <div
-    style={{
-      background: 'var(--color-bg-subtle)',
-      borderBottom: '2px solid var(--color-status-error)', // #FF3257
-      borderRadius: '8px 8px 0 0',
-      padding: '16px 16px 8px',
-    }}
-  >
-    <label
-      style={{
-        display: 'block',
-        fontSize: 12,
-        fontWeight: 500,
-        color: 'var(--color-status-error)',   // #FF3257
-        marginBottom: 4,
-      }}
-    >
-      이메일
-    </label>
-    <input
-      type="email"
-      value="잘못된@형식"
-      style={{
-        display: 'block',
-        width: '100%',
-        background: 'transparent',
-        border: 'none',
-        outline: 'none',
-        fontSize: 16,
-        color: 'var(--color-text-default)',
-      }}
-    />
-  </div>
-  {/* Helper text — Error 시 반드시 표시 */}
-  <p style={{ fontSize: 12, color: 'var(--color-status-error)', marginTop: 4 }}>
-    올바른 이메일 형식을 입력해 주세요.
-  </p>
-</div>`,
-  },
-];
-
-function InputCodeSection() {
-  const [active, setActive] = useState(0);
-  const [copied, setCopied] = useState(false);
-
-  const copy = () => {
-    navigator.clipboard.writeText(INPUT_SNIPPETS[active].code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  return (
-    <section className="mb-16">
-      <div className="mb-5">
-        <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Code</p>
-        <h2 className="text-[20px] font-bold text-[var(--color-text-primary)]">코드 스니펫</h2>
-        <p className="text-[13px] mt-1 text-[var(--color-text-secondary)]">CSS 변수 기반 React 코드 예시 · State별 스타일 처리 방법</p>
-      </div>
-
-      <div className="flex border-b border-[var(--color-border)] mb-0">
-        {INPUT_SNIPPETS.map((s, i) => (
-          <button
-            key={s.label}
-            onClick={() => setActive(i)}
-            style={{ height: 40, padding: "0 16px" }}
-            className={`relative text-[13px] font-medium tracking-[0.04em] transition-all shrink-0
-              ${active === i ? "text-[var(--color-brand-primary)]" : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"}`}
-          >
-            {s.label}
-            {active === i && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full" style={{ background: "var(--color-brand-primary)" }} />
-            )}
-          </button>
-        ))}
-      </div>
-
-      <div className="relative rounded-b-xl rounded-tr-xl overflow-hidden border border-t-0 border-[var(--color-border)]" style={{ background: "#1a2028" }}>
-        <button
-          onClick={copy}
-          className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[12px] font-medium transition-all"
-          style={{
-            background: copied ? "rgba(40,215,210,0.15)" : "rgba(255,255,255,0.08)",
-            color: copied ? "#28D7D2" : "rgba(255,255,255,0.6)",
-            border: `1px solid ${copied ? "rgba(40,215,210,0.3)" : "rgba(255,255,255,0.12)"}`,
-          }}
-        >
-          {copied ? (
-            <><svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>복사됨</>
-          ) : (
-            <><svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>복사</>
-          )}
-        </button>
-        <pre className="p-5 text-[13px] leading-relaxed overflow-x-auto" style={{ color: "#e2e8f0", fontFamily: "'SF Mono', 'Fira Code', monospace" }}>
-          <code>{INPUT_SNIPPETS[active].code}</code>
-        </pre>
       </div>
     </section>
   );
@@ -786,46 +495,28 @@ function InputCodeSection() {
 export default function InputPage() {
   return (
     <div className="px-8 py-10 max-w-[960px]">
-      {/* 헤더 */}
-      <div className="mb-10 pb-8 border-b border-[var(--color-border)]">
+      {/* Header */}
+      <div className="mb-10 pb-8 border-b border-[var(--color-border-default)]">
         <div className="flex items-center gap-2 mb-3">
-          <span className="w-2 h-2 rounded-full bg-mint-300" />
-          <span className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest">Components</span>
+          <span className="w-2 h-2 rounded-full bg-[var(--color-brand-primary)]" />
+          <span className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest">Components</span>
         </div>
-        <h1 className="text-[40px] font-black tracking-tight text-[var(--color-text-primary)] mb-2">
-          Text Field
-        </h1>
-        <p className="text-[16px] text-[var(--color-text-secondary)] leading-relaxed max-w-[560px]">
-          사용자 입력을 받는 기본 필드 컴포넌트.
+        <h1 className="text-[40px] font-black tracking-tight text-[var(--color-text-default)] mb-2">Text Field</h1>
+        <p className="text-[16px] text-[var(--color-text-subtle)] leading-relaxed max-w-[560px]">
+          텍스트 입력을 위한 기본 폼 컴포넌트. Filled · Outlined 두 가지 타입.
           <br />
-          <span className="text-mint-400 font-medium">Filled</span> ·{" "}
-          <span className="text-mint-400 font-medium">Outlined</span> 두 타입과{" "}
-          <span className="text-mint-400 font-medium">6가지 State</span>로 구성됩니다.
+          <span className="text-[var(--color-brand-primary)] font-medium">shape/xs 4dp</span> ·{" "}
+          <span className="text-[var(--color-brand-primary)] font-medium">Floating label</span> ·{" "}
+          <span className="text-[var(--color-brand-primary)] font-medium">aria-describedby 자동 연결</span>
         </p>
-
-        <div className="flex flex-wrap gap-2 mt-5">
-          {[
-            { label: "Filled",    desc: "배경색 + 하단 border" },
-            { label: "Outlined",  desc: "투명 배경 + 전체 border" },
-            { label: "Prefix",    desc: "좌측 고정 단위·프로토콜" },
-            { label: "Suffix",    desc: "우측 단위·액션 아이콘" },
-            { label: "Exposed Dropdown", desc: "chevron-down 선택형 Input" },
-          ].map((v) => (
-            <div key={v.label} className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--color-bg-subtle)] border border-[var(--color-border)]">
-              <span className="w-1.5 h-1.5 rounded-full bg-mint-300 shrink-0" />
-              <span className="text-[12px] font-semibold text-[var(--color-text-primary)]">{v.label}</span>
-              <span className="text-[11px] text-[var(--color-text-secondary)]">— {v.desc}</span>
-            </div>
-          ))}
-        </div>
       </div>
 
       <InteractiveDemo />
-      <StateGallery />
       <VariantGallery />
+      <StateReference />
+      <AccessibilitySection />
       <SpecTable />
       <DosDonts />
-      <InputCodeSection />
     </div>
   );
 }

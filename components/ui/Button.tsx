@@ -35,6 +35,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         disabled={isDisabled}
+        aria-disabled={isDisabled || undefined}
         aria-busy={loading || undefined}
         className={[
           "op-btn",
