@@ -2210,4 +2210,243 @@
     outline: 2px solid var(--color-brand-primary);
     outline-offset: 2px;
   }
+
+  /* ── Slider ─────────────────────────────────────────────────── */
+
+  .op-slider-root {
+    width: 100%;
+    user-select: none;
+  }
+  .op-slider-root--disabled {
+    cursor: not-allowed;
+  }
+
+  /* Header row: label + value badge */
+  .op-slider__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-02);
+  }
+  .op-slider__label-text {
+    font-size: 12px;
+    color: var(--color-text-subtle);
+  }
+  .op-slider__value-badge {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-on-brand);
+    padding: 2px 8px;
+    border-radius: var(--shape-xs);
+    min-width: 32px;
+    text-align: center;
+  }
+  .op-slider__range-value {
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Wrapper = the interactive zone */
+  .op-slider__wrapper {
+    position: relative;
+    height: 48px;       /* 48dp touch area */
+    display: flex;
+    align-items: center;
+  }
+  .op-slider__wrapper--range {
+    /* range inputs stack via absolute positioning */
+  }
+
+  /* ── Floating value label ── */
+  .op-slider__label {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-on-brand);
+    padding: 2px 6px;
+    border-radius: var(--shape-xs);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 5;
+    min-width: 28px;
+    text-align: center;
+  }
+  .op-slider__label-arrow {
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top-width: 4px;
+    border-top-style: solid;
+    /* border-top-color set inline to match background */
+  }
+
+  /* ── Track ── */
+  .op-slider__track {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 4px;
+    border-radius: 2px;
+    pointer-events: none;
+  }
+  .op-slider__track-bg {
+    position: absolute;
+    inset: 0;
+    border-radius: 2px;
+    background: var(--color-border-default);
+  }
+  .op-slider__track-fill {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    border-radius: 2px;
+    transition: left 50ms linear, right 50ms linear;
+  }
+
+  /* ── Tick marks (discrete) ── */
+  .op-slider__ticks {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .op-slider__tick {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* Mark labels row (below track) */
+  .op-slider__mark-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--space-01);
+  }
+  .op-slider__mark-label {
+    font-size: 10px;
+    text-align: center;
+    flex: 1;
+    transition: color var(--duration-short) var(--motion-standard),
+                font-weight var(--duration-short) var(--motion-standard);
+  }
+
+  /* ── Native input[type=range] reset + thumb styling ── */
+
+  .op-slider__input {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 48px;
+    background: transparent;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+    z-index: 3;
+  }
+  .op-slider-root--disabled .op-slider__input {
+    cursor: not-allowed;
+  }
+
+  /* Range variant: two inputs stack absolutely */
+  .op-slider__input--range {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+  }
+
+  /* ── WebKit track ── */
+  .op-slider__input::-webkit-slider-runnable-track {
+    height: 4px;
+    background: transparent;
+    border-radius: 2px;
+  }
+
+  /* ── WebKit thumb ── */
+  .op-slider__input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--color-brand-primary);
+    cursor: pointer;
+    pointer-events: all;
+    margin-top: -8px;
+    transition:
+      background var(--duration-short) var(--motion-standard),
+      width var(--duration-short) var(--motion-standard),
+      height var(--duration-short) var(--motion-standard),
+      margin-top var(--duration-short) var(--motion-standard),
+      box-shadow var(--duration-short) var(--motion-standard);
+    position: relative;
+    z-index: 3;
+  }
+  .op-slider__input:hover:not(:disabled)::-webkit-slider-thumb {
+    background: var(--color-interactive-hover);
+    box-shadow: 0 0 0 8px rgba(40, 215, 210, 0.12);
+  }
+  .op-slider__input:active:not(:disabled)::-webkit-slider-thumb {
+    width: 28px;
+    height: 28px;
+    margin-top: -12px;
+    background: var(--color-interactive-pressed);
+    box-shadow: 0 0 0 10px rgba(40, 215, 210, 0.15);
+  }
+  .op-slider__input:focus-visible::-webkit-slider-thumb {
+    outline: 2px solid var(--color-border-brand);
+    outline-offset: 2px;
+  }
+  .op-slider__input:disabled::-webkit-slider-thumb {
+    background: var(--color-interactive-disabled);
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+
+  /* ── Firefox track ── */
+  .op-slider__input::-moz-range-track {
+    height: 4px;
+    background: transparent;
+    border-radius: 2px;
+  }
+
+  /* ── Firefox thumb ── */
+  .op-slider__input::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--color-brand-primary);
+    border: none;
+    cursor: pointer;
+    pointer-events: all;
+    transition:
+      background var(--duration-short) var(--motion-standard),
+      box-shadow var(--duration-short) var(--motion-standard);
+  }
+  .op-slider__input:hover:not(:disabled)::-moz-range-thumb {
+    background: var(--color-interactive-hover);
+    box-shadow: 0 0 0 8px rgba(40, 215, 210, 0.12);
+  }
+  .op-slider__input:active:not(:disabled)::-moz-range-thumb {
+    background: var(--color-interactive-pressed);
+  }
+  .op-slider__input:disabled::-moz-range-thumb {
+    background: var(--color-interactive-disabled);
+    cursor: not-allowed;
+  }
 }
