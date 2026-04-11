@@ -1,7 +1,7 @@
 # OPENPATH Design System — Done List
 
 > 마지막 업데이트: 2026-04-11
-> 기준 브랜치: `main` / 최신 커밋: `62e70c5`
+> 기준 브랜치: `main` / 최신 커밋: `cdd82e2`
 > 저장소: https://github.com/PMgomdol/openpath-ds
 > 배포: Vercel (GitHub main push → 자동 배포)
 
@@ -90,6 +90,24 @@ Components  UI 구성   — 16종 컴포넌트
 | `--color-status-error` | `#FF3257` | `#FF3257` |
 | `--color-status-success` | `#28D7D2` | `#28D7D2` |
 | `--color-status-warning` | `#EE706B` | `#EE706B` |
+
+**Category Accents (UI chrome, non-brand)**
+
+| 변수 | Light | Dark |
+|---|---|---|
+| `--color-category-foundation` | `#7B61FF` | `#B39DFF` |
+| `--color-category-foundation-bg` | `#F5F2FF` | `rgba(123,97,255,0.10)` |
+| `--color-category-foundation-border` | `#D6CCFF` | `rgba(123,97,255,0.30)` |
+| `--color-category-autonomy` | `#FF6B6B` | `#FF8F8F` |
+| `--color-category-autonomy-bg` | `#FFF2F2` | `rgba(255,107,107,0.10)` |
+| `--color-category-autonomy-border` | `#FFD0D0` | `rgba(255,107,107,0.30)` |
+
+**Overlay / Component Surface**
+
+| 변수 | Value |
+|---|---|
+| `--color-scrim` | `rgba(0,0,0,0.40)` |
+| `--color-track-tick-active` | `rgba(255,255,255,0.75)` |
 
 ### 1-2. Shape 토큰
 
@@ -261,9 +279,10 @@ Components  UI 구성   — 16종 컴포넌트
 
 | 컴포넌트 | 설명 |
 |---|---|
-| `Header.tsx` | Fixed top h-14, 로고 + ThemeToggle, backdrop-blur |
-| `Sidebar.tsx` | Fixed left w-220px, 3그룹 (Style=민트 / Foundation=보라 / Components=회색), pathname-aware active |
-| `Providers.tsx` | `<ThemeProvider attribute="class">` next-themes 래퍼 |
+| `Header.tsx` | Fixed top h-14, 로고 + ThemeToggle + 햄버거(md 미만), backdrop-blur |
+| `Sidebar.tsx` | Desktop(Fixed left 220px) + Mobile(Modal overlay 280px, slide-in 300ms) |
+| `SidebarContext.tsx` | React Context — open/toggle/close 상태 공유 |
+| `Providers.tsx` | `<ThemeProvider>` + `<SidebarProvider>` 래퍼 |
 | `ThemeToggle.tsx` | Sun/Moon 아이콘 버튼, Light/Dark 전환 |
 | `ColorChip.tsx` | 색상 스와치 카드, 토큰명 + hex 클립보드 복사 |
 | `SemanticTable.tsx` | Semantic 토큰 그룹 테이블 (Light/Dark 병렬 표시) |
@@ -310,10 +329,10 @@ Components  UI 구성   — 16종 컴포넌트
 | `/components/tab` | 📄 스펙 문서 — 컴포넌트 미구현 |
 | `/components/menu` | 📄 스펙 문서 — 컴포넌트 미구현 |
 | `/components/snackbar` | 📄 스펙 문서 — 컴포넌트 미구현 |
-| `/components/slider` | 📄 스펙 문서 — 컴포넌트 미구현 |
+| `/components/slider` | ✅ 실제 컴포넌트 — Continuous / Discrete / Range 3종, value label, 48dp |
 | `/components/navigation-drawer` | 📄 스펙 문서 — 컴포넌트 미구현 |
-| `/components/list` | 📄 스펙 문서 — 컴포넌트 미구현 |
-| `/components/banner` | 📄 스펙 문서 — 컴포넌트 미구현 |
+| `/components/list` | ✅ 실제 컴포넌트 — Single-line(48dp) / Two-line(64dp) / Three-line(88dp), Leading+Trailing |
+| `/components/banner` | ✅ 실제 컴포넌트 — Info / Warning / Error / Success, 4px accent border, role="alert" |
 
 ### 기타
 
@@ -336,11 +355,14 @@ Components  UI 구성   — 16종 컴포넌트
 | TextField aria-describedby | helper/error 연결 | ✅ TextField.tsx |
 | TextField aria-invalid | error 상태 | ✅ TextField.tsx |
 | Dialog | `role="dialog"` `aria-modal` `aria-labelledby` | ✅ Modal 페이지 데모 |
+| Mobile Sidebar | `role="dialog"` `aria-modal="true"` | ✅ Sidebar.tsx MobileSidebar |
+| Banner | `role="alert"` `aria-atomic="true"` | ✅ Banner.tsx |
 | Navigation | `role="navigation"` `aria-label` | ✅ BottomNavigation, Sidebar |
 | Tab 패턴 | `role="tablist"` `role="tab"` `aria-selected` | ✅ BottomNavigation |
 | Disabled 처리 | opacity 아닌 변수 사용 | ✅ `--color-interactive-disabled` / `--color-text-disabled` |
 | 다크모드 Shadow | `none` | ✅ `.dark { --shadow-*: none }` |
 | 색상만으로 상태 표현 금지 | 아이콘·텍스트 병행 | ✅ 컴포넌트별 구현 |
+| 하드코딩 색상 0건 | CSS 변수 전용 | ✅ 전수 점검 완료 (`cdd82e2`) |
 
 ---
 
@@ -378,13 +400,18 @@ Components  UI 구성   — 16종 컴포넌트
 
 | 커밋 | 내용 |
 |---|---|
-| `62e70c5` | Sidebar STYLE/FOUNDATION/COMPONENTS 3그룹 + 신규 Foundation 6페이지 + Shape 페이지 + Home Overview 카드 |
-| `c40f3dc` | M3 Type Scale 15종 CSS 변수 + Tonal Elevation L0~L5 + FAB 컴포넌트 + BottomNavigation 컴포넌트 + Focus 3dp 통일 + Activated→Populated |
-| `87a3e0c` | Design.md 기준 전체 토큰 동기화 + `--shape-xl` 28px 수정 + CLAUDE.md 업데이트 |
-| `e40a8c0` | Radio/Checkbox/Switch/Card/Chip 접근성 + 모션 토큰 전체 적용 |
-| `a3f0ad5` | TextField 컴포넌트 (Filled/Outlined, Floating Label, M3 Notch outline) |
-| `4c5479d` | 전역 색상 토큰 위반 수정, `--color-text-on-brand` N600 전환 |
-| `5af2d5b` | Button 컴포넌트 (Primary/Outlined/Text, sm/md/lg, loading spinner) |
+| `cdd82e2` | CLAUDE.md 규칙 위반 전수 수정 — 하드코딩 색상 0건 달성, 신규 category/scrim/track 변수 |
+| `2997b5d` | Mobile Sidebar — SidebarContext + 슬라이드 Modal, scrim, ESC, route-close, scroll-lock |
+| `674a2d2` | CSS 레거시 정리 — `--radius-*` 제거, mint-*/dark: Tailwind → CSS 변수 전환, Shape 토큰 정규화 |
+| `7eac0d5` | List 컴포넌트 — Single/Two/Three-line, Leading(icon/avatar/checkbox/radio), Trailing(icon/switch) |
+| `433c439` | Banner 컴포넌트 — Info/Warning/Error/Success, 4px accent border, role="alert" |
+| `13e80e2` | Slider 컴포넌트 — Continuous/Discrete/Range, value label, tick marks |
+| `62e70c5` | Sidebar 3그룹 + Foundation 6페이지 + Shape 페이지 + Home Overview |
+| `c40f3dc` | M3 Type Scale + Tonal Elevation + FAB + BottomNavigation + Focus 3dp |
+| `87a3e0c` | 전체 토큰 동기화 + `--shape-xl` 수정 + CLAUDE.md 업데이트 |
+| `e40a8c0` | Radio/Checkbox/Switch/Card/Chip 접근성 + 모션 토큰 |
+| `a3f0ad5` | TextField (Filled/Outlined, Floating Label) |
+| `5af2d5b` | Button (Primary/Outlined/Text, sm/md/lg, spinner) |
 
 ---
 
@@ -399,20 +426,14 @@ Components  UI 구성   — 16종 컴포넌트
 | Navigation Drawer | Modal / Standard 2종 |
 | Menu | Dropdown / Context menu |
 | Snackbar | Text only / With Action / With Close |
-| Slider | Continuous / Discrete / Range |
-| Banner | Info / Warning / Error / Success |
-| List | Single-line / Two-line / Three-line |
 | FAB 페이지 | 컴포넌트 연결만 필요 |
 | Bottom Navigation 페이지 | 컴포넌트 연결만 필요 |
-
-### CSS 정리
-
-- `--radius-*` legacy alias 변수 제거 예정 (현재 `--shape-*`와 병존)
-- 일부 페이지의 `mint-*`, `dark:` Tailwind 클래스 → CSS 변수로 전환 권장
+| Slider 데모 페이지 | 컴포넌트 구현 완료 → 페이지 라이브 데모 연결 필요 |
+| Banner 데모 페이지 | 컴포넌트 구현 완료 → 페이지 라이브 데모 연결 필요 |
+| List 데모 페이지 | 컴포넌트 구현 완료 → 페이지 라이브 데모 연결 필요 |
 
 ### 기능 추가
 
-- 모바일 Sidebar (햄버거 메뉴, md 미만에서 숨김 상태)
 - 컴포넌트 코드 스니펫 복사 기능 (현재 일부만)
 - Storybook 연동 (선택)
 
