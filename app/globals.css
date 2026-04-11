@@ -291,10 +291,16 @@
   }
 }
 
-/* Menu open animation — defined outside @layer so it's always available */
+/* Menu open animation */
 @keyframes op-menu-in {
   from { opacity: 0; transform: scale(0.95); }
   to   { opacity: 1; transform: scale(1); }
+}
+
+/* Snackbar appear animation — slides up from below */
+@keyframes op-snackbar-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @layer components {
@@ -2097,5 +2103,111 @@
     height: 1px;
     margin: var(--space-01) 0;       /* 4px */
     background: var(--color-border-default);
+  }
+
+  /* ─── Snackbar ───────────────────────────────────────────── */
+  /* Text only / With Action / With Close · 4s auto-dismiss    */
+  /* Position: fixed bottom-center · aria-live="polite"        */
+
+  /* ── Fixed region — always in DOM for aria-live ──────────── */
+  .op-snackbar-region {
+    position: fixed;
+    bottom: var(--space-06);         /* 24px */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 50;
+    pointer-events: none;            /* clicks pass through when empty */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-02);
+  }
+
+  /* ── Snackbar panel ──────────────────────────────────────── */
+  /* bg = N600 (light) / White (dark) — inverted from page bg  */
+  .op-snackbar {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    gap: var(--space-03);            /* 12px */
+    min-width: 288px;
+    max-width: 568px;
+    min-height: 48px;
+    padding: var(--space-03) var(--space-04);   /* 12px 16px */
+    border-radius: var(--shape-sm);             /* 8px */
+    background: var(--color-text-default);      /* N600 — inverted */
+    color: var(--color-bg-default);             /* White — inverted */
+    box-shadow: var(--shadow-03);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    /* Appear: slide up + fade in */
+    animation: op-snackbar-in var(--duration-medium) var(--motion-decelerate) both;
+  }
+
+  /* ── Message ─────────────────────────────────────────────── */
+  .op-snackbar__message {
+    flex: 1;
+    white-space: pre-wrap;           /* respect intentional line-breaks */
+    word-break: break-word;
+  }
+
+  /* ── Action button ───────────────────────────────────────── */
+  .op-snackbar__action {
+    flex-shrink: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--color-brand-primary);   /* M300 — spec: action text */
+    padding: var(--space-01) var(--space-02);
+    border-radius: var(--shape-xs);
+    margin-left: var(--space-02);
+    outline: none;
+    transition: color var(--duration-short) var(--motion-standard);
+  }
+  .op-snackbar__action:hover {
+    color: var(--color-interactive-hover);   /* M400 — spec: action hover */
+  }
+  .op-snackbar__action:focus-visible {
+    outline: 2px solid var(--color-border-brand);
+    outline-offset: 2px;
+    border-radius: var(--shape-xs);
+  }
+
+  /* ── Close button — 32dp visual, full 48dp touch via ::after ─ */
+  .op-snackbar__close {
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: var(--color-bg-default);
+    opacity: 0.7;
+    border-radius: var(--shape-full);
+    margin-left: var(--space-01);
+    outline: none;
+    transition: opacity var(--duration-short) var(--motion-standard);
+  }
+  /* Extend touch target to 48dp */
+  .op-snackbar__close::after {
+    content: "";
+    position: absolute;
+    inset: -8px;
+  }
+  .op-snackbar__close:hover {
+    opacity: 1;
+  }
+  .op-snackbar__close:focus-visible {
+    outline: 2px solid var(--color-brand-primary);
+    outline-offset: 2px;
   }
 }
