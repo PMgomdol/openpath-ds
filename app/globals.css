@@ -2449,4 +2449,144 @@
     background: var(--color-interactive-disabled);
     cursor: not-allowed;
   }
+
+  /* ── Banner ──────────────────────────────────────────────────── */
+
+  .op-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-03);        /* 12px */
+    padding: var(--space-03) var(--space-04); /* 12px 16px */
+    border-radius: var(--shape-sm); /* 8px */
+    border-left-width: 4px;
+    border-left-style: solid;
+  }
+
+  /* ── Variant colors ── */
+  .op-banner--info {
+    background: var(--color-bg-subtle);
+    border-left-color: var(--color-brand-primary);
+  }
+  .op-banner--info .op-banner__icon {
+    color: var(--color-brand-primary);
+  }
+  .op-banner--info .op-banner__action {
+    color: var(--color-brand-primary);
+  }
+  .op-banner--info .op-banner__action:hover {
+    color: var(--color-interactive-hover);
+  }
+
+  .op-banner--warning {
+    background: var(--color-bg-warning);
+    border-left-color: var(--color-status-warning);
+  }
+  .op-banner--warning .op-banner__icon {
+    color: var(--color-status-warning);
+  }
+  .op-banner--warning .op-banner__action {
+    color: var(--color-status-warning);
+  }
+
+  .op-banner--error {
+    background: var(--color-bg-error);
+    border-left-color: var(--color-status-error);
+  }
+  .op-banner--error .op-banner__icon {
+    color: var(--color-status-error);
+  }
+  .op-banner--error .op-banner__action {
+    color: var(--color-status-error);
+  }
+
+  .op-banner--success {
+    background: var(--color-bg-brand);
+    border-left-color: var(--color-status-success);
+  }
+  .op-banner--success .op-banner__icon {
+    color: var(--color-status-success);
+  }
+  .op-banner--success .op-banner__action {
+    color: var(--color-status-success);
+  }
+  .op-banner--success .op-banner__action:hover {
+    color: var(--color-interactive-hover);
+  }
+
+  /* ── Icon ── */
+  .op-banner__icon {
+    flex-shrink: 0;
+    margin-top: 1px; /* optical alignment with first text line */
+    display: flex;
+    align-items: center;
+  }
+
+  /* ── Body ── */
+  .op-banner__body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .op-banner__title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-default);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .op-banner__description {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--color-text-default);
+    margin: var(--space-01) 0 0; /* 4px top */
+    line-height: 1.5;
+  }
+
+  .op-banner__action {
+    display: inline-block;
+    margin-top: var(--space-02); /* 8px */
+    font-size: 13px;
+    font-weight: 600;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color var(--duration-short) var(--motion-standard);
+  }
+
+  /* ── Close button ── */
+  .op-banner__close {
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-subtle);
+    border-radius: var(--shape-xs);
+    margin-top: -2px; /* optical align */
+    opacity: 0.6;
+    transition: opacity var(--duration-short) var(--motion-standard);
+  }
+  /* Extend touch target to 48dp */
+  .op-banner__close::after {
+    content: "";
+    position: absolute;
+    inset: -12px;
+  }
+  .op-banner__close:hover {
+    opacity: 1;
+  }
+  .op-banner__close:focus-visible {
+    outline: 2px solid var(--color-border-brand);
+    outline-offset: 2px;
+    opacity: 1;
+  }
 }
