@@ -1816,4 +1816,174 @@
     background: var(--color-brand-subtle);
     color: var(--color-brand-primary);
   }
+
+  /* ─── Navigation Drawer ──────────────────────────────────── */
+  /* Modal: fixed, slides in · Standard: flex sibling, collapses */
+
+  /* ── Modal scrim ─────────────────────────────────────────── */
+  .op-drawer-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: rgba(21, 27, 30, 0.40);   /* spec: scrim color */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--duration-medium) var(--motion-standard);
+  }
+  .op-drawer-scrim--open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ── Modal drawer panel ──────────────────────────────────── */
+  .op-drawer--modal {
+    position: fixed;
+    inset-block: 0;
+    left: 0;
+    z-index: 41;
+    width: 360px;
+    max-width: 90vw;
+    box-shadow: var(--shadow-03);          /* spec: elevation/surface/sticky */
+    /* Closed: off-screen left */
+    transform: translateX(-100%);
+    visibility: hidden;
+    transition:
+      transform   var(--duration-medium) var(--motion-decelerate),  /* enter */
+      visibility  0ms                    linear var(--duration-medium);
+  }
+  .op-drawer--modal.op-drawer--open {
+    transform: translateX(0);
+    visibility: visible;
+    /* Override delay so visibility appears instantly on open */
+    transition:
+      transform  var(--duration-medium) var(--motion-decelerate),
+      visibility 0ms                   linear;
+  }
+
+  /* ── Standard: width-collapse wrapper ───────────────────── */
+  /* Outer div handles overflow + width transition            */
+  .op-drawer-standard-wrap {
+    width: 0;
+    overflow: hidden;
+    flex-shrink: 0;
+    transition:
+      width     var(--duration-medium) var(--motion-decelerate),
+      min-width var(--duration-medium) var(--motion-decelerate);
+  }
+  .op-drawer-standard-wrap--open {
+    width: 360px;
+    min-width: 360px;
+  }
+
+  /* ── Shared drawer panel base ────────────────────────────── */
+  .op-drawer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--color-bg-default);
+  }
+  .op-drawer--standard {
+    /* Standard is contained — no shadow (spec) */
+    box-shadow: none;
+    border-right: 1px solid var(--color-border-default);
+    width: 360px;
+    min-width: 360px;
+  }
+
+  /* nav fills the dialog container in modal */
+  .op-drawer__nav {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  /* ── Header slot ─────────────────────────────────────────── */
+  .op-drawer__header {
+    flex-shrink: 0;
+    padding: var(--space-05) var(--space-04);
+    border-bottom: 1px solid var(--color-border-default);
+  }
+
+  /* ── Scrollable body ─────────────────────────────────────── */
+  .op-drawer__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-02);
+  }
+
+  /* ── Section heading ─────────────────────────────────────── */
+  .op-drawer__section-label {
+    padding: var(--space-02) var(--space-04);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    user-select: none;
+  }
+
+  /* ── Nav item: 56px pill ─────────────────────────────────── */
+  .op-drawer__item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-03);              /* 12px icon→label gap */
+    width: 100%;
+    height: 56px;
+    padding: 0 var(--space-04);
+    border: none;
+    border-radius: var(--shape-full);  /* 9999px pill */
+    background: transparent;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: var(--color-text-default);  /* spec: inactive label = text/default */
+    text-align: left;
+    outline: none;
+    transition:
+      background-color var(--duration-short) var(--motion-standard),
+      color            var(--duration-short) var(--motion-standard);
+  }
+  .op-drawer__item:hover:not(.op-drawer__item--active):not(:disabled) {
+    background: var(--color-bg-subtle);
+  }
+  .op-drawer__item--active {
+    background: var(--color-bg-brand);
+    color: var(--color-brand-primary);
+  }
+  .op-drawer__item:disabled {
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+  }
+  .op-drawer__item:focus-visible {
+    outline: 3px solid var(--color-border-brand);
+    outline-offset: 2px;
+  }
+
+  /* ── Icon slot (24dp) ────────────────────────────────────── */
+  .op-drawer__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    color: var(--color-text-subtle);   /* spec: inactive icon = text/subtle */
+    transition: color var(--duration-short) var(--motion-standard);
+  }
+  .op-drawer__item--active .op-drawer__icon {
+    color: var(--color-brand-primary); /* spec: active icon = brand/primary */
+  }
+  .op-drawer__item:disabled .op-drawer__icon {
+    color: var(--color-text-disabled);
+  }
+
+  /* Label inherits color from item */
+  .op-drawer__label {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
