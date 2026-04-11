@@ -1,297 +1,354 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import Menu from "@/components/ui/Menu";
+import type { MenuEntry } from "@/components/ui/Menu";
+import {
+  Edit3,
+  Copy,
+  Share2,
+  Download,
+  Trash2,
+  MoreVertical,
+} from "lucide-react";
 
-// ─── Spec (DESIGN.md)
-// shadow: elevation/surface/overlay → shadow/02 (0 2px 8px)
-// bg: color/bg/default (White Light / N600 Dark)
-// item bg Hover: color/bg/subtle N20
-// item bg Pressed: color/bg/brand M20
-// item label: 16px Regular (type/body/md)
-// item label Disabled: color/text/disabled N100
-// item label Destructive: color/status/error #FF3257
-// divider: color/border/default N100
-// min-width: 112px | max-width: 280px | item height: 48px
-// padding H: 16px | radius: 8px
-
-type MenuItem = {
-  label: string;
-  icon?: React.ReactNode;
-  shortcut?: string;
-  danger?: boolean;
-  divider?: boolean;
-  disabled?: boolean;
-};
-
-const MENU_ITEMS: MenuItem[] = [
-  {
-    label: "편집하기",
-    icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>,
-    shortcut: "⌘E",
-  },
-  {
-    label: "복제하기",
-    icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>,
-    shortcut: "⌘D",
-  },
-  {
-    label: "공유하기",
-    icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>,
-  },
-  { label: "내보내기", disabled: true },
-  { label: "", divider: true },
-  {
-    label: "삭제하기",
-    icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>,
-    danger: true,
-    shortcut: "⌘⌫",
-  },
+// ── Demo items ─────────────────────────────────────────────
+const BASE_ITEMS: MenuEntry[] = [
+  { key: "edit",     label: "편집하기",  icon: <Edit3    size={20} />, shortcut: "⌘E" },
+  { key: "copy",     label: "복제하기",  icon: <Copy     size={20} />, shortcut: "⌘D" },
+  { key: "share",    label: "공유하기",  icon: <Share2   size={20} /> },
+  { key: "export",   label: "내보내기",  icon: <Download size={20} />, disabled: true },
+  { key: "div-1",    divider: true },
+  { key: "delete",   label: "삭제하기",  icon: <Trash2   size={20} />, shortcut: "⌘⌫", destructive: true },
 ];
 
-function MenuList({ onClose }: { onClose?: () => void }) {
-  return (
-    <div
-      style={{
-        background: "var(--color-bg-default)",
-        borderRadius: 8,
-        boxShadow: "var(--shadow-02, 0 2px 8px rgba(21,27,30,0.12))",
-        minWidth: 112,
-        maxWidth: 280,
-        padding: "4px 0",
-        border: "1px solid var(--color-border-default)",
-      }}
-    >
-      {MENU_ITEMS.map((item, i) => {
-        if (item.divider) {
-          return (
-            <div
-              key={i}
-              style={{ height: 1, margin: "4px 0", background: "var(--color-border-default)" }}
-            />
-          );
-        }
-        return (
-          <button
-            key={item.label}
-            disabled={item.disabled}
-            onClick={() => onClose?.()}
-            style={{
-              width: "100%",
-              height: 48,
-              display: "flex",
-              alignItems: "center",
-              gap: 12,
-              paddingLeft: 16,
-              paddingRight: 16,
-              fontSize: 16,
-              fontWeight: 400,
-              color: item.disabled
-                ? "var(--color-text-disabled)"
-                : item.danger
-                  ? "var(--color-status-error)"
-                  : "var(--color-text-default)",
-              background: "transparent",
-              border: "none",
-              cursor: item.disabled ? "not-allowed" : "pointer",
-              transition: "background 0.1s",
-              textAlign: "left",
-            }}
-            onMouseEnter={e => {
-              if (!item.disabled) (e.currentTarget as HTMLButtonElement).style.background = "var(--color-bg-subtle)";
-            }}
-            onMouseLeave={e => {
-              (e.currentTarget as HTMLButtonElement).style.background = "transparent";
-            }}
-            onMouseDown={e => {
-              if (!item.disabled) (e.currentTarget as HTMLButtonElement).style.background = "var(--color-bg-brand)";
-            }}
-            onMouseUp={e => {
-              if (!item.disabled) (e.currentTarget as HTMLButtonElement).style.background = "var(--color-bg-subtle)";
-            }}
-          >
-            {item.icon && (
-              <span style={{ color: item.danger ? "var(--color-status-error)" : "var(--color-text-subtle)", flexShrink: 0 }}>
-                {item.icon}
-              </span>
-            )}
-            <span style={{ flex: 1 }}>{item.label}</span>
-            {item.shortcut && (
-              <span style={{ fontSize: 11, fontFamily: "monospace", color: "var(--color-text-subtle)", opacity: 0.6 }}>
-                {item.shortcut}
-              </span>
-            )}
-          </button>
-        );
-      })}
-    </div>
-  );
+// ── click-outside hook ─────────────────────────────────────
+function useClickOutside<T extends HTMLElement>(
+  ref: React.RefObject<T | null>,
+  handler: () => void
+) {
+  useEffect(() => {
+    const listener = (e: MouseEvent | TouchEvent) => {
+      if (!ref.current || ref.current.contains(e.target as Node)) return;
+      handler();
+    };
+    document.addEventListener("mousedown", listener);
+    document.addEventListener("touchstart", listener);
+    return () => {
+      document.removeEventListener("mousedown", listener);
+      document.removeEventListener("touchstart", listener);
+    };
+  }, [ref, handler]);
 }
 
+// ── Dropdown demo ──────────────────────────────────────────
 function DropdownDemo() {
   const [open, setOpen] = useState(false);
+  const [last, setLast] = useState<string | null>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!open) return;
-    const close = () => setOpen(false);
-    window.addEventListener("click", close);
-    return () => window.removeEventListener("click", close);
-  }, [open]);
+  const close = useCallback(() => setOpen(false), []);
+  useClickOutside(wrapRef, close);
 
   return (
-    <div className="relative inline-block">
-      <button
-        onClick={e => { e.stopPropagation(); setOpen(v => !v); }}
-        className="flex items-center gap-2 px-4 py-2 rounded-lg border text-[14px] font-medium transition-all hover:border-mint-300 hover:text-mint-400"
-        style={{ borderColor: "var(--color-border-default)", color: "var(--color-text-default)" }}
-      >
-        더보기
-        <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
-          <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-        </svg>
-      </button>
-      {open && (
-        <div
-          className="absolute top-full left-0 mt-1 z-20"
-          onClick={e => e.stopPropagation()}
+    <div className="flex items-start gap-6 flex-wrap">
+      <div ref={wrapRef} className="relative">
+        <button
+          type="button"
+          aria-haspopup="menu"
+          aria-expanded={open}
+          onClick={() => setOpen((v) => !v)}
+          className="flex items-center gap-2 px-4 py-2.5 rounded-lg border text-[14px] font-medium transition-colors"
+          style={{
+            borderColor: open
+              ? "var(--color-brand-primary)"
+              : "var(--color-border-default)",
+            color: open
+              ? "var(--color-brand-primary)"
+              : "var(--color-text-default)",
+            background: "var(--color-bg-default)",
+          }}
         >
-          <MenuList onClose={() => setOpen(false)} />
-        </div>
+          더보기
+          <MoreVertical size={16} />
+        </button>
+
+        {open && (
+          <div className="absolute top-full left-0 mt-1 z-20">
+            <Menu
+              items={BASE_ITEMS}
+              onAction={(key) => setLast(key)}
+              onClose={close}
+            />
+          </div>
+        )}
+      </div>
+
+      {last && (
+        <p className="text-[13px] py-2.5 text-[var(--color-text-subtle)]">
+          마지막 액션:{" "}
+          <strong className="text-[var(--color-text-default)]">{last}</strong>
+        </p>
       )}
     </div>
   );
 }
 
+// ── Context menu demo ──────────────────────────────────────
 function ContextMenuDemo() {
-  const [anchor, setAnchor] = useState<{ x: number; y: number } | null>(null);
+  const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
+  const [last, setLast] = useState<string | null>(null);
+  const menuRef = useRef<HTMLUListElement>(null);
+  const close = useCallback(() => setPos(null), []);
 
+  // Close on click-outside the menu panel
   useEffect(() => {
-    if (!anchor) return;
-    const close = () => setAnchor(null);
-    window.addEventListener("click", close);
-    return () => window.removeEventListener("click", close);
-  }, [anchor]);
+    if (!pos) return;
+    const handler = (e: MouseEvent | TouchEvent) => {
+      if (menuRef.current?.contains(e.target as Node)) return;
+      close();
+    };
+    document.addEventListener("mousedown", handler);
+    document.addEventListener("touchstart", handler);
+    return () => {
+      document.removeEventListener("mousedown", handler);
+      document.removeEventListener("touchstart", handler);
+    };
+  }, [pos, close]);
 
   return (
-    <div
-      onContextMenu={e => {
-        e.preventDefault();
-        e.stopPropagation();
-        setAnchor({ x: e.clientX, y: e.clientY });
-      }}
-      className="rounded-xl border-2 border-dashed p-10 flex items-center justify-center cursor-context-menu select-none text-[14px]"
-      style={{ borderColor: "var(--color-border-default)", color: "var(--color-text-subtle)" }}
-    >
-      마우스 우클릭으로 Context Menu 열기
-      {anchor && (
+    <div>
+      <div
+        role="region"
+        aria-label="우클릭 데모 영역"
+        onContextMenu={(e) => {
+          e.preventDefault();
+          setPos({ x: e.clientX, y: e.clientY });
+        }}
+        className="rounded-xl border-2 border-dashed flex items-center justify-center select-none cursor-context-menu"
+        style={{
+          minHeight: 160,
+          borderColor: "var(--color-border-default)",
+          background: "var(--color-bg-subtle)",
+        }}
+      >
+        <p className="text-[14px] text-[var(--color-text-subtle)]">
+          마우스 우클릭으로 Context Menu 열기
+        </p>
+      </div>
+
+      {pos && (
         <div
           className="fixed z-50"
-          style={{ top: anchor.y, left: anchor.x }}
-          onClick={e => e.stopPropagation()}
+          style={{ top: pos.y, left: pos.x }}
         >
-          <MenuList onClose={() => setAnchor(null)} />
+          <Menu
+            ref={menuRef}
+            items={BASE_ITEMS}
+            onAction={(key) => setLast(key)}
+            onClose={close}
+          />
         </div>
+      )}
+
+      {last && (
+        <p className="text-[13px] mt-3 text-[var(--color-text-subtle)]">
+          마지막 액션:{" "}
+          <strong className="text-[var(--color-text-default)]">{last}</strong>
+        </p>
       )}
     </div>
   );
 }
 
+// ── Static preview ─────────────────────────────────────────
+function StaticPreview() {
+  return (
+    <div className="flex gap-8 flex-wrap items-start">
+      {/* Normal */}
+      <div>
+        <p className="text-[11px] font-bold uppercase tracking-widest text-[var(--color-text-subtle)] mb-3">
+          기본
+        </p>
+        <Menu items={BASE_ITEMS} />
+      </div>
+
+      {/* Icon-only items */}
+      <div>
+        <p className="text-[11px] font-bold uppercase tracking-widest text-[var(--color-text-subtle)] mb-3">
+          아이콘 없음
+        </p>
+        <Menu
+          items={[
+            { key: "new",    label: "새 파일" },
+            { key: "open",   label: "열기",   shortcut: "⌘O" },
+            { key: "save",   label: "저장",   shortcut: "⌘S" },
+            { key: "div-1",  divider: true },
+            { key: "close",  label: "닫기",   shortcut: "⌘W", disabled: true },
+            { key: "div-2",  divider: true },
+            { key: "quit",   label: "종료",   destructive: true },
+          ]}
+        />
+      </div>
+    </div>
+  );
+}
+
+// ── Page ────────────────────────────────────────────────────
 export default function MenuPage() {
   return (
     <div className="px-8 py-10 max-w-[960px]">
+      {/* Header */}
       <div className="mb-10 pb-8 border-b border-[var(--color-border-default)]">
         <div className="flex items-center gap-2 mb-3">
-          <span className="w-2 h-2 rounded-full bg-mint-300" />
-          <span className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest">Components</span>
+          <span className="w-2 h-2 rounded-full bg-[var(--color-brand-primary)]" />
+          <span className="text-[11px] font-bold text-[var(--color-brand-primary)] uppercase tracking-widest">
+            Components
+          </span>
         </div>
-        <h1 className="text-[40px] font-black tracking-tight mb-2" style={{ color: "var(--color-text-default)" }}>
+        <h1 className="text-[40px] font-black tracking-tight text-[var(--color-text-default)] mb-2">
           Menu
         </h1>
-        <p className="text-[16px] leading-relaxed max-w-[520px]" style={{ color: "var(--color-text-subtle)" }}>
+        <p className="text-[16px] text-[var(--color-text-subtle)] leading-relaxed max-w-[540px]">
           컨텍스트 액션 목록을 표시하는 오버레이 컴포넌트.
           <br />
-          <span className="text-mint-400 font-medium">shadow/02</span> ·{" "}
-          <span className="text-mint-400 font-medium">radius 8px</span> · 아이템 높이 48px.
+          <span className="text-[var(--color-brand-primary)] font-medium">Dropdown</span>{" "}
+          (클릭 트리거) ·{" "}
+          <span className="text-[var(--color-brand-primary)] font-medium">Context</span>{" "}
+          (우클릭) · click-outside 자동 닫힘 ·{" "}
+          <span className="text-[var(--color-brand-primary)] font-medium">shadow/02</span>
         </p>
       </div>
 
       {/* Dropdown */}
       <section className="mb-14">
         <div className="mb-5">
-          <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Dropdown Menu</p>
-          <h2 className="text-[20px] font-bold" style={{ color: "var(--color-text-default)" }}>Dropdown Menu 데모</h2>
-          <p className="text-[13px] mt-1" style={{ color: "var(--color-text-subtle)" }}>버튼 클릭 → 드롭다운 메뉴 표시</p>
+          <p className="text-[11px] font-bold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">
+            Dropdown Menu
+          </p>
+          <h2 className="text-[20px] font-bold text-[var(--color-text-default)]">
+            Dropdown Menu
+          </h2>
+          <p className="text-[13px] text-[var(--color-text-subtle)] mt-1">
+            버튼 클릭으로 열기. 외부 클릭·ESC·항목 선택 시 닫힘.{" "}
+            <code className="text-[11px] font-mono px-1 py-0.5 bg-[var(--color-bg-subtle)] rounded">
+              aria-haspopup="menu"
+            </code>{" "}
+            +{" "}
+            <code className="text-[11px] font-mono px-1 py-0.5 bg-[var(--color-bg-subtle)] rounded">
+              aria-expanded
+            </code>
+          </p>
         </div>
         <div
-          className="rounded-xl border border-[var(--color-border-default)] p-8 flex items-start"
+          className="rounded-xl border border-[var(--color-border-default)] p-8"
           style={{ background: "var(--color-bg-subtle)" }}
         >
           <DropdownDemo />
         </div>
       </section>
 
-      {/* Context Menu */}
+      {/* Context */}
       <section className="mb-14">
         <div className="mb-5">
-          <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Context Menu</p>
-          <h2 className="text-[20px] font-bold" style={{ color: "var(--color-text-default)" }}>Context Menu 데모</h2>
-          <p className="text-[13px] mt-1" style={{ color: "var(--color-text-subtle)" }}>영역 우클릭 → Context Menu 표시</p>
+          <p className="text-[11px] font-bold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">
+            Context Menu
+          </p>
+          <h2 className="text-[20px] font-bold text-[var(--color-text-default)]">
+            Context Menu
+          </h2>
+          <p className="text-[13px] text-[var(--color-text-subtle)] mt-1">
+            우클릭 좌표에 고정 위치로 메뉴 표시.
+            외부 클릭·ESC·항목 선택 시 닫힘.
+          </p>
         </div>
         <ContextMenuDemo />
       </section>
 
-      {/* Static Gallery */}
+      {/* Static preview */}
       <section className="mb-14">
         <div className="mb-5">
-          <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Static Preview</p>
-          <h2 className="text-[20px] font-bold" style={{ color: "var(--color-text-default)" }}>정적 미리보기</h2>
-          <p className="text-[13px] mt-1" style={{ color: "var(--color-text-subtle)" }}>항목 구성: 일반 · Disabled · 구분선 · Destructive</p>
+          <p className="text-[11px] font-bold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">
+            Static Preview
+          </p>
+          <h2 className="text-[20px] font-bold text-[var(--color-text-default)]">
+            정적 미리보기
+          </h2>
+          <p className="text-[13px] text-[var(--color-text-subtle)] mt-1">
+            일반 · Disabled · 구분선 · Destructive (하단 배치) 조합.
+          </p>
         </div>
         <div
-          className="rounded-xl border border-[var(--color-border-default)] p-6 flex"
+          className="rounded-xl border border-[var(--color-border-default)] p-8"
           style={{ background: "var(--color-bg-subtle)" }}
         >
-          <MenuList />
+          <StaticPreview />
         </div>
       </section>
 
-      {/* Spec */}
+      {/* Spec Table */}
       <section className="mb-14">
         <div className="mb-5">
-          <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Spec</p>
-          <h2 className="text-[20px] font-bold" style={{ color: "var(--color-text-default)" }}>스펙 테이블</h2>
+          <p className="text-[11px] font-bold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">
+            Spec
+          </p>
+          <h2 className="text-[20px] font-bold text-[var(--color-text-default)]">
+            스펙 테이블
+          </h2>
         </div>
         <div className="overflow-x-auto rounded-xl border border-[var(--color-border-default)]">
           <table className="w-full text-[13px]">
             <thead>
-              <tr className="border-b border-[var(--color-border-default)]" style={{ background: "var(--color-bg-subtle)" }}>
-                {["속성", "Value", "Token"].map(h => (
-                  <th key={h} className="text-left px-4 py-3 text-[11px] font-semibold uppercase tracking-widest" style={{ color: "var(--color-text-subtle)" }}>{h}</th>
+              <tr className="bg-[var(--color-bg-subtle)] border-b border-[var(--color-border-default)]">
+                {["속성", "State", "Value", "Token"].map((h) => (
+                  <th
+                    key={h}
+                    className="text-left px-4 py-3 text-[11px] font-bold text-[var(--color-text-subtle)] uppercase tracking-widest"
+                  >
+                    {h}
+                  </th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {[
-                { attr: "최소 너비",       value: "112px",           token: "—" },
-                { attr: "최대 너비",       value: "280px",           token: "—" },
-                { attr: "아이템 높이",     value: "48px",            token: "—" },
-                { attr: "좌우 패딩",       value: "16px",            token: "space/04" },
-                { attr: "Radius",          value: "8px",             token: "—" },
-                { attr: "라벨 폰트",       value: "16px Regular",    token: "type/body/md" },
-                { attr: "Shadow",          value: "0 2px 8px",       token: "elevation/surface/overlay → shadow/02" },
-                { attr: "Background",      value: "White / N600",    token: "color/bg/default" },
-                { attr: "Hover bg",        value: "N20 #F4F5F5",     token: "color/bg/subtle" },
-                { attr: "Pressed bg",      value: "M20 #F3FCFC",     token: "color/bg/brand" },
-                { attr: "Disabled 텍스트", value: "N100 #D8DCDE",    token: "color/text/disabled" },
-                { attr: "Destructive 텍스트", value: "#FF3257",      token: "color/status/error" },
-                { attr: "Divider",         value: "1px N100",        token: "color/border/default" },
+                { attr: "최소 너비",      state: "—", value: "112px",                  token: "—" },
+                { attr: "최대 너비",      state: "—", value: "280px",                  token: "—" },
+                { attr: "아이템 높이",    state: "—", value: "48px",                   token: "—" },
+                { attr: "좌우 패딩",      state: "—", value: "16px",                   token: "space/04" },
+                { attr: "Radius",         state: "—", value: "8px",                    token: "shape/sm" },
+                { attr: "라벨 폰트",      state: "—", value: "16px Regular",           token: "type/body/md" },
+                { attr: "Shadow",         state: "—", value: "0 2px 8px",              token: "elevation/surface/overlay → shadow/02" },
+                { attr: "Background",     state: "—", value: "White / N600",           token: "color/bg/default" },
+                { attr: "Item bg",        state: "Hover",    value: "N20 #F4F5F5",     token: "color/bg/subtle" },
+                { attr: "Item bg",        state: "Pressed",  value: "M20 #F3FCFC",     token: "color/bg/brand" },
+                { attr: "Item label",     state: "Default",  value: "N600 #29363D",    token: "color/text/default" },
+                { attr: "Item label",     state: "Disabled", value: "N100 #D8DCDE",    token: "color/text/disabled" },
+                { attr: "Item label",     state: "Destructive", value: "#FF3257",      token: "color/status/error" },
+                { attr: "Item icon",      state: "Default",  value: "N300 #889298",    token: "color/text/subtle" },
+                { attr: "Divider",        state: "—", value: "1px N100 #D8DCDE",       token: "color/border/default" },
               ].map((row, i) => (
-                <tr key={row.attr} className="border-b border-[var(--color-border-default)] last:border-0" style={{ background: i % 2 === 1 ? "var(--color-bg-subtle)" : undefined }}>
-                  <td className="px-4 py-3 font-medium" style={{ color: "var(--color-text-default)" }}>{row.attr}</td>
-                  <td className="px-4 py-3 font-mono text-[12px] text-mint-500">{row.value}</td>
+                <tr
+                  key={`${row.attr}-${row.state}`}
+                  className={`border-b border-[var(--color-border-default)] last:border-0 ${
+                    i % 2 === 1 ? "bg-[var(--color-bg-subtle)]" : ""
+                  }`}
+                >
+                  <td className="px-4 py-3 font-medium text-[var(--color-text-default)]">
+                    {row.attr}
+                  </td>
+                  <td className="px-4 py-3 text-[var(--color-text-subtle)]">{row.state}</td>
+                  <td className="px-4 py-3 font-mono text-[12px] text-[var(--color-brand-primary)]">
+                    {row.value}
+                  </td>
                   <td className="px-4 py-3">
-                    {row.token !== "—"
-                      ? <code className="text-[11px] font-mono" style={{ color: "var(--color-text-subtle)" }}>{row.token}</code>
-                      : <span style={{ color: "var(--color-border-default)" }}>—</span>}
+                    {row.token !== "—" ? (
+                      <code className="text-[11px] font-mono text-[var(--color-text-subtle)]">
+                        {row.token}
+                      </code>
+                    ) : (
+                      <span className="text-[var(--color-text-disabled)]">—</span>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -303,26 +360,64 @@ export default function MenuPage() {
       {/* Do / Don't */}
       <section className="mb-16">
         <div className="mb-5">
-          <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Guidelines</p>
-          <h2 className="text-[20px] font-bold" style={{ color: "var(--color-text-default)" }}>Do / Don't</h2>
+          <p className="text-[11px] font-bold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">
+            Guidelines
+          </p>
+          <h2 className="text-[20px] font-bold text-[var(--color-text-default)]">
+            Do / Don&apos;t
+          </h2>
         </div>
         <div className="grid sm:grid-cols-2 gap-4">
-          <div className="rounded-xl border-2 border-[var(--color-border-brand)] p-5" style={{ background: "var(--color-bg-brand)" }}>
-            <p className="text-[14px] font-bold text-[var(--color-brand-primary)] mb-3">✓ Do</p>
+          <div className="rounded-xl border-2 border-[var(--color-border-brand)] p-5 bg-[var(--color-bg-brand)]">
+            <p className="text-[14px] font-bold text-[var(--color-brand-primary)] mb-3">
+              ✓ Do
+            </p>
             <ul className="space-y-2">
-              {["Destructive 액션은 하단 + 빨간 텍스트", "항목 5개 이하 권장", "비활성 항목은 color/text/disabled 사용", "Pressed 시 color/bg/brand 표시"].map((t, i) => (
-                <li key={i} className="flex gap-2 text-[13px]" style={{ color: "var(--color-text-default)" }}>
-                  <span className="text-[var(--color-brand-primary)] font-bold shrink-0">✓</span>{t}
+              {[
+                "Destructive 항목은 하단에 배치 + 빨간 텍스트",
+                "항목 5개 이하 권장",
+                "트리거 요소 기준으로 정렬",
+                "외부 클릭·ESC로 반드시 닫기 가능",
+                "Disabled 항목은 color/text/disabled 사용",
+              ].map((t) => (
+                <li
+                  key={t}
+                  className="flex gap-2 text-[13px] text-[var(--color-text-default)]"
+                >
+                  <span className="text-[var(--color-brand-primary)] font-bold shrink-0">›</span>
+                  {t}
                 </li>
               ))}
             </ul>
           </div>
-          <div className="rounded-xl border-2 p-5" style={{ borderColor: "var(--color-status-error)", background: "var(--color-bg-error)" }}>
-            <p className="text-[14px] font-bold mb-3" style={{ color: "var(--color-status-error)" }}>✕ Don't</p>
+          <div
+            className="rounded-xl border-2 p-5 bg-[var(--color-bg-error)]"
+            style={{ borderColor: "var(--color-status-error)" }}
+          >
+            <p
+              className="text-[14px] font-bold mb-3"
+              style={{ color: "var(--color-status-error)" }}
+            >
+              ✕ Don&apos;t
+            </p>
             <ul className="space-y-2">
-              {["Destructive 항목을 상단 배치", "항목 7개 이상 나열", "아이템 높이 48px 미만 축소", "라벨에 긴 문장 사용"].map((t, i) => (
-                <li key={i} className="flex gap-2 text-[13px] text-red-700 dark:text-red-300">
-                  <span className="font-bold shrink-0" style={{ color: "var(--color-status-error)" }}>✕</span>{t}
+              {[
+                "Destructive 항목을 상단에 배치",
+                "항목 7개 이상 나열",
+                "화면 중앙에 Menu 띄우기",
+                "아이템 높이 48px 미만 축소",
+              ].map((t) => (
+                <li
+                  key={t}
+                  className="flex gap-2 text-[13px] text-[var(--color-text-default)]"
+                >
+                  <span
+                    className="font-bold shrink-0"
+                    style={{ color: "var(--color-status-error)" }}
+                  >
+                    ›
+                  </span>
+                  {t}
                 </li>
               ))}
             </ul>
