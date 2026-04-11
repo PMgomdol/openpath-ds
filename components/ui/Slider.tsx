@@ -206,7 +206,7 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(
                       left: `calc(${mp}% + ${10 - mp * 0.2}px)`,
                       background:
                         m.value <= value
-                          ? "rgba(255,255,255,0.75)"
+                          ? "var(--color-track-tick-active)"
                           : "var(--color-text-subtle)",
                     }}
                   />

@@ -47,6 +47,22 @@
     --color-status-success: #28D7D2;
     --color-status-warning: #EE706B;
 
+    /* ── Color — Category accents (UI chrome, non-brand) ── */
+    --color-category-foundation:          #7B61FF;
+    --color-category-foundation-pressed:  #5B41DF;
+    --color-category-foundation-bg:       #F5F2FF;
+    --color-category-foundation-border:   #D6CCFF;
+    --color-category-autonomy:            #FF6B6B;
+    --color-category-autonomy-pressed:    #EE4444;
+    --color-category-autonomy-bg:         #FFF2F2;
+    --color-category-autonomy-border:     #FFD0D0;
+
+    /* ── Overlay / Scrim ── */
+    --color-scrim: rgba(0,0,0,0.40);
+
+    /* ── Slider track ── */
+    --color-track-tick-active: rgba(255,255,255,0.75);
+
     /* ── Spacing ── */
     --space-01: 4px;
     --space-02: 8px;
@@ -201,6 +217,16 @@
 
     /* ── Color — Brand ── */
     --color-brand-subtle:   rgba(40,215,210,0.18);
+
+    /* ── Color — Category accents (dark overrides) ── */
+    --color-category-foundation:         #B39DFF;
+    --color-category-foundation-pressed: #9B7DFF;
+    --color-category-foundation-bg:      rgba(123,97,255,0.10);
+    --color-category-foundation-border:  rgba(123,97,255,0.30);
+    --color-category-autonomy:           #FF8F8F;
+    --color-category-autonomy-pressed:   #FF6B6B;
+    --color-category-autonomy-bg:        rgba(255,107,107,0.10);
+    --color-category-autonomy-border:    rgba(255,107,107,0.30);
 
     /* ── Shadow (다크모드 — 전부 none) ── */
     --shadow-01: none;

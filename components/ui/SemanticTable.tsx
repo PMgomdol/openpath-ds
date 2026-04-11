@@ -25,12 +25,12 @@ const GROUP_LABEL: Record<string, string> = {
 };
 
 const GROUP_COLOR: Record<string, string> = {
-  brand:       "bg-mint-20 text-mint-600 dark:bg-mint-600/20 dark:text-mint-300",
-  text:        "bg-neutral-20 text-neutral-500 dark:bg-neutral-500/20 dark:text-neutral-300",
-  bg:          "bg-[#F5F2FF] text-[#7B61FF] dark:bg-[#7B61FF]/10 dark:text-[#B39DFF]",
-  border:      "bg-[#FFF5E6] text-[#D97706] dark:bg-[#D97706]/10 dark:text-[#FBB040]",
-  status:      "bg-[#FFF2F2] text-[#FF3257] dark:bg-[#FF3257]/10 dark:text-[#FF6B8A]",
-  interactive: "bg-mint-20 text-mint-500 dark:bg-mint-600/20 dark:text-mint-300",
+  brand:       "bg-[var(--color-bg-brand)] text-[var(--color-brand-primary)]",
+  text:        "bg-[var(--color-bg-subtle)] text-[var(--color-text-subtle)]",
+  bg:          "bg-[var(--color-category-foundation-bg)] text-[var(--color-category-foundation)]",
+  border:      "bg-[var(--color-bg-warning)] text-[var(--color-status-warning)]",
+  status:      "bg-[var(--color-bg-error)] text-[var(--color-status-error)]",
+  interactive: "bg-[var(--color-bg-brand)] text-[var(--color-brand-primary)]",
 };
 
 function CopyHex({ hex }: { hex: string }) {
@@ -54,8 +54,8 @@ function CopyHex({ hex }: { hex: string }) {
         "group/copy flex items-center gap-1 font-mono text-[12px] rounded px-1 py-0.5 -ml-1",
         "transition-all duration-150",
         copied
-          ? "text-mint-500 bg-mint-20"
-          : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-subtle)]"
+          ? "text-[var(--color-brand-primary)] bg-[var(--color-bg-brand)]"
+          : "text-[var(--color-text-subtle)] hover:text-[var(--color-text-default)] hover:bg-[var(--color-bg-subtle)]"
       )}
     >
       {copied ? (

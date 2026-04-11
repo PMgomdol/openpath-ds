@@ -21,9 +21,9 @@ const principles = [
     ko: "확장성",
     description:
       "토큰 기반 아키텍처로 설계됩니다. 브랜드가 성장해도 일관성을 잃지 않고, 새로운 제품에 즉시 적용할 수 있습니다.",
-    accent: "from-[#7B61FF] to-[#5B41DF]",
-    bg: "bg-[#F5F2FF] dark:bg-[#7B61FF]/10",
-    border: "border-[#D6CCFF] dark:border-[#7B61FF]/30",
+    accent: "from-[var(--color-category-foundation)] to-[var(--color-category-foundation-pressed)]",
+    bg: "bg-[var(--color-category-foundation-bg)]",
+    border: "border-[var(--color-category-foundation-border)]",
   },
   {
     icon: <User size={22} strokeWidth={2} />,
@@ -31,9 +31,9 @@ const principles = [
     ko: "자립성",
     description:
       "디자이너와 개발자 모두 DS를 독립적으로 운용할 수 있도록 문서화합니다. 의존 없이 스스로 결정하는 팀을 만듭니다.",
-    accent: "from-[#FF6B6B] to-[#EE4444]",
-    bg: "bg-[#FFF2F2] dark:bg-[#FF6B6B]/10",
-    border: "border-[#FFD0D0] dark:border-[#FF6B6B]/30",
+    accent: "from-[var(--color-category-autonomy)] to-[var(--color-category-autonomy-pressed)]",
+    bg: "bg-[var(--color-category-autonomy-bg)]",
+    border: "border-[var(--color-category-autonomy-border)]",
   },
 ];
 
@@ -134,7 +134,7 @@ export default function HomePage() {
                   inline-flex items-center justify-center
                   w-10 h-10 rounded-lg mb-4
                   bg-gradient-to-br ${p.accent}
-                  text-white
+                  text-[var(--color-text-on-brand)]
                 `}
               >
                 {p.icon}
@@ -177,9 +177,9 @@ export default function HomePage() {
             {
               category: "Foundation",
               desc: "환경·원칙·기반",
-              color: "text-purple-600 dark:text-purple-400",
-              bg: "bg-[#F5F2FF] dark:bg-[#7B61FF]/10",
-              border: "border-[#D6CCFF] dark:border-[#7B61FF]/30",
+              color: "text-[var(--color-category-foundation)]",
+              bg: "bg-[var(--color-category-foundation-bg)]",
+              border: "border-[var(--color-category-foundation-border)]",
               items: ["Environment", "Principles", "Naming", "Design Token", "Accessibility", "Motion"],
             },
             {
@@ -317,7 +317,7 @@ function ThemeDemo() {
                 cursor: "pointer",
                 transition: "all 0.2s",
                 background: isActive ? color : "transparent",
-                color: isActive ? "#FFFFFF" : "var(--color-text-subtle)",
+                color: isActive ? "var(--color-text-on-brand)" : "var(--color-text-subtle)",
                 border: `2px solid ${isActive ? color : "var(--color-border-default)"}`,
               }}
             >
@@ -340,7 +340,7 @@ function ThemeDemo() {
           >
             <div className="flex items-center gap-3 mb-4">
               <div
-                className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold"
+                className="w-10 h-10 rounded-full flex items-center justify-center text-[var(--color-text-on-brand)] font-bold"
                 style={{ background: vars["--demo-primary"] }}
               >
                 O
@@ -359,7 +359,7 @@ function ThemeDemo() {
             </p>
             <div className="flex gap-2 flex-wrap">
               <button
-                className="px-4 py-2 rounded-lg text-[13px] font-semibold text-white transition-all"
+                className="px-4 py-2 rounded-lg text-[13px] font-semibold text-[var(--color-text-on-brand)] transition-all"
                 style={{ background: vars["--demo-primary"] }}
                 onMouseEnter={e => { (e.target as HTMLButtonElement).style.background = vars["--demo-primary-hover"]; }}
                 onMouseLeave={e => { (e.target as HTMLButtonElement).style.background = vars["--demo-primary"]; }}

@@ -20,9 +20,8 @@ export default function ThemeToggle() {
       className="
         flex items-center justify-center
         w-9 h-9 rounded-md
-        text-[var(--color-text-secondary)]
-        hover:text-mint-300 hover:bg-mint-20
-        dark:hover:bg-mint-600/20
+        text-[var(--color-text-subtle)]
+        hover:text-[var(--color-interactive-hover)] hover:bg-[var(--color-bg-brand)]
         transition-all duration-150
       "
     >

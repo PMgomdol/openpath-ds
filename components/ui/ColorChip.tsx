@@ -78,8 +78,8 @@ export default function ColorChip({
             "rounded px-1.5 py-0.5 -ml-1.5",
             "transition-all duration-150",
             copied
-              ? "text-mint-500 bg-mint-20"
-              : "text-[var(--color-text-primary)] hover:text-mint-400 hover:bg-[var(--color-bg-subtle)]"
+              ? "text-[var(--color-brand-primary)] bg-[var(--color-bg-brand)]"
+              : "text-[var(--color-text-default)] hover:text-[var(--color-interactive-hover)] hover:bg-[var(--color-bg-subtle)]"
           )}
         >
           {copied ? (

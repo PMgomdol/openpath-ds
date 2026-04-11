@@ -87,7 +87,7 @@ const navigation: NavItem[] = [
 // ── Category header colours ───────────────────────────────────
 const GROUP_ACCENT: Record<string, string> = {
   Style:      "text-[var(--color-brand-primary)]",
-  Foundation: "text-purple-500 dark:text-purple-400",
+  Foundation: "text-[var(--color-category-foundation)]",
   Components: "text-[var(--color-text-subtle)]",
 };
 
@@ -269,7 +269,7 @@ function MobileSidebar() {
           position: "fixed",
           inset: 0,
           zIndex: 55,
-          background: "rgba(0,0,0,0.4)",
+          background: "var(--color-scrim)",
           opacity: open ? 1 : 0,
           pointerEvents: open ? "auto" : "none",
           transition: `opacity 300ms var(--motion-standard)`,

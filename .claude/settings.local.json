@@ -21,7 +21,8 @@
       "Bash(echo \"exit:$?\")",
       "Bash(echo \"EXIT:$?\")",
       "Bash(ls /Users/duotne/Desktop/AI/op_ds/Done-List*)",
-      "Bash(echo \"EXIT: $?\")"
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(echo \"Exit: $?\")"
     ]
   }
 }
