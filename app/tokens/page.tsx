@@ -50,17 +50,13 @@ const SPACING_TOKENS: TokenRow[] = [
   { variable: "--space-09", description: "대형 섹션 패딩",          lightValue: "48px", preview: "spacing" },
 ];
 
-const RADIUS_TOKENS: TokenRow[] = [
-  { variable: "--radius-tooltip",   description: "Tooltip",            lightValue: "4px",    preview: "radius" },
-  { variable: "--radius-button-sm", description: "Small Button",       lightValue: "4px",    preview: "radius" },
-  { variable: "--radius-button-md", description: "Medium/Large Button",lightValue: "8px",    preview: "radius" },
-  { variable: "--radius-input",     description: "Text Field",         lightValue: "8px",    preview: "radius" },
-  { variable: "--radius-snackbar",  description: "Snackbar, Toast",    lightValue: "8px",    preview: "radius" },
-  { variable: "--radius-card-sm",   description: "소형 Card",          lightValue: "12px",   preview: "radius" },
-  { variable: "--radius-card-md",   description: "기본 Card",          lightValue: "16px",   preview: "radius" },
-  { variable: "--radius-dialog",    description: "Dialog, Modal",      lightValue: "16px",   preview: "radius" },
-  { variable: "--radius-chip",      description: "Chip, Badge, Tag",   lightValue: "9999px", preview: "radius" },
-  { variable: "--radius-fab",       description: "FAB",                lightValue: "9999px", preview: "radius" },
+const SHAPE_TOKENS: TokenRow[] = [
+  { variable: "--shape-xs",   description: "Extra Small — TextField, Chip notch, Tooltip", lightValue: "4px",    preview: "radius" },
+  { variable: "--shape-sm",   description: "Small — Snackbar, Menu, Banner",               lightValue: "8px",    preview: "radius" },
+  { variable: "--shape-md",   description: "Medium — Card (소형)",                         lightValue: "12px",   preview: "radius" },
+  { variable: "--shape-lg",   description: "Large — Card, FAB, Bottom Sheet",              lightValue: "16px",   preview: "radius" },
+  { variable: "--shape-xl",   description: "Extra Large — Dialog, Large FAB",              lightValue: "28px",   preview: "radius" },
+  { variable: "--shape-full", description: "Full — Button (Pill), Chip, Badge, Switch",   lightValue: "9999px", preview: "radius" },
 ];
 
 const SHADOW_TOKENS: TokenRow[] = [
@@ -105,7 +101,7 @@ function SpacingPreview({ value }: { value: string }) {
   return (
     <div className="flex items-center gap-2">
       <div
-        className="h-3 bg-mint-300 rounded-sm shrink-0 transition-all"
+        className="h-3 bg-[var(--color-brand-primary)] rounded-sm shrink-0 transition-all"
         style={{ width }}
       />
       <span className="text-[11px] font-mono text-[var(--color-text-subtle)]">{value}</span>
@@ -117,7 +113,7 @@ function RadiusPreview({ value }: { value: string }) {
   const r = parseInt(value) > 16 ? "9999px" : value;
   return (
     <div
-      className="w-8 h-8 border-2 border-mint-300 bg-mint-20 dark:bg-mint-600/20 shrink-0"
+      className="w-8 h-8 border-2 border-[var(--color-border-brand)] bg-[var(--color-bg-brand)] shrink-0"
       style={{ borderRadius: r }}
     />
   );
@@ -161,10 +157,10 @@ function TokenRowItem({ token, isDark }: { token: TokenRow; isDark: boolean }) {
           className="flex items-center gap-2 text-left"
           title="클릭하여 복사"
         >
-          <code className="text-[12px] font-mono text-mint-500 dark:text-mint-300 group-hover:text-mint-400 transition-colors">
+          <code className="text-[12px] font-mono text-[var(--color-interactive-pressed)] group-hover:text-[var(--color-interactive-hover)] transition-colors">
             {token.variable}
           </code>
-          <span className={`text-[10px] transition-all ${copied ? "text-mint-400 opacity-100" : "text-[var(--color-text-subtle)] opacity-0 group-hover:opacity-100"}`}>
+          <span className={`text-[10px] transition-all ${copied ? "text-[var(--color-brand-primary)] opacity-100" : "text-[var(--color-text-subtle)] opacity-0 group-hover:opacity-100"}`}>
             {copied ? "복사됨 ✓" : "복사"}
           </span>
         </button>
@@ -212,7 +208,7 @@ function TokenSection({
   return (
     <section className="mb-12">
       <div className="mb-4">
-        <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Token</p>
+        <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">Token</p>
         <h2 className="text-[20px] font-bold text-[var(--color-text-default)]">{label}</h2>
         <p className="text-[13px] text-[var(--color-text-subtle)] mt-1">
           {tokens.length}개 토큰 — 클릭하여 변수명 복사
@@ -262,7 +258,7 @@ export default function TokensPage() {
     { key: "all",     label: "전체" },
     { key: "color",   label: "Color" },
     { key: "spacing", label: "Spacing" },
-    { key: "radius",  label: "Radius" },
+    { key: "radius",  label: "Shape" },
     { key: "shadow",  label: "Shadow" },
   ] as const;
 
@@ -271,8 +267,8 @@ export default function TokensPage() {
       {/* 헤더 */}
       <div className="mb-10 pb-8 border-b border-[var(--color-border-default)]">
         <div className="flex items-center gap-2 mb-3">
-          <span className="w-2 h-2 rounded-full bg-mint-300" />
-          <span className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest">Design Tokens</span>
+          <span className="w-2 h-2 rounded-full bg-[var(--color-brand-primary)]" />
+          <span className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest">Design Tokens</span>
         </div>
         <h1 className="text-[40px] font-black tracking-tight text-[var(--color-text-default)] mb-2">
           Tokens
@@ -280,7 +276,7 @@ export default function TokensPage() {
         <p className="text-[16px] text-[var(--color-text-subtle)] leading-relaxed max-w-[560px]">
           모든 디자인 결정의 기반이 되는 토큰 시스템.
           <br />
-          <span className="text-mint-400 font-medium">CSS 변수</span>로 등록되어 Light/Dark 모드를 자동 지원합니다.
+          <span className="text-[var(--color-brand-primary)] font-medium">CSS 변수</span>로 등록되어 Light/Dark 모드를 자동 지원합니다.
         </p>
 
         {/* 요약 뱃지 */}
@@ -288,11 +284,11 @@ export default function TokensPage() {
           {[
             { label: "Color",   count: COLOR_TOKENS.length },
             { label: "Spacing", count: SPACING_TOKENS.length },
-            { label: "Radius",  count: RADIUS_TOKENS.length },
+            { label: "Radius",  count: SHAPE_TOKENS.length },
             { label: "Shadow",  count: SHADOW_TOKENS.length },
           ].map((v) => (
             <div key={v.label} className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--color-bg-subtle)] border border-[var(--color-border-default)]">
-              <span className="w-1.5 h-1.5 rounded-full bg-mint-300 shrink-0" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-brand-primary)] shrink-0" />
               <span className="text-[12px] font-semibold text-[var(--color-text-default)]">{v.label}</span>
               <span className="text-[11px] text-[var(--color-text-subtle)]">{v.count}개</span>
             </div>
@@ -302,7 +298,7 @@ export default function TokensPage() {
         {/* Dark mode 안내 */}
         <div className={`mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border text-[12px] font-medium transition-all ${
           isDark
-            ? "bg-mint-600/20 border-mint-600/30 text-mint-300"
+            ? "bg-[var(--color-bg-brand)] border-[var(--color-border-brand)] text-[var(--color-brand-primary)]"
             : "bg-[var(--color-bg-subtle)] border-[var(--color-border-default)] text-[var(--color-text-subtle)]"
         }`}>
           <span>{isDark ? "🌙" : "☀️"}</span>
@@ -318,8 +314,8 @@ export default function TokensPage() {
             onClick={() => setCategory(key)}
             className={`px-4 py-1.5 rounded-md text-[13px] font-medium border transition-all ${
               category === key
-                ? "bg-mint-300 text-white border-mint-300"
-                : "border-[var(--color-border-default)] text-[var(--color-text-subtle)] hover:border-mint-300 hover:text-mint-400"
+                ? "bg-[var(--color-brand-primary)] text-[var(--color-text-on-brand)] border-[var(--color-border-brand)]"
+                : "border-[var(--color-border-default)] text-[var(--color-text-subtle)] hover:border-[var(--color-border-brand)] hover:text-[var(--color-interactive-hover)]"
             }`}
           >
             {label}
@@ -335,7 +331,7 @@ export default function TokensPage() {
         <TokenSection label="Spacing" tokens={SPACING_TOKENS} isDark={isDark} />
       )}
       {(category === "all" || category === "radius") && (
-        <TokenSection label="Radius" tokens={RADIUS_TOKENS} isDark={isDark} />
+        <TokenSection label="Shape" tokens={SHAPE_TOKENS} isDark={isDark} />
       )}
       {(category === "all" || category === "shadow") && (
         <TokenSection label="Shadow" tokens={SHADOW_TOKENS} isDark={isDark} />

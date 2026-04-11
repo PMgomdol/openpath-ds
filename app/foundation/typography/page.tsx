@@ -100,7 +100,7 @@ function SectionHeader({
 }) {
   return (
     <div className="mb-4">
-      <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">
+      <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">
         {eyebrow}
       </p>
       <h2 className="text-[20px] font-bold text-[var(--color-text-primary)]">{title}</h2>
@@ -141,7 +141,7 @@ function TypeRow({
         <p className="text-[13px] font-semibold text-[var(--color-text-primary)] leading-snug mb-1">
           {style.label}
         </p>
-        <code className="text-[10px] font-mono text-mint-500 leading-relaxed break-all">
+        <code className="text-[10px] font-mono text-[var(--color-interactive-pressed)] leading-relaxed break-all">
           {style.token}
         </code>
       </div>
@@ -216,7 +216,7 @@ function LangCompareCard({
       {/* 카드 헤더 */}
       <div className="px-5 py-4 border-b border-[var(--color-border)] flex items-center justify-between">
         <div>
-          <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-0.5">
+          <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-0.5">
             {lang}
           </p>
           <p className="text-[16px] font-bold text-[var(--color-text-primary)]">{fontName}</p>
@@ -227,7 +227,7 @@ function LangCompareCard({
               Licensed
             </span>
           )}
-          <code className="text-[11px] font-mono text-mint-500">{token}</code>
+          <code className="text-[11px] font-mono text-[var(--color-interactive-pressed)]">{token}</code>
         </div>
       </div>
 
@@ -239,7 +239,7 @@ function LangCompareCard({
             EN · line-height {lhEN}
           </p>
           <div
-            className="text-[18px] text-[var(--color-text-primary)] border-l-2 border-mint-200 pl-3"
+            className="text-[18px] text-[var(--color-text-primary)] border-l-2 border-[var(--color-border-default)] pl-3"
             style={{
               fontFamily: lang === "EN" ? "'Mark Pro', system-ui, sans-serif" : "'Noto Sans KR', sans-serif",
               lineHeight: lhEN,
@@ -256,12 +256,12 @@ function LangCompareCard({
             <p className="text-[10px] font-semibold text-[var(--color-text-secondary)] uppercase tracking-widest">
               KO · line-height {lhKO}
             </p>
-            <span className="text-[10px] font-semibold text-mint-500 bg-mint-20 px-1.5 py-px rounded-full">
+            <span className="text-[10px] font-semibold text-[var(--color-interactive-pressed)] bg-[var(--color-bg-brand)] px-1.5 py-px rounded-full">
               +0.1
             </span>
           </div>
           <div
-            className="text-[18px] text-[var(--color-text-primary)] border-l-2 border-mint-300 pl-3"
+            className="text-[18px] text-[var(--color-text-primary)] border-l-2 border-[var(--color-border-brand)] pl-3"
             style={{
               fontFamily: "'Noto Sans KR', sans-serif",
               lineHeight: lhKO,
@@ -299,7 +299,7 @@ function FontCard({
       <div className="px-6 pt-6 pb-4 border-b border-[var(--color-border)]">
         <div className="flex items-start justify-between gap-4 mb-3">
           <div>
-            <code className="text-[11px] font-mono text-mint-500 mb-1 block">{token}</code>
+            <code className="text-[11px] font-mono text-[var(--color-interactive-pressed)] mb-1 block">{token}</code>
             <p className="text-[22px] font-bold text-[var(--color-text-primary)]">{fontName}</p>
           </div>
           <p className="text-[12px] text-[var(--color-text-secondary)] text-right leading-relaxed max-w-[140px]">
@@ -354,8 +354,8 @@ export default function TypographyPage() {
       {/* 페이지 헤더 */}
       <div className="mb-10 pb-8 border-b border-[var(--color-border)]">
         <div className="flex items-center gap-2 mb-3">
-          <span className="w-2 h-2 rounded-full bg-mint-300" />
-          <span className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest">
+          <span className="w-2 h-2 rounded-full bg-[var(--color-brand-primary)]" />
+          <span className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest">
             Foundation
           </span>
         </div>
@@ -365,7 +365,7 @@ export default function TypographyPage() {
         <p className="text-[16px] text-[var(--color-text-secondary)] leading-relaxed max-w-[540px]">
           Mark Pro(EN) + Noto Sans KR(KO) 기반 타이포 스케일.
           <br />
-          <span className="text-mint-400 font-medium">
+          <span className="text-[var(--color-brand-primary)] font-medium">
             Headline → Title → Body → Label → Caption
           </span>{" "}
           5단계 위계 구조.
@@ -434,7 +434,7 @@ export default function TypographyPage() {
 
           <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-base)] overflow-hidden">
             <div className="px-5 py-4 border-b border-[var(--color-border)]">
-              <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-0.5">
+              <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-0.5">
                 Rule
               </p>
               <p className="text-[16px] font-bold text-[var(--color-text-primary)]">
@@ -462,7 +462,7 @@ export default function TypographyPage() {
                     <span className="text-[12px] text-[var(--color-text-secondary)]">→</span>
                     <div className="flex items-center gap-1">
                       <span className="text-[10px] text-[var(--color-text-secondary)]">KO</span>
-                      <code className="text-[12px] font-mono font-medium text-mint-500 bg-mint-20 border border-mint-100 px-2 py-px rounded-sm">
+                      <code className="text-[12px] font-mono font-medium text-[var(--color-interactive-pressed)] bg-[var(--color-bg-brand)] border border-[var(--color-border-default)] px-2 py-px rounded-sm">
                         {row.ko}
                       </code>
                     </div>

@@ -117,7 +117,7 @@ function SectionHeader({
 }) {
   return (
     <div className="mb-6">
-      <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">
+      <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">
         {eyebrow}
       </p>
       <h2 className="text-[20px] font-bold text-[var(--color-text-primary)]">{title}</h2>
@@ -172,7 +172,7 @@ function ElevationCard({ ev }: { ev: ElevationLevel }) {
       {/* 메타 정보 */}
       <div className="space-y-2">
         {/* 토큰명 */}
-        <code className="text-[11px] font-mono text-mint-500 block leading-snug">
+        <code className="text-[11px] font-mono text-[var(--color-interactive-pressed)] block leading-snug">
           {ev.token}
         </code>
         {ev.shadowToken && (
@@ -267,7 +267,7 @@ function DarkModeCompare() {
       <div className="rounded-2xl border border-[var(--color-border)] overflow-hidden">
         <div className="px-4 py-3 border-b border-[var(--color-border)] flex items-center justify-between">
           <p className="text-[12px] font-bold text-[var(--color-text-primary)]">Dark Mode</p>
-          <span className="text-[10px] font-semibold text-mint-500 bg-mint-20 dark:bg-mint-600/20 px-2 py-0.5 rounded-full">
+          <span className="text-[10px] font-semibold text-[var(--color-interactive-pressed)] bg-[var(--color-bg-brand)] px-2 py-0.5 rounded-full">
             배경색으로 위계
           </span>
         </div>
@@ -318,7 +318,7 @@ function ShadowColorTable({ rows }: { rows: ShadowColorRow[] }) {
           }`}
         >
           {/* 토큰 */}
-          <code className="text-[12px] font-mono text-mint-500">{row.token}</code>
+          <code className="text-[12px] font-mono text-[var(--color-interactive-pressed)]">{row.token}</code>
 
           {/* Light */}
           <div className="flex items-center gap-2">
@@ -367,8 +367,8 @@ export default function ElevationPage() {
       {/* 페이지 헤더 */}
       <div className="mb-10 pb-8 border-b border-[var(--color-border)]">
         <div className="flex items-center gap-2 mb-3">
-          <span className="w-2 h-2 rounded-full bg-mint-300" />
-          <span className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest">
+          <span className="w-2 h-2 rounded-full bg-[var(--color-brand-primary)]" />
+          <span className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest">
             Foundation
           </span>
         </div>
@@ -378,7 +378,7 @@ export default function ElevationPage() {
         <p className="text-[16px] text-[var(--color-text-secondary)] leading-relaxed max-w-[540px]">
           레이어 위계를 그림자로 표현. 다크모드에서는 shadow 대신 배경색 차이로 위계를 표현.
           <br />
-          <span className="text-mint-400 font-medium">Level 0 (Default) → Level 4 (Modal)</span> 5단계.
+          <span className="text-[var(--color-brand-primary)] font-medium">Level 0 (Default) → Level 4 (Modal)</span> 5단계.
         </p>
       </div>
 
@@ -507,7 +507,7 @@ export default function ElevationPage() {
                 key={row.token}
                 className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-base)] px-3 py-3"
               >
-                <code className="text-[11px] font-mono text-mint-500 block mb-1">{row.token}</code>
+                <code className="text-[11px] font-mono text-[var(--color-interactive-pressed)] block mb-1">{row.token}</code>
                 <code className="text-[10px] font-mono text-[var(--color-text-secondary)] block mb-0.5">
                   {row.css} {"<"}color{">"}
                 </code>

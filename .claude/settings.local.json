@@ -15,7 +15,13 @@
       "Bash(npm run:*)",
       "Bash(grep:*)",
       "Bash(sed -n '54,60p' /Users/duotne/Desktop/AI/op_ds/app/components/snackbar/page.tsx)",
-      "Bash(sed -n '168,172p' /Users/duotne/Desktop/AI/op_ds/app/components/snackbar/page.tsx)"
+      "Bash(sed -n '168,172p' /Users/duotne/Desktop/AI/op_ds/app/components/snackbar/page.tsx)",
+      "Bash(npx tsc:*)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(echo \"exit:$?\")",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(ls /Users/duotne/Desktop/AI/op_ds/Done-List*)",
+      "Bash(echo \"EXIT: $?\")"
     ]
   }
 }

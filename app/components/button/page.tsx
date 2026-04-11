@@ -105,7 +105,7 @@ function LiveButton({
     inline-flex items-center justify-center gap-2
     font-medium tracking-[0.04em]
     transition-all duration-150 select-none shrink-0
-    focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mint-300
+    focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-border-brand)]
     ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}
   `;
 
@@ -118,7 +118,7 @@ function LiveButton({
           ${sc.base}
           ${isDisabled
             ? "bg-neutral-100 text-neutral-300"
-            : "bg-mint-300 text-white hover:bg-mint-400 active:bg-mint-500"}
+            : "bg-[var(--color-brand-primary)] text-[var(--color-text-on-brand)] hover:bg-[var(--color-interactive-hover)] active:bg-[var(--color-interactive-pressed)]"}
         `}
       >
         {isLoading && <Spinner color={isDisabled ? "#889298" : "#fff"} />}
@@ -137,7 +137,7 @@ function LiveButton({
           border
           ${isDisabled
             ? "border-neutral-100 text-neutral-300"
-            : "border-mint-300 text-mint-300 hover:bg-mint-20 dark:hover:bg-mint-600/10 active:bg-mint-50"}
+            : "border-[var(--color-border-brand)] text-[var(--color-brand-primary)] hover:bg-[var(--color-bg-brand)] active:bg-[var(--color-bg-brand)]"}
         `}
       >
         {isLoading && <Spinner color={isDisabled ? "#D8DCDE" : "#28D7D2"} />}
@@ -156,7 +156,7 @@ function LiveButton({
           bg-transparent
           ${isDisabled
             ? "text-neutral-300"
-            : "text-mint-300 hover:bg-mint-20 dark:hover:bg-mint-600/10 active:bg-mint-50"}
+            : "text-[var(--color-brand-primary)] hover:bg-[var(--color-bg-brand)] active:bg-[var(--color-bg-brand)]"}
         `}
       >
         {isLoading && <Spinner color={isDisabled ? "#D8DCDE" : "#28D7D2"} />}
@@ -174,7 +174,7 @@ function LiveButton({
         ${sc.icon}
         ${isDisabled
           ? "bg-neutral-100 text-neutral-300"
-          : "bg-mint-300 text-white hover:bg-mint-400 active:bg-mint-500"}
+          : "bg-[var(--color-brand-primary)] text-[var(--color-text-on-brand)] hover:bg-[var(--color-interactive-hover)] active:bg-[var(--color-interactive-pressed)]"}
       `}
     >
       {isLoading
@@ -205,12 +205,12 @@ function TokenBadge({ token, value }: { token: string; value: string }) {
         px-3 py-1.5 rounded-md
         bg-[var(--color-bg-subtle)]
         border border-[var(--color-border)]
-        hover:border-mint-300
+        hover:border-[var(--color-border-brand)]
         transition-all duration-150
         text-left w-full
       "
     >
-      <code className="text-[11px] font-mono text-mint-500 dark:text-mint-300 flex-1 truncate">
+      <code className="text-[11px] font-mono text-[var(--color-interactive-pressed)] flex-1 truncate">
         {token}
       </code>
       <span className="text-[11px] text-[var(--color-text-secondary)] shrink-0">{value}</span>
@@ -258,7 +258,7 @@ function InteractiveDemo() {
   return (
     <section className="mb-16">
       <div className="mb-5">
-        <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Interactive Demo</p>
+        <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">Interactive Demo</p>
         <h2 className="text-[20px] font-bold text-[var(--color-text-primary)]">라이브 미리보기</h2>
       </div>
 
@@ -291,8 +291,8 @@ function InteractiveDemo() {
                       px-3 py-1.5 rounded-md text-[13px] font-medium border
                       transition-all duration-100
                       ${type === t
-                        ? "bg-mint-300 text-white border-mint-300"
-                        : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-mint-300 hover:text-mint-400"
+                        ? "bg-[var(--color-brand-primary)] text-[var(--color-text-on-brand)] border-[var(--color-border-brand)]"
+                        : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-brand)] hover:text-[var(--color-interactive-hover)]"
                       }
                     `}
                   >
@@ -316,8 +316,8 @@ function InteractiveDemo() {
                       px-4 py-1.5 rounded-md text-[13px] font-medium border
                       transition-all duration-100
                       ${size === s
-                        ? "bg-mint-300 text-white border-mint-300"
-                        : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-mint-300 hover:text-mint-400"
+                        ? "bg-[var(--color-brand-primary)] text-[var(--color-text-on-brand)] border-[var(--color-border-brand)]"
+                        : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-brand)] hover:text-[var(--color-interactive-hover)]"
                       }
                     `}
                   >
@@ -344,8 +344,8 @@ function InteractiveDemo() {
                       px-3 py-1.5 rounded-md text-[13px] font-medium border
                       transition-all duration-100
                       ${state === st
-                        ? "bg-mint-300 text-white border-mint-300"
-                        : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-mint-300 hover:text-mint-400"
+                        ? "bg-[var(--color-brand-primary)] text-[var(--color-text-on-brand)] border-[var(--color-border-brand)]"
+                        : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-brand)] hover:text-[var(--color-interactive-hover)]"
                       }
                     `}
                   >
@@ -359,7 +359,7 @@ function InteractiveDemo() {
           {/* 토큰 패널 */}
           <div className="p-6">
             <p className="text-[11px] font-semibold text-[var(--color-text-secondary)] uppercase tracking-widest mb-3">
-              적용된 토큰 <span className="text-mint-400">(클릭하여 복사)</span>
+              적용된 토큰 <span className="text-[var(--color-brand-primary)]">(클릭하여 복사)</span>
             </p>
             <div className="space-y-1.5">
               {currentTokens().map((t) => (
@@ -383,7 +383,7 @@ function VariantGallery() {
   return (
     <section className="mb-16">
       <div className="mb-5">
-        <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Variants</p>
+        <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">Variants</p>
         <h2 className="text-[20px] font-bold text-[var(--color-text-primary)]">전체 Variant 갤러리</h2>
         <p className="text-[14px] text-[var(--color-text-secondary)] mt-1">
           Type × Size × State 모든 조합
@@ -486,7 +486,7 @@ function SpecTable() {
   return (
     <section className="mb-16">
       <div className="mb-5">
-        <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Spec</p>
+        <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">Spec</p>
         <h2 className="text-[20px] font-bold text-[var(--color-text-primary)]">스펙 테이블</h2>
       </div>
 
@@ -512,7 +512,7 @@ function SpecTable() {
                     <span className="ml-1.5 text-[11px] font-normal text-[var(--color-text-secondary)]">{row.label}</span>
                   </td>
                   <td className="px-4 py-3">
-                    <span className="font-mono text-[12px] text-mint-500">{row.height}</span>
+                    <span className="font-mono text-[12px] text-[var(--color-interactive-pressed)]">{row.height}</span>
                     <div className="text-[10px] text-[var(--color-text-secondary)] mt-0.5 font-mono">{row.tokenHeight}</div>
                   </td>
                   <td className="px-4 py-3">
@@ -563,7 +563,7 @@ function SpecTable() {
                     </div>
                   </td>
                   <td className="px-4 py-3">
-                    <code className="text-[11px] font-mono text-mint-500 dark:text-mint-300 bg-mint-20 dark:bg-mint-600/20 px-2 py-0.5 rounded">
+                    <code className="text-[11px] font-mono text-[var(--color-interactive-pressed)] bg-[var(--color-bg-brand)] px-2 py-0.5 rounded">
                       {row.tokenBg}
                     </code>
                   </td>
@@ -577,7 +577,7 @@ function SpecTable() {
                     </div>
                   </td>
                   <td className="px-4 py-3">
-                    <code className="text-[11px] font-mono text-mint-500 dark:text-mint-300 bg-mint-20 dark:bg-mint-600/20 px-2 py-0.5 rounded">
+                    <code className="text-[11px] font-mono text-[var(--color-interactive-pressed)] bg-[var(--color-bg-brand)] px-2 py-0.5 rounded">
                       {row.tokenText}
                     </code>
                   </td>
@@ -597,20 +597,20 @@ function DosDonts() {
   return (
     <section className="mb-16">
       <div className="mb-5">
-        <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Guidelines</p>
+        <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">Guidelines</p>
         <h2 className="text-[20px] font-bold text-[var(--color-text-primary)]">Do / Don&apos;t</h2>
       </div>
 
       <div className="grid sm:grid-cols-2 gap-4">
         {/* Do */}
-        <div className="rounded-xl border-2 border-mint-300 bg-mint-20 dark:bg-mint-600/10 p-5">
+        <div className="rounded-xl border-2 border-[var(--color-border-brand)] bg-[var(--color-bg-brand)] p-5">
           <div className="flex items-center gap-2 mb-4">
-            <div className="w-5 h-5 rounded-full bg-mint-300 flex items-center justify-center shrink-0">
+            <div className="w-5 h-5 rounded-full bg-[var(--color-brand-primary)] flex items-center justify-center shrink-0">
               <svg viewBox="0 0 24 24" className="w-3 h-3" fill="white">
                 <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
               </svg>
             </div>
-            <span className="text-[14px] font-bold text-mint-500 dark:text-mint-300">Do</span>
+            <span className="text-[14px] font-bold text-[var(--color-interactive-pressed)]">Do</span>
           </div>
           <ul className="space-y-3">
             {[
@@ -620,8 +620,8 @@ function DosDonts() {
               { icon: "✓", text: "Secondary / Text 버튼은 Primary와 함께 계층 구조로 사용하세요." },
               { icon: "✓", text: "아이콘은 텍스트 앞에 배치하고 의미를 보완하는 역할로만 쓰세요." },
             ].map((item, i) => (
-              <li key={i} className="flex items-start gap-2 text-[13px] text-mint-600 dark:text-mint-200">
-                <span className="font-bold shrink-0 text-mint-400">{item.icon}</span>
+              <li key={i} className="flex items-start gap-2 text-[13px] text-[var(--color-interactive-pressed)]">
+                <span className="font-bold shrink-0 text-[var(--color-brand-primary)]">{item.icon}</span>
                 {item.text}
               </li>
             ))}
@@ -629,7 +629,7 @@ function DosDonts() {
         </div>
 
         {/* Don't */}
-        <div className="rounded-xl border-2 border-system-error/30 bg-red-50 dark:bg-red-950/20 p-5">
+        <div className="rounded-xl border-2 border-system-error/30 bg-[var(--color-bg-error)] p-5">
           <div className="flex items-center gap-2 mb-4">
             <div className="w-5 h-5 rounded-full bg-[#FF3257] flex items-center justify-center shrink-0">
               <svg viewBox="0 0 24 24" className="w-3 h-3" fill="white">
@@ -646,7 +646,7 @@ function DosDonts() {
               { text: "State와 Type을 하나의 prop에 혼용하지 마세요." },
               { text: "다크모드 대응을 위해 컴포넌트를 별도로 복제하지 마세요." },
             ].map((item, i) => (
-              <li key={i} className="flex items-start gap-2 text-[13px] text-red-700 dark:text-red-300">
+              <li key={i} className="flex items-start gap-2 text-[13px] text-[var(--color-status-error)]">
                 <span className="font-bold shrink-0 text-[#FF3257]">✕</span>
                 {item.text}
               </li>
@@ -667,7 +667,7 @@ const BUTTON_SNIPPETS = [
   style={{
     background: 'var(--color-brand-primary)',  // M300 #28D7D2
     color: 'var(--color-text-on-brand)',        // White
-    borderRadius: 'var(--radius-button-md)',    // 8px
+    borderRadius: 'var(--shape-full)',            // 9999px (Pill)
     padding: '10px 16px',
     fontSize: 14,
     fontWeight: 500,
@@ -685,7 +685,7 @@ const BUTTON_SNIPPETS = [
   style={{
     background: 'transparent',
     color: 'var(--color-brand-primary)',        // M300 #28D7D2
-    borderRadius: 'var(--radius-button-md)',    // 8px
+    borderRadius: 'var(--shape-full)',            // 9999px (Pill)
     padding: '10px 16px',
     fontSize: 14,
     fontWeight: 500,
@@ -721,7 +721,7 @@ const BUTTON_SNIPPETS = [
   style={{
     background: 'var(--color-interactive-disabled)', // N100 #D8DCDE
     color: 'var(--color-text-disabled)',              // N100 #D8DCDE
-    borderRadius: 'var(--radius-button-md)',
+    borderRadius: 'var(--shape-full)',
     padding: '10px 16px',
     fontSize: 14,
     fontWeight: 500,
@@ -748,7 +748,7 @@ function ButtonCodeSection() {
   return (
     <section className="mb-16">
       <div className="mb-5">
-        <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Code</p>
+        <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">Code</p>
         <h2 className="text-[20px] font-bold text-[var(--color-text-primary)]">코드 스니펫</h2>
         <p className="text-[13px] mt-1 text-[var(--color-text-secondary)]">CSS 변수 기반 React 코드 예시 · 복사 후 바로 사용 가능</p>
       </div>
@@ -811,8 +811,8 @@ export default function ButtonPage() {
       {/* 페이지 헤더 */}
       <div className="mb-10 pb-8 border-b border-[var(--color-border)]">
         <div className="flex items-center gap-2 mb-3">
-          <span className="w-2 h-2 rounded-full bg-mint-300" />
-          <span className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest">
+          <span className="w-2 h-2 rounded-full bg-[var(--color-brand-primary)]" />
+          <span className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest">
             Components
           </span>
         </div>
@@ -822,9 +822,9 @@ export default function ButtonPage() {
         <p className="text-[16px] text-[var(--color-text-secondary)] leading-relaxed max-w-[520px]">
           사용자의 행동을 유도하는 가장 기본적인 인터랙션 컴포넌트.
           <br />
-          <span className="text-mint-400 font-medium">Type</span> ·{" "}
-          <span className="text-mint-400 font-medium">Size</span> ·{" "}
-          <span className="text-mint-400 font-medium">State</span> 세 축으로 구성됩니다.
+          <span className="text-[var(--color-brand-primary)] font-medium">Type</span> ·{" "}
+          <span className="text-[var(--color-brand-primary)] font-medium">Size</span> ·{" "}
+          <span className="text-[var(--color-brand-primary)] font-medium">State</span> 세 축으로 구성됩니다.
         </p>
 
         {/* 빠른 변형 요약 뱃지 */}
@@ -839,7 +839,7 @@ export default function ButtonPage() {
               key={v.label}
               className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--color-bg-subtle)] border border-[var(--color-border)]"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-mint-300 shrink-0" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-brand-primary)] shrink-0" />
               <span className="text-[12px] font-semibold text-[var(--color-text-primary)]">{v.label}</span>
               <span className="text-[11px] text-[var(--color-text-secondary)]">— {v.desc}</span>
             </div>

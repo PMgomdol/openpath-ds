@@ -77,7 +77,7 @@ function SectionHeader({
 }) {
   return (
     <div className="mb-5">
-      <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">
+      <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">
         {eyebrow}
       </p>
       <h2 className="text-[20px] font-bold text-[var(--color-text-primary)]">{title}</h2>
@@ -107,7 +107,7 @@ function SpaceRow({ token, valuePx, usage, isLast }: SpaceToken & { isLast: bool
     >
       {/* 왼쪽: 토큰명 + 용도 */}
       <div className="w-[220px] flex-shrink-0">
-        <code className="text-[12px] font-mono font-medium text-mint-500 block mb-0.5">
+        <code className="text-[12px] font-mono font-medium text-[var(--color-interactive-pressed)] block mb-0.5">
           {token}
         </code>
         <p className="text-[11px] text-[var(--color-text-secondary)] leading-snug">
@@ -122,7 +122,7 @@ function SpaceRow({ token, valuePx, usage, isLast }: SpaceToken & { isLast: bool
           <div className="absolute inset-y-0 left-0 right-0 rounded-sm bg-[var(--color-bg-subtle)] border border-[var(--color-border)]" />
           {/* 민트 바 */}
           <div
-            className="relative h-6 rounded-sm bg-mint-300 transition-all duration-300 group-hover:bg-mint-400"
+            className="relative h-6 rounded-sm bg-[var(--color-brand-primary)] transition-all duration-300 group-hover:bg-[var(--color-interactive-hover)]"
             style={{ width: `${barWidth}%`, minWidth: "4px" }}
           >
             {/* 바 위 px 레이블 (좁으면 밖으로) */}
@@ -172,7 +172,7 @@ function SemanticSpacingTable({ rows }: { rows: SemanticRow[] }) {
             idx < rows.length - 1 ? "border-b border-[var(--color-border)]" : ""
           }`}
         >
-          <code className="text-[12px] font-mono text-mint-500 leading-snug">
+          <code className="text-[12px] font-mono text-[var(--color-interactive-pressed)] leading-snug">
             {row.token}
           </code>
           <code className="text-[11px] font-mono text-[var(--color-text-secondary)]">
@@ -211,7 +211,7 @@ function LayoutSpacingTable({ rows }: { rows: LayoutRow[] }) {
             idx < rows.length - 1 ? "border-b border-[var(--color-border)]" : ""
           }`}
         >
-          <code className="text-[12px] font-mono text-mint-500 leading-snug">
+          <code className="text-[12px] font-mono text-[var(--color-interactive-pressed)] leading-snug">
             {row.token}
           </code>
 
@@ -227,7 +227,7 @@ function LayoutSpacingTable({ rows }: { rows: LayoutRow[] }) {
 
           {/* Desktop */}
           <div className="flex items-center gap-1.5">
-            <span className="text-[9px] font-bold text-mint-500 bg-mint-20 border border-mint-100 px-1.5 py-px rounded-full uppercase tracking-wide flex-shrink-0">
+            <span className="text-[9px] font-bold text-[var(--color-interactive-pressed)] bg-[var(--color-bg-brand)] border border-[var(--color-border-default)] px-1.5 py-px rounded-full uppercase tracking-wide flex-shrink-0">
               DT
             </span>
             <code className="text-[11px] font-mono text-[var(--color-text-primary)]">
@@ -252,7 +252,7 @@ function BaseGridCard() {
   return (
     <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-base)] overflow-hidden">
       <div className="px-6 py-5 border-b border-[var(--color-border)]">
-        <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">
+        <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">
           Base Grid
         </p>
         <p className="text-[16px] font-bold text-[var(--color-text-primary)]">
@@ -269,7 +269,7 @@ function BaseGridCard() {
           {steps.map((v) => (
             <div key={v} className="flex flex-col items-center gap-1 flex-shrink-0">
               <div
-                className="w-5 rounded-sm bg-mint-300 opacity-80"
+                className="w-5 rounded-sm bg-[var(--color-brand-primary)] opacity-80"
                 style={{ height: `${(v / 96) * 80 + 8}px` }}
               />
               <span className="text-[9px] font-mono text-[var(--color-text-secondary)] tabular-nums">
@@ -289,7 +289,7 @@ function BaseGridCard() {
             "이 스케일 밖의 값 사용 금지 — 예외 없음",
           ].map((rule) => (
             <li key={rule} className="flex items-start gap-2">
-              <span className="mt-1 w-1.5 h-1.5 rounded-full bg-mint-300 flex-shrink-0" />
+              <span className="mt-1 w-1.5 h-1.5 rounded-full bg-[var(--color-brand-primary)] flex-shrink-0" />
               <p className="text-[12px] text-[var(--color-text-secondary)] leading-relaxed">
                 {rule}
               </p>
@@ -310,8 +310,8 @@ export default function SpacingPage() {
       {/* 페이지 헤더 */}
       <div className="mb-10 pb-8 border-b border-[var(--color-border)]">
         <div className="flex items-center gap-2 mb-3">
-          <span className="w-2 h-2 rounded-full bg-mint-300" />
-          <span className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest">
+          <span className="w-2 h-2 rounded-full bg-[var(--color-brand-primary)]" />
+          <span className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest">
             Foundation
           </span>
         </div>
@@ -321,7 +321,7 @@ export default function SpacingPage() {
         <p className="text-[16px] text-[var(--color-text-secondary)] leading-relaxed max-w-[520px]">
           8배수 베이스 스페이싱 시스템. 모든 여백은 이 스케일에서 선택한다.
           <br />
-          <span className="text-mint-400 font-medium">
+          <span className="text-[var(--color-brand-primary)] font-medium">
             space/01 (4px) → space/12 (96px)
           </span>{" "}
           총 12단계.
@@ -399,8 +399,8 @@ export default function SpacingPage() {
           </p>
           <div className="relative flex gap-0 rounded-xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-bg-base)] h-20">
             {/* 왼쪽 거터 */}
-            <div className="w-6 bg-mint-20 border-r border-dashed border-mint-200 flex items-center justify-center flex-shrink-0">
-              <span className="text-[8px] font-mono text-mint-400 rotate-90 whitespace-nowrap">24px</span>
+            <div className="w-6 bg-[var(--color-bg-brand)] border-r border-dashed border-[var(--color-border-default)] flex items-center justify-center flex-shrink-0">
+              <span className="text-[8px] font-mono text-[var(--color-brand-primary)] rotate-90 whitespace-nowrap">24px</span>
             </div>
             {/* 콘텐츠 영역 */}
             <div className="flex-1 flex items-center justify-center">
@@ -409,14 +409,14 @@ export default function SpacingPage() {
               </span>
             </div>
             {/* 오른쪽 거터 */}
-            <div className="w-6 bg-mint-20 border-l border-dashed border-mint-200 flex items-center justify-center flex-shrink-0">
-              <span className="text-[8px] font-mono text-mint-400 rotate-90 whitespace-nowrap">24px</span>
+            <div className="w-6 bg-[var(--color-bg-brand)] border-l border-dashed border-[var(--color-border-default)] flex items-center justify-center flex-shrink-0">
+              <span className="text-[8px] font-mono text-[var(--color-brand-primary)] rotate-90 whitespace-nowrap">24px</span>
             </div>
           </div>
 
           <div className="mt-3 flex items-center gap-4">
             <div className="flex items-center gap-1.5">
-              <div className="w-3 h-3 rounded-sm bg-mint-20 border border-mint-200" />
+              <div className="w-3 h-3 rounded-sm bg-[var(--color-bg-brand)] border border-[var(--color-border-default)]" />
               <span className="text-[11px] text-[var(--color-text-secondary)]">Gutter (24px Desktop · 16px Mobile)</span>
             </div>
             <div className="flex items-center gap-1.5">

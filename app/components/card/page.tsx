@@ -280,8 +280,8 @@ export default function CardPage() {
       {/* Header */}
       <div className="mb-10 pb-8 border-b border-[var(--color-border-default)]">
         <div className="flex items-center gap-2 mb-3">
-          <span className="w-2 h-2 rounded-full bg-mint-300" />
-          <span className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest">Components</span>
+          <span className="w-2 h-2 rounded-full bg-[var(--color-brand-primary)]" />
+          <span className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest">Components</span>
         </div>
         <h1 className="text-[40px] font-black tracking-tight mb-2" style={{ color: "var(--color-text-default)" }}>
           Card
@@ -289,16 +289,16 @@ export default function CardPage() {
         <p className="text-[16px] leading-relaxed max-w-[560px]" style={{ color: "var(--color-text-subtle)" }}>
           관련 정보를 그룹화하고 계층을 표현하는 컨테이너 컴포넌트.
           <br />
-          <span className="text-mint-400 font-medium">shadow/01</span> 기본 ·{" "}
-          <span className="text-mint-400 font-medium">shadow/02</span> hover ·{" "}
-          <span className="text-mint-400 font-medium">radius 16px</span> · 6가지 Variant.
+          <span className="text-[var(--color-brand-primary)] font-medium">shadow/01</span> 기본 ·{" "}
+          <span className="text-[var(--color-brand-primary)] font-medium">shadow/02</span> hover ·{" "}
+          <span className="text-[var(--color-brand-primary)] font-medium">radius 16px</span> · 6가지 Variant.
         </p>
       </div>
 
       {/* Variant Gallery — 2-column grid */}
       <section className="mb-14">
         <div className="mb-6">
-          <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Variants</p>
+          <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">Variants</p>
           <h2 className="text-[20px] font-bold" style={{ color: "var(--color-text-default)" }}>Variant 갤러리</h2>
           <p className="text-[13px] mt-1" style={{ color: "var(--color-text-subtle)" }}>
             Basic · Expand · Overflow Menu · Stars to Rate · With Chips · With Slider
@@ -318,7 +318,7 @@ export default function CardPage() {
       {/* Spec */}
       <section className="mb-14">
         <div className="mb-5">
-          <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Spec</p>
+          <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">Spec</p>
           <h2 className="text-[20px] font-bold" style={{ color: "var(--color-text-default)" }}>스펙 테이블</h2>
         </div>
         <div className="overflow-x-auto rounded-xl border border-[var(--color-border-default)]">
@@ -348,7 +348,7 @@ export default function CardPage() {
               ].map((row, i) => (
                 <tr key={row.attr} className="border-b border-[var(--color-border-default)] last:border-0" style={{ background: i % 2 === 1 ? "var(--color-bg-subtle)" : undefined }}>
                   <td className="px-4 py-3 font-medium" style={{ color: "var(--color-text-default)" }}>{row.attr}</td>
-                  <td className="px-4 py-3 font-mono text-[12px] text-mint-500">{row.value}</td>
+                  <td className="px-4 py-3 font-mono text-[12px] text-[var(--color-interactive-pressed)]">{row.value}</td>
                   <td className="px-4 py-3">
                     <code className="text-[11px] font-mono" style={{ color: "var(--color-text-subtle)" }}>{row.token}</code>
                   </td>
@@ -362,7 +362,7 @@ export default function CardPage() {
       {/* Do / Don't */}
       <section className="mb-16">
         <div className="mb-5">
-          <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Guidelines</p>
+          <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">Guidelines</p>
           <h2 className="text-[20px] font-bold" style={{ color: "var(--color-text-default)" }}>Do / Don't</h2>
         </div>
         <div className="grid sm:grid-cols-2 gap-4">

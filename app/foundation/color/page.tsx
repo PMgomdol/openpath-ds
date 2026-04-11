@@ -91,7 +91,7 @@ function SectionHeader({
 }) {
   return (
     <div className="mb-5">
-      <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">
+      <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">
         {eyebrow}
       </p>
       <h2 className="text-[20px] font-bold text-[var(--color-text-primary)]">{title}</h2>
@@ -113,8 +113,8 @@ export default function ColorPage() {
       {/* 페이지 헤더 */}
       <div className="mb-10 pb-8 border-b border-[var(--color-border)]">
         <div className="flex items-center gap-2 mb-3">
-          <span className="w-2 h-2 rounded-full bg-mint-300" />
-          <span className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest">
+          <span className="w-2 h-2 rounded-full bg-[var(--color-brand-primary)]" />
+          <span className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest">
             Foundation
           </span>
         </div>
@@ -124,7 +124,7 @@ export default function ColorPage() {
         <p className="text-[16px] text-[var(--color-text-secondary)] leading-relaxed max-w-[520px]">
           오픈패스 DS의 컬러 시스템. 3단계 토큰 구조로 설계됨.
           <br />
-          <span className="text-mint-400 font-medium">Palette → Semantic → Component</span> 순서로 참조하세요.
+          <span className="text-[var(--color-brand-primary)] font-medium">Palette → Semantic → Component</span> 순서로 참조하세요.
         </p>
       </div>
 

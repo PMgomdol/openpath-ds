@@ -11,9 +11,9 @@ const principles = [
     ko: "명료함",
     description:
       "모든 UI 결정은 사용자가 즉시 이해할 수 있어야 합니다. 불필요한 장식 없이, 정보 위계만으로 의도를 전달합니다.",
-    accent: "from-mint-300 to-mint-400",
-    bg: "bg-mint-20 dark:bg-mint-600/10",
-    border: "border-mint-100 dark:border-mint-600/30",
+    accent: "from-[var(--color-brand-primary)] to-[var(--color-interactive-hover)]",
+    bg: "bg-[var(--color-bg-brand)]",
+    border: "border-[var(--color-border-default)]",
   },
   {
     icon: <Layers size={22} strokeWidth={2} />,
@@ -54,16 +54,16 @@ export default function HomePage() {
 
       {/* Hero */}
       <section className="mb-16">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-mint-20 dark:bg-mint-600/15 border border-mint-100 dark:border-mint-600/30 mb-6">
-          <span className="w-1.5 h-1.5 rounded-full bg-mint-300 animate-pulse" />
-          <span className="text-[12px] font-semibold text-mint-500 dark:text-mint-300 tracking-wide">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--color-bg-brand)] border border-[var(--color-border-default)] mb-6">
+          <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-brand-primary)] animate-pulse" />
+          <span className="text-[12px] font-semibold text-[var(--color-interactive-pressed)] tracking-wide">
             v0.1.0 — 기반 구조 구축 중
           </span>
         </div>
 
         <h1 className="text-[48px] leading-[1.15] font-black text-[var(--color-text-primary)] tracking-tight mb-4">
           오픈패스{" "}
-          <span className="text-mint-300">디자인 시스템</span>
+          <span className="text-[var(--color-brand-primary)]">디자인 시스템</span>
         </h1>
         <p className="text-[18px] text-[var(--color-text-secondary)] leading-relaxed max-w-[560px] mb-8">
           명료함, 확장성, 자립성 위에 설계된 교육 브랜드 범용 DS.
@@ -77,8 +77,8 @@ export default function HomePage() {
             className="
               inline-flex items-center gap-2
               px-5 py-2.5 rounded-md
-              bg-mint-300 hover:bg-mint-400
-              text-white text-[15px] font-semibold
+              bg-[var(--color-brand-primary)] hover:bg-[var(--color-interactive-hover)]
+              text-[var(--color-text-on-brand)] text-[15px] font-semibold
               transition-colors duration-150
               shadow-elevation-1
             "
@@ -94,7 +94,7 @@ export default function HomePage() {
               text-[15px] font-semibold
               text-[var(--color-text-primary)]
               border border-[var(--color-border)]
-              hover:border-mint-300 hover:text-mint-400
+              hover:border-[var(--color-border-brand)] hover:text-[var(--color-interactive-hover)]
               transition-colors duration-150
             "
           >
@@ -109,7 +109,7 @@ export default function HomePage() {
       {/* Principles */}
       <section className="mb-16">
         <div className="mb-6">
-          <p className="text-[12px] font-semibold text-mint-300 uppercase tracking-widest mb-1">
+          <p className="text-[12px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">
             Design Principles
           </p>
           <h2 className="text-[24px] font-bold text-[var(--color-text-primary)]">
@@ -157,7 +157,7 @@ export default function HomePage() {
       {/* DS Structure Overview */}
       <section className="mb-16">
         <div className="mb-6">
-          <p className="text-[12px] font-semibold text-mint-300 uppercase tracking-widest mb-1">
+          <p className="text-[12px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">
             M3 Structure
           </p>
           <h2 className="text-[24px] font-bold text-[var(--color-text-primary)]">
@@ -169,9 +169,9 @@ export default function HomePage() {
             {
               category: "Style",
               desc: "시각 요소",
-              color: "text-mint-500 dark:text-mint-300",
-              bg: "bg-mint-20 dark:bg-mint-600/10",
-              border: "border-mint-100 dark:border-mint-600/30",
+              color: "text-[var(--color-interactive-pressed)]",
+              bg: "bg-[var(--color-bg-brand)]",
+              border: "border-[var(--color-border-default)]",
               items: ["Color", "Typography", "Spacing", "Shape", "Elevation", "Iconography"],
             },
             {
@@ -210,7 +210,7 @@ export default function HomePage() {
       {/* Quick Links */}
       <section>
         <div className="mb-6">
-          <p className="text-[12px] font-semibold text-mint-300 uppercase tracking-widest mb-1">
+          <p className="text-[12px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">
             Quick Links
           </p>
           <h2 className="text-[24px] font-bold text-[var(--color-text-primary)]">
@@ -228,11 +228,11 @@ export default function HomePage() {
                 p-4 rounded-lg
                 border border-[var(--color-border)]
                 bg-[var(--color-bg-base)]
-                hover:border-mint-300 hover:shadow-elevation-1
+                hover:border-[var(--color-border-brand)] hover:shadow-elevation-1
                 transition-all duration-150
               "
             >
-              <span className="text-[14px] font-semibold text-[var(--color-text-primary)] group-hover:text-mint-400 transition-colors">
+              <span className="text-[14px] font-semibold text-[var(--color-text-primary)] group-hover:text-[var(--color-interactive-hover)] transition-colors">
                 {link.label}
               </span>
               <span className="text-[12px] text-[var(--color-text-secondary)]">

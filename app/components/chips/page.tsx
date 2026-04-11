@@ -92,8 +92,8 @@ export default function ChipsPage() {
       {/* Header */}
       <div className="mb-10 pb-8 border-b border-[var(--color-border-default)]">
         <div className="flex items-center gap-2 mb-3">
-          <span className="w-2 h-2 rounded-full bg-mint-300" />
-          <span className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest">Components</span>
+          <span className="w-2 h-2 rounded-full bg-[var(--color-brand-primary)]" />
+          <span className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest">Components</span>
         </div>
         <h1 className="text-[40px] font-black tracking-tight mb-2" style={{ color: "var(--color-text-default)" }}>
           Chips
@@ -101,10 +101,10 @@ export default function ChipsPage() {
         <p className="text-[16px] leading-relaxed max-w-[520px]" style={{ color: "var(--color-text-subtle)" }}>
           짧은 정보, 필터, 태그를 표현하는 소형 컴포넌트.
           <br />
-          <span className="text-mint-400 font-medium">Assist</span> ·{" "}
-          <span className="text-mint-400 font-medium">Filter</span> ·{" "}
-          <span className="text-mint-400 font-medium">Input</span> ·{" "}
-          <span className="text-mint-400 font-medium">Suggestion</span>
+          <span className="text-[var(--color-brand-primary)] font-medium">Assist</span> ·{" "}
+          <span className="text-[var(--color-brand-primary)] font-medium">Filter</span> ·{" "}
+          <span className="text-[var(--color-brand-primary)] font-medium">Input</span> ·{" "}
+          <span className="text-[var(--color-brand-primary)] font-medium">Suggestion</span>
         </p>
 
         {/* Type guide table */}
@@ -125,7 +125,7 @@ export default function ChipsPage() {
                 ["Suggestion", "AI/시스템이 제안하는 자동완성 칩",             "검색창 아래 추천어, 챗봇 빠른 답변"],
               ].map(([type, desc, when], i) => (
                 <tr key={type} className="border-b border-[var(--color-border-default)] last:border-0" style={{ background: i % 2 === 1 ? "var(--color-bg-subtle)" : undefined }}>
-                  <td className="px-4 py-2.5 font-semibold text-mint-500">{type}</td>
+                  <td className="px-4 py-2.5 font-semibold text-[var(--color-interactive-pressed)]">{type}</td>
                   <td className="px-4 py-2.5" style={{ color: "var(--color-text-default)" }}>{desc}</td>
                   <td className="px-4 py-2.5" style={{ color: "var(--color-text-subtle)" }}>{when}</td>
                 </tr>
@@ -138,7 +138,7 @@ export default function ChipsPage() {
       {/* ── Assist ── */}
       <section className="mb-14">
         <div className="mb-5">
-          <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Assist Chip</p>
+          <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">Assist Chip</p>
           <h2 className="text-[20px] font-bold" style={{ color: "var(--color-text-default)" }}>Assist</h2>
           <p className="text-[13px] mt-1" style={{ color: "var(--color-text-subtle)" }}>빠른 액션 제안. 아이콘 있거나 없거나 모두 가능.</p>
         </div>
@@ -159,7 +159,7 @@ export default function ChipsPage() {
       {/* ── Filter ── */}
       <section className="mb-14">
         <div className="mb-5">
-          <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Filter Chip</p>
+          <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">Filter Chip</p>
           <h2 className="text-[20px] font-bold" style={{ color: "var(--color-text-default)" }}>Filter</h2>
           <p className="text-[13px] mt-1" style={{ color: "var(--color-text-subtle)" }}>
             멀티 선택 가능 · 선택 시 체크마크 표시 · <code className="text-[12px] font-mono">aria-pressed</code>
@@ -178,7 +178,7 @@ export default function ChipsPage() {
       {/* ── Input ── */}
       <section className="mb-14">
         <div className="mb-5">
-          <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Input Chip</p>
+          <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">Input Chip</p>
           <h2 className="text-[20px] font-bold" style={{ color: "var(--color-text-default)" }}>Input</h2>
           <p className="text-[13px] mt-1" style={{ color: "var(--color-text-subtle)" }}>입력된 값을 태그로 표시. X 버튼으로 제거.</p>
         </div>
@@ -190,7 +190,7 @@ export default function ChipsPage() {
       {/* ── Suggestion ── */}
       <section className="mb-14">
         <div className="mb-5">
-          <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Suggestion Chip</p>
+          <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">Suggestion Chip</p>
           <h2 className="text-[20px] font-bold" style={{ color: "var(--color-text-default)" }}>Suggestion</h2>
           <p className="text-[13px] mt-1" style={{ color: "var(--color-text-subtle)" }}>AI/시스템이 제안하는 자동완성 옵션.</p>
         </div>
@@ -216,7 +216,7 @@ export default function ChipsPage() {
       {/* ── Spec ── */}
       <section className="mb-14">
         <div className="mb-5">
-          <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Spec</p>
+          <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">Spec</p>
           <h2 className="text-[20px] font-bold" style={{ color: "var(--color-text-default)" }}>스펙 테이블</h2>
         </div>
         <div className="overflow-x-auto rounded-xl border border-[var(--color-border-default)]">
@@ -251,7 +251,7 @@ export default function ChipsPage() {
                 <tr key={`${row.attr}-${row.state}`} className="border-b border-[var(--color-border-default)] last:border-0" style={{ background: i % 2 === 1 ? "var(--color-bg-subtle)" : undefined }}>
                   <td className="px-4 py-3 font-medium" style={{ color: "var(--color-text-default)" }}>{row.attr}</td>
                   <td className="px-4 py-3 text-[12px]" style={{ color: "var(--color-text-subtle)" }}>{row.state}</td>
-                  <td className="px-4 py-3 font-mono text-[12px] text-mint-500">{row.value}</td>
+                  <td className="px-4 py-3 font-mono text-[12px] text-[var(--color-interactive-pressed)]">{row.value}</td>
                   <td className="px-4 py-3">
                     {row.token !== "—"
                       ? <code className="text-[11px] font-mono" style={{ color: "var(--color-text-subtle)" }}>{row.token}</code>
@@ -268,7 +268,7 @@ export default function ChipsPage() {
       {/* ── Do / Don't ── */}
       <section className="mb-16">
         <div className="mb-5">
-          <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Guidelines</p>
+          <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">Guidelines</p>
           <h2 className="text-[20px] font-bold" style={{ color: "var(--color-text-default)" }}>Do / Don't</h2>
         </div>
         <div className="grid sm:grid-cols-2 gap-4">

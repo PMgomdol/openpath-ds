@@ -7,9 +7,9 @@ function TokenBadge({ token, value }: { token: string; value: string }) {
   return (
     <button
       onClick={() => { navigator.clipboard.writeText(token).catch(() => {}); setCopied(true); setTimeout(() => setCopied(false), 1500); }}
-      className="group flex items-center gap-2 px-3 py-1.5 rounded-md bg-[var(--color-bg-subtle)] border border-[var(--color-border)] hover:border-mint-300 transition-all text-left w-full"
+      className="group flex items-center gap-2 px-3 py-1.5 rounded-md bg-[var(--color-bg-subtle)] border border-[var(--color-border)] hover:border-[var(--color-border-brand)] transition-all text-left w-full"
     >
-      <code className="text-[11px] font-mono text-mint-500 dark:text-mint-300 flex-1 truncate">{token}</code>
+      <code className="text-[11px] font-mono text-[var(--color-interactive-pressed)] flex-1 truncate">{token}</code>
       <span className="text-[11px] text-[var(--color-text-secondary)] shrink-0">{value}</span>
       <span className="text-[10px] text-[var(--color-text-secondary)] opacity-0 group-hover:opacity-100 transition-opacity shrink-0">{copied ? "복사됨" : "복사"}</span>
     </button>
@@ -23,7 +23,7 @@ function ModalDemo() {
   return (
     <section className="mb-16">
       <div className="mb-5">
-        <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Interactive Demo</p>
+        <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">Interactive Demo</p>
         <h2 className="text-[20px] font-bold text-[var(--color-text-primary)]">라이브 미리보기</h2>
       </div>
 
@@ -82,7 +82,7 @@ function ModalDemo() {
             </p>
             <div className="flex gap-3 justify-end">
               <button onClick={() => setOpen(false)}
-                className="px-4 py-2 rounded-md border border-[var(--color-border)] text-[14px] font-medium text-[var(--color-text-secondary)] hover:border-mint-300 hover:text-mint-400 transition-colors">
+                className="px-4 py-2 rounded-md border border-[var(--color-border)] text-[14px] font-medium text-[var(--color-text-secondary)] hover:border-[var(--color-border-brand)] hover:text-[var(--color-interactive-hover)] transition-colors">
                 취소
               </button>
               <button onClick={() => setOpen(false)}
@@ -116,7 +116,7 @@ function SpecTable() {
   return (
     <section className="mb-16">
       <div className="mb-5">
-        <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Spec</p>
+        <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">Spec</p>
         <h2 className="text-[20px] font-bold text-[var(--color-text-primary)]">스펙 테이블</h2>
       </div>
       <div className="overflow-x-auto rounded-xl border border-[var(--color-border)]">
@@ -132,7 +132,7 @@ function SpecTable() {
             {specs.map((row, i) => (
               <tr key={row.attr} className={`border-b border-[var(--color-border)] last:border-0 ${i % 2 === 1 ? "bg-[var(--color-bg-subtle)]" : ""}`}>
                 <td className="px-4 py-3 font-medium text-[var(--color-text-primary)]">{row.attr}</td>
-                <td className="px-4 py-3 font-mono text-[12px] text-mint-500 dark:text-mint-300">{row.value}</td>
+                <td className="px-4 py-3 font-mono text-[12px] text-[var(--color-interactive-pressed)]">{row.value}</td>
                 <td className="px-4 py-3">
                   {row.token !== "—"
                     ? <code className="text-[11px] font-mono text-[var(--color-text-secondary)] bg-[var(--color-bg-subtle)] px-2 py-0.5 rounded">{row.token}</code>
@@ -152,15 +152,15 @@ export default function ModalPage() {
     <div className="px-8 py-10 max-w-[960px]">
       <div className="mb-10 pb-8 border-b border-[var(--color-border)]">
         <div className="flex items-center gap-2 mb-3">
-          <span className="w-2 h-2 rounded-full bg-mint-300" />
-          <span className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest">Components</span>
+          <span className="w-2 h-2 rounded-full bg-[var(--color-brand-primary)]" />
+          <span className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest">Components</span>
         </div>
         <h1 className="text-[40px] font-black tracking-tight text-[var(--color-text-primary)] mb-2">Modal</h1>
         <p className="text-[16px] text-[var(--color-text-secondary)] leading-relaxed max-w-[520px]">
           사용자의 주의가 필요한 작업 확인, 경고, 정보 전달에 사용하는 오버레이 컴포넌트.
           <br />
-          <span className="text-mint-400 font-medium">Elevation 4</span> ·{" "}
-          <span className="text-mint-400 font-medium">Radius 16px</span>
+          <span className="text-[var(--color-brand-primary)] font-medium">Elevation 4</span> ·{" "}
+          <span className="text-[var(--color-brand-primary)] font-medium">Radius 16px</span>
         </p>
       </div>
       <ModalDemo />

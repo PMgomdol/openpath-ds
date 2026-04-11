@@ -250,8 +250,8 @@ function IconCard({ name, onCopy }: { name: string; onCopy: (name: string) => vo
         group flex flex-col items-center gap-2 p-3
         rounded-lg border border-[var(--color-border)]
         bg-[var(--color-bg-base)]
-        hover:border-mint-300 hover:bg-mint-20
-        dark:hover:bg-mint-600/10
+        hover:border-[var(--color-border-brand)] hover:bg-[var(--color-bg-brand)]
+       
         transition-all duration-150
         cursor-pointer
       "
@@ -259,7 +259,7 @@ function IconCard({ name, onCopy }: { name: string; onCopy: (name: string) => vo
       {/* SVG 24dp */}
       <div className="w-6 h-6 flex items-center justify-center">
         {copied ? (
-          <svg viewBox="0 0 24 24" className="w-6 h-6 text-mint-400" fill="currentColor">
+          <svg viewBox="0 0 24 24" className="w-6 h-6 text-[var(--color-brand-primary)]" fill="currentColor">
             <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
           </svg>
         ) : (
@@ -286,7 +286,7 @@ function IconCard({ name, onCopy }: { name: string; onCopy: (name: string) => vo
           text-[10px] font-medium tracking-tight
           transition-colors duration-150
           ${copied
-            ? "text-mint-500 dark:text-mint-300"
+            ? "text-[var(--color-interactive-pressed)]"
             : "text-[var(--color-text-secondary)] group-hover:text-[var(--color-text-primary)]"
           }
         `}
@@ -341,8 +341,8 @@ export default function IconographyPage() {
       {/* 페이지 헤더 */}
       <div className="mb-10 pb-8 border-b border-[var(--color-border)]">
         <div className="flex items-center gap-2 mb-3">
-          <span className="w-2 h-2 rounded-full bg-mint-300" />
-          <span className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest">
+          <span className="w-2 h-2 rounded-full bg-[var(--color-brand-primary)]" />
+          <span className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest">
             Foundation
           </span>
         </div>
@@ -352,7 +352,7 @@ export default function IconographyPage() {
         <p className="text-[16px] text-[var(--color-text-secondary)] leading-relaxed max-w-[520px]">
           오픈패스 DS 아이콘 라이브러리. 24dp 기준으로 설계됨.
           <br />
-          <span className="text-mint-400 font-medium">{ICONS.length}개 아이콘</span> · SVG 포맷 · 클릭 시 이름 복사
+          <span className="text-[var(--color-brand-primary)] font-medium">{ICONS.length}개 아이콘</span> · SVG 포맷 · 클릭 시 이름 복사
         </p>
       </div>
 
@@ -377,7 +377,7 @@ export default function IconographyPage() {
               bg-[var(--color-bg-base)]
               text-[14px] text-[var(--color-text-primary)]
               placeholder:text-[var(--color-text-secondary)]
-              focus:outline-none focus:border-mint-300
+              focus:outline-none focus:border-[var(--color-border-brand)]
               transition-colors duration-150
             "
           />
@@ -403,8 +403,8 @@ export default function IconographyPage() {
                 px-3 py-1 rounded-full text-[12px] font-medium
                 border transition-all duration-150
                 ${activeCategory === cat
-                  ? "bg-mint-300 text-white border-mint-300"
-                  : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-mint-300 hover:text-mint-400 bg-transparent"
+                  ? "bg-[var(--color-brand-primary)] text-[var(--color-text-on-brand)] border-[var(--color-border-brand)]"
+                  : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-brand)] hover:text-[var(--color-interactive-hover)] bg-transparent"
                 }
               `}
             >
@@ -428,7 +428,7 @@ export default function IconographyPage() {
                 <h2 className="text-[16px] font-bold text-[var(--color-text-primary)]">
                   {category}
                 </h2>
-                <span className="text-[12px] font-medium text-mint-400 bg-mint-20 dark:bg-mint-600/20 px-2 py-0.5 rounded-full">
+                <span className="text-[12px] font-medium text-[var(--color-brand-primary)] bg-[var(--color-bg-brand)] px-2 py-0.5 rounded-full">
                   {icons!.length}
                 </span>
                 <div className="flex-1 h-px bg-[var(--color-border)]" />
@@ -455,7 +455,7 @@ export default function IconographyPage() {
           z-50
           animate-fade-in
         ">
-          <span className="text-mint-300 font-semibold">{copiedToast}</span> 복사됨
+          <span className="text-[var(--color-brand-primary)] font-semibold">{copiedToast}</span> 복사됨
         </div>
       )}
 

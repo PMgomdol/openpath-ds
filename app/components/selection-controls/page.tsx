@@ -22,7 +22,7 @@ function SpecTable({ rows }: { rows: { attr: string; token: string; value: strin
           {rows.map((row, i) => (
             <tr key={row.attr} className="border-b border-[var(--color-border-default)] last:border-0" style={{ background: i % 2 === 1 ? "var(--color-bg-subtle)" : undefined }}>
               <td className="px-4 py-3 font-medium" style={{ color: "var(--color-text-default)" }}>{row.attr}</td>
-              <td className="px-4 py-3"><code className="text-[11px] font-mono text-mint-500">{row.token}</code></td>
+              <td className="px-4 py-3"><code className="text-[11px] font-mono text-[var(--color-interactive-pressed)]">{row.token}</code></td>
               <td className="px-4 py-3 font-mono text-[12px]" style={{ color: "var(--color-text-subtle)" }}>{row.value}</td>
             </tr>
           ))}
@@ -95,8 +95,8 @@ export default function SelectionControlsPage() {
       {/* Header */}
       <div className="mb-10 pb-8 border-b border-[var(--color-border-default)]">
         <div className="flex items-center gap-2 mb-3">
-          <span className="w-2 h-2 rounded-full bg-mint-300" />
-          <span className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest">Components</span>
+          <span className="w-2 h-2 rounded-full bg-[var(--color-brand-primary)]" />
+          <span className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest">Components</span>
         </div>
         <h1 className="text-[40px] font-black tracking-tight mb-2" style={{ color: "var(--color-text-default)" }}>
           Selection Controls
@@ -104,9 +104,9 @@ export default function SelectionControlsPage() {
         <p className="text-[16px] leading-relaxed max-w-[520px]" style={{ color: "var(--color-text-subtle)" }}>
           사용자의 선택을 받는 컨트롤 컴포넌트.
           <br />
-          <span className="text-mint-400 font-medium">Checkbox</span> ·{" "}
-          <span className="text-mint-400 font-medium">Radio</span> ·{" "}
-          <span className="text-mint-400 font-medium">Switch</span>
+          <span className="text-[var(--color-brand-primary)] font-medium">Checkbox</span> ·{" "}
+          <span className="text-[var(--color-brand-primary)] font-medium">Radio</span> ·{" "}
+          <span className="text-[var(--color-brand-primary)] font-medium">Switch</span>
         </p>
         {/* When to use which */}
         <div className="mt-5 overflow-x-auto rounded-xl border border-[var(--color-border-default)]">
@@ -126,7 +126,7 @@ export default function SelectionControlsPage() {
               ].map(([s, c], i) => (
                 <tr key={s} className="border-b border-[var(--color-border-default)] last:border-0" style={{ background: i % 2 === 1 ? "var(--color-bg-subtle)" : undefined }}>
                   <td className="px-4 py-2.5" style={{ color: "var(--color-text-default)" }}>{s}</td>
-                  <td className="px-4 py-2.5 font-semibold text-mint-500">{c}</td>
+                  <td className="px-4 py-2.5 font-semibold text-[var(--color-interactive-pressed)]">{c}</td>
                 </tr>
               ))}
             </tbody>
@@ -137,7 +137,7 @@ export default function SelectionControlsPage() {
       {/* ── Checkbox ── */}
       <section className="mb-14">
         <div className="mb-5">
-          <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Checkbox</p>
+          <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">Checkbox</p>
           <h2 className="text-[20px] font-bold" style={{ color: "var(--color-text-default)" }}>체크박스</h2>
           <p className="text-[13px] mt-1" style={{ color: "var(--color-text-subtle)" }}>박스 20×20px · radius 4px · 라벨 간격 8px · 터치 영역 48dp</p>
         </div>
@@ -184,7 +184,7 @@ export default function SelectionControlsPage() {
       {/* ── Radio ── */}
       <section className="mb-14">
         <div className="mb-5">
-          <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Radio</p>
+          <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">Radio</p>
           <h2 className="text-[20px] font-bold" style={{ color: "var(--color-text-default)" }}>라디오 버튼</h2>
           <p className="text-[13px] mt-1" style={{ color: "var(--color-text-subtle)" }}>아이콘 20px · 간격 8px · 터치 영역 48dp</p>
         </div>
@@ -228,7 +228,7 @@ export default function SelectionControlsPage() {
       {/* ── Switch ── */}
       <section className="mb-14">
         <div className="mb-5">
-          <p className="text-[11px] font-semibold text-mint-400 uppercase tracking-widest mb-1">Switch</p>
+          <p className="text-[11px] font-semibold text-[var(--color-brand-primary)] uppercase tracking-widest mb-1">Switch</p>
           <h2 className="text-[20px] font-bold" style={{ color: "var(--color-text-default)" }}>스위치</h2>
           <p className="text-[13px] mt-1" style={{ color: "var(--color-text-subtle)" }}>Track 52×32px · Thumb Off 24px / On 28px · 터치 영역 52×48dp</p>
         </div>
