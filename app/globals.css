@@ -1678,4 +1678,142 @@
     text-overflow: ellipsis;
     max-width: calc(100% - 192px); /* guard: 2 × (48px × 2 actions) */
   }
+
+  /* ─── Tabs ───────────────────────────────────────────────── */
+  /* Primary: 48px / bottom indicator 2px                      */
+  /* Secondary: 40px pill inside subtle tray                   */
+
+  .op-tabs {
+    display: flex;
+    align-items: stretch;
+  }
+
+  /* Primary wrapper: stretch full width + bottom border */
+  .op-tabs--primary {
+    width: 100%;
+    background: var(--color-bg-default);
+    border-bottom: 1px solid var(--color-border-default);
+  }
+
+  /* Secondary wrapper: pill tray, fits content */
+  .op-tabs--secondary {
+    gap: var(--space-01);
+    padding: var(--space-01);
+    border-radius: var(--shape-md);
+    background: var(--color-bg-subtle);
+    width: fit-content;
+  }
+
+  /* ── Tab button base ─────────────────────────────────────── */
+  .op-tab {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 48px;
+    padding: 0 var(--space-04);
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.43;
+    letter-spacing: 0.01em;
+    color: var(--color-text-subtle);
+    white-space: nowrap;
+    flex-shrink: 0;
+    outline: none;
+    transition: color var(--duration-short) var(--motion-standard);
+  }
+
+  .op-tab[aria-selected="true"] {
+    color: var(--color-brand-primary);
+  }
+
+  .op-tab:hover:not([aria-selected="true"]):not(:disabled) {
+    color: var(--color-text-default);
+  }
+
+  .op-tab:disabled {
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+  }
+
+  .op-tab:focus-visible {
+    outline: 3px solid var(--color-border-brand);
+    outline-offset: -3px;
+    border-radius: var(--shape-sm);
+  }
+
+  /* ── Primary: 2px indicator on bottom border ─────────────── */
+  .op-tabs--primary .op-tab::after {
+    content: "";
+    position: absolute;
+    bottom: -1px; /* sits flush on the wrapper's border-bottom */
+    left: 0;
+    right: 0;
+    height: 2px;
+    border-radius: var(--shape-full);
+    background: transparent;
+    transition: background-color var(--duration-short) var(--motion-standard);
+  }
+
+  .op-tabs--primary .op-tab[aria-selected="true"]::after {
+    background: var(--color-brand-primary);
+  }
+
+  /* ── Secondary: pill background ──────────────────────────── */
+  .op-tabs--secondary .op-tab {
+    height: 40px;
+    border-radius: var(--shape-full);
+    transition:
+      color            var(--duration-short) var(--motion-standard),
+      background-color var(--duration-short) var(--motion-standard);
+  }
+
+  .op-tabs--secondary .op-tab:hover:not([aria-selected="true"]):not(:disabled) {
+    background: var(--color-bg-default);
+    color: var(--color-text-default);
+  }
+
+  .op-tabs--secondary .op-tab[aria-selected="true"] {
+    background: var(--color-bg-brand);
+    color: var(--color-brand-primary);
+  }
+
+  /* ── Icon slot (20dp) ────────────────────────────────────── */
+  .op-tab__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  /* ── Count badge ─────────────────────────────────────────── */
+  .op-tab__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 var(--space-01);
+    border-radius: var(--shape-full);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+    background: var(--color-bg-subtle);
+    color: var(--color-text-subtle);
+    transition:
+      background-color var(--duration-short) var(--motion-standard),
+      color            var(--duration-short) var(--motion-standard);
+  }
+
+  .op-tab[aria-selected="true"] .op-tab__badge {
+    background: var(--color-brand-subtle);
+    color: var(--color-brand-primary);
+  }
 }
