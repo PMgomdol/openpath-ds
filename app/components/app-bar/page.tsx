@@ -4,6 +4,46 @@ import { useState, useRef } from "react";
 import AppBar from "@/components/ui/AppBar";
 import type { AppBarAction, AppBarVariant } from "@/components/ui/AppBar";
 import { ArrowLeft, Search, MoreVertical, Share2 } from "lucide-react";
+import CodeBlock from "@/components/ui/CodeBlock";
+
+// ── Code snippets ──────────────────────────────────────────────
+const APPBAR_SNIPPETS = [
+  {
+    label: "Center-aligned",
+    code: `import AppBar from "@/components/ui/AppBar";
+import { ArrowLeft, Search, MoreVertical } from "lucide-react";
+
+<AppBar
+  variant="center"
+  title="페이지 제목"
+  navigationIcon={<ArrowLeft size={24} />}
+  navigationLabel="뒤로"
+  onNavigationClick={() => router.back()}
+  actions={[
+    { label: "검색", icon: <Search size={24} />, onClick: () => {} },
+    { label: "더보기", icon: <MoreVertical size={24} />, onClick: () => {} },
+  ]}
+/>`,
+  },
+  {
+    label: "Small",
+    code: `import AppBar from "@/components/ui/AppBar";
+import { Menu, Search } from "lucide-react";
+
+// Small variant — title left-aligned next to nav icon
+<AppBar
+  variant="small"
+  title="앱 이름"
+  navigationIcon={<Menu size={24} />}
+  navigationLabel="메뉴 열기"
+  onNavigationClick={() => setDrawerOpen(true)}
+  actions={[
+    { label: "검색", icon: <Search size={24} />, onClick: () => {} },
+  ]}
+  scrolled={isScrolled}   // true → shadow/03 + bg-subtle
+/>`,
+  },
+];
 
 // ── Shared demo actions ───────────────────────────────────
 const demoActions: AppBarAction[] = [
@@ -397,6 +437,8 @@ export default function AppBarPage() {
           </div>
         </div>
       </section>
+
+      <CodeBlock snippets={APPBAR_SNIPPETS} />
     </div>
   );
 }

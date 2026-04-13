@@ -8,6 +8,58 @@ import Card, {
 } from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import Chip from "@/components/ui/Chip";
+import CodeBlock from "@/components/ui/CodeBlock";
+
+// ── Code snippets ──────────────────────────────────────────────
+const CARD_SNIPPETS = [
+  {
+    label: "기본 카드",
+    code: `import Card, {
+  CardContent, CardOverline, CardTitle, CardBody, CardActions,
+} from "@/components/ui/Card";
+import Button from "@/components/ui/Button";
+
+<Card>
+  <CardContent>
+    <CardOverline>카테고리</CardOverline>
+    <CardTitle>카드 제목</CardTitle>
+    <CardBody>카드의 본문 텍스트가 여기에 들어갑니다.</CardBody>
+    <CardActions>
+      <Button variant="outlined" size="sm">취소</Button>
+      <Button variant="primary" size="sm">확인</Button>
+    </CardActions>
+  </CardContent>
+</Card>`,
+  },
+  {
+    label: "미디어 카드",
+    code: `import Card, {
+  CardMedia, CardContent, CardOverline, CardTitle, CardBody,
+  CardActions, CardTrailing,
+} from "@/components/ui/Card";
+import Button from "@/components/ui/Button";
+import { MoreVertical } from "lucide-react";
+
+<Card interactive onClick={() => navigate()}>
+  <CardMedia src="/image.jpg" alt="썸네일" />
+  <CardContent>
+    <CardTrailing
+      overflowItems={[
+        { key: "edit",   label: "편집" },
+        { key: "delete", label: "삭제", destructive: true },
+      ]}
+      onOverflowAction={(key) => handleAction(key)}
+    />
+    <CardOverline>컬렉션</CardOverline>
+    <CardTitle>미디어 카드 제목</CardTitle>
+    <CardBody>이미지와 함께 표시되는 카드입니다.</CardBody>
+    <CardActions>
+      <Button variant="primary" size="sm">열기</Button>
+    </CardActions>
+  </CardContent>
+</Card>`,
+  },
+];
 
 // ─── Shared demo copy ─────────────────────────────────────────
 
@@ -396,6 +448,8 @@ export default function CardPage() {
           </div>
         </div>
       </section>
+
+      <CodeBlock snippets={CARD_SNIPPETS} />
     </div>
   );
 }

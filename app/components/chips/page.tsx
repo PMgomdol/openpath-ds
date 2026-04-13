@@ -5,6 +5,76 @@ import {
   Map, Sparkles, Calendar, Bell, Search, Tag, User, Settings,
 } from "lucide-react";
 import Chip from "@/components/ui/Chip";
+import CodeBlock from "@/components/ui/CodeBlock";
+
+// ── Code snippets ──────────────────────────────────────────────
+const CHIP_SNIPPETS = [
+  {
+    label: "Filter",
+    code: `import { useState } from "react";
+import Chip from "@/components/ui/Chip";
+
+const FILTERS = ["전체", "디자인", "개발", "마케팅"];
+
+export function FilterBar() {
+  const [selected, setSelected] = useState<string[]>(["전체"]);
+
+  const toggle = (label: string) =>
+    setSelected((prev) =>
+      prev.includes(label) ? prev.filter((x) => x !== label) : [...prev, label]
+    );
+
+  return (
+    <div style={{ display: "flex", gap: 8 }}>
+      {FILTERS.map((f) => (
+        <Chip
+          key={f}
+          chipType="filter"
+          label={f}
+          selected={selected.includes(f)}
+          onToggle={() => toggle(f)}
+        />
+      ))}
+    </div>
+  );
+}`,
+  },
+  {
+    label: "Input",
+    code: `import { useState } from "react";
+import Chip from "@/components/ui/Chip";
+
+export function TagInput() {
+  const [tags, setTags] = useState(["React", "TypeScript"]);
+  const remove = (tag: string) => setTags((t) => t.filter((x) => x !== tag));
+
+  return (
+    <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+      {tags.map((tag) => (
+        <Chip
+          key={tag}
+          chipType="input"
+          label={tag}
+          onRemove={() => remove(tag)}
+        />
+      ))}
+    </div>
+  );
+}`,
+  },
+  {
+    label: "Assist / Suggestion",
+    code: `import Chip from "@/components/ui/Chip";
+import { Map, Calendar, Sparkles } from "lucide-react";
+
+// Assist — action shortcut
+<Chip chipType="assist" label="지도에서 보기" icon={<Map size={18} />} onClick={() => {}} />
+
+// Suggestion — system-generated options
+<Chip chipType="suggestion" label="내일 일정 추가" icon={<Calendar size={18} />} onClick={() => {}} />
+<Chip chipType="suggestion" label="AI 추천" icon={<Sparkles size={18} />} onClick={() => {}} />`,
+  },
+];
 
 // ─── Filter demo (multi-select) ───────────────────────────────
 
@@ -302,6 +372,8 @@ export default function ChipsPage() {
           </div>
         </div>
       </section>
+
+      <CodeBlock snippets={CHIP_SNIPPETS} />
     </div>
   );
 }

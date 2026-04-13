@@ -4,6 +4,36 @@ import { useState } from "react";
 import BottomNavigation from "@/components/ui/BottomNavigation";
 import type { BottomNavItem } from "@/components/ui/BottomNavigation";
 import { Home, Search, Heart, Bell, User } from "lucide-react";
+import CodeBlock from "@/components/ui/CodeBlock";
+
+// ── Code snippets ──────────────────────────────────────────────
+const BOTTOM_NAV_SNIPPETS = [
+  {
+    label: "사용 예시",
+    code: `import { useState } from "react";
+import BottomNavigation from "@/components/ui/BottomNavigation";
+import type { BottomNavItem } from "@/components/ui/BottomNavigation";
+import { Home, Search, Heart, Bell } from "lucide-react";
+
+const ITEMS: BottomNavItem[] = [
+  { key: "home",   icon: <Home size={24} />,   label: "홈" },
+  { key: "search", icon: <Search size={24} />, label: "탐색" },
+  { key: "saved",  icon: <Heart size={24} />,  label: "저장됨", badge: 3 },
+  { key: "alerts", icon: <Bell size={24} />,   label: "알림" },
+];
+
+export function MyNav() {
+  const [active, setActive] = useState("home");
+  return (
+    <BottomNavigation
+      items={ITEMS}
+      activeKey={active}
+      onChange={setActive}
+    />
+  );
+}`,
+  },
+];
 
 // ── 공통 아이템 팩토리 (badge는 wrapper에서 주입) ────────────────
 function makeItems(badgeKey?: string, badgeCount?: number): BottomNavItem[] {
@@ -188,6 +218,8 @@ export default function BottomNavigationPage() {
           </div>
         </div>
       </section>
+
+      <CodeBlock snippets={BOTTOM_NAV_SNIPPETS} />
     </div>
   );
 }

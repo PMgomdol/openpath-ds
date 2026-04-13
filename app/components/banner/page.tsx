@@ -3,6 +3,35 @@
 import { useState } from "react";
 import Banner from "@/components/ui/Banner";
 import type { BannerVariant } from "@/components/ui/Banner";
+import CodeBlock from "@/components/ui/CodeBlock";
+
+// ── Code snippets ──────────────────────────────────────────────
+const BANNER_SNIPPETS = [
+  {
+    label: "사용 예시",
+    code: `import { useState } from "react";
+import Banner from "@/components/ui/Banner";
+
+export function AnnouncementBanner() {
+  const [visible, setVisible] = useState(true);
+
+  if (!visible) return null;
+  return (
+    <Banner
+      variant="info"
+      title="시스템 점검 안내"
+      description="2026년 4월 20일 오전 2시~4시 정기 점검이 진행됩니다."
+      actionLabel="자세히 보기"
+      onAction={() => openModal()}
+      onDismiss={() => setVisible(false)}
+    />
+  );
+}
+
+// variant: "info" | "warning" | "error" | "success"
+// dismissible 기본값: true (X 버튼 표시)`,
+  },
+];
 
 // ── Demo data ──────────────────────────────────────────────────
 
@@ -305,6 +334,8 @@ export default function BannerPage() {
           </div>
         </div>
       </section>
+
+      <CodeBlock snippets={BANNER_SNIPPETS} />
     </div>
   );
 }

@@ -3,6 +3,41 @@
 import { useState } from "react";
 import FAB from "@/components/ui/FAB";
 import { Plus, Share2, Edit3, Heart } from "lucide-react";
+import CodeBlock from "@/components/ui/CodeBlock";
+
+// ── Code snippets ──────────────────────────────────────────────
+const FAB_SNIPPETS = [
+  {
+    label: "Standard",
+    code: `import FAB from "@/components/ui/FAB";
+import { Plus } from "lucide-react";
+
+// Standard FAB (md — 56dp)
+<FAB
+  size="md"
+  icon={<Plus size={24} />}
+  aria-label="추가하기"
+  onClick={() => {}}
+/>
+
+// Small (40dp) / Large (96dp) variants
+<FAB size="sm" icon={<Plus size={20} />} aria-label="추가하기" onClick={() => {}} />
+<FAB size="lg" icon={<Plus size={28} />} aria-label="추가하기" onClick={() => {}} />`,
+  },
+  {
+    label: "Extended",
+    code: `import FAB from "@/components/ui/FAB";
+import { Edit } from "lucide-react";
+
+// Extended FAB — icon + label
+<FAB
+  size="extended"
+  icon={<Edit size={24} />}
+  label="작성하기"
+  onClick={() => {}}
+/>`,
+  },
+];
 
 const speedActions = [
   { label: "공유",     icon: <Share2 size={18} /> },
@@ -229,6 +264,8 @@ export default function FABPage() {
           </div>
         </div>
       </section>
+
+      <CodeBlock snippets={FAB_SNIPPETS} />
     </div>
   );
 }

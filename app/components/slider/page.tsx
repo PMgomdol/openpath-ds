@@ -3,6 +3,79 @@
 import { useState } from "react";
 import Slider, { RangeSlider } from "@/components/ui/Slider";
 import type { SliderMark } from "@/components/ui/Slider";
+import CodeBlock from "@/components/ui/CodeBlock";
+
+// ── Code snippets ──────────────────────────────────────────────
+const SLIDER_SNIPPETS = [
+  {
+    label: "Continuous",
+    code: `import { useState } from "react";
+import Slider from "@/components/ui/Slider";
+
+export function VolumeControl() {
+  const [volume, setVolume] = useState(40);
+  return (
+    <Slider
+      label="볼륨"
+      value={volume}
+      onChange={setVolume}
+      min={0}
+      max={100}
+      formatValue={(v) => \`\${v}%\`}
+    />
+  );
+}`,
+  },
+  {
+    label: "Discrete",
+    code: `import { useState } from "react";
+import Slider from "@/components/ui/Slider";
+import type { SliderMark } from "@/components/ui/Slider";
+
+const MARKS: SliderMark[] = [
+  { value: 0,   label: "0" },
+  { value: 25,  label: "25" },
+  { value: 50,  label: "50" },
+  { value: 75,  label: "75" },
+  { value: 100, label: "100" },
+];
+
+export function DiscreteSlider() {
+  const [value, setValue] = useState(50);
+  return (
+    <Slider
+      label="단계"
+      value={value}
+      onChange={setValue}
+      min={0}
+      max={100}
+      step={25}
+      marks={MARKS}
+    />
+  );
+}`,
+  },
+  {
+    label: "Range",
+    code: `import { useState } from "react";
+import { RangeSlider } from "@/components/ui/Slider";
+
+export function PriceRange() {
+  const [range, setRange] = useState<[number, number]>([20000, 80000]);
+  return (
+    <RangeSlider
+      label="가격 범위"
+      value={range}
+      onChange={setRange}
+      min={0}
+      max={100000}
+      step={1000}
+      formatValue={(v) => \`₩\${v.toLocaleString()}\`}
+    />
+  );
+}`,
+  },
+];
 
 // ── Discrete marks ─────────────────────────────────────────────
 
@@ -312,6 +385,8 @@ export default function SliderPage() {
           </div>
         </div>
       </section>
+
+      <CodeBlock snippets={SLIDER_SNIPPETS} />
     </div>
   );
 }

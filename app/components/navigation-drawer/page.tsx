@@ -15,6 +15,72 @@ import {
   Lock,
   Menu,
 } from "lucide-react";
+import CodeBlock from "@/components/ui/CodeBlock";
+
+// ── Code snippets ──────────────────────────────────────────────
+const DRAWER_SNIPPETS = [
+  {
+    label: "Modal",
+    code: `import { useState } from "react";
+import NavigationDrawer from "@/components/ui/NavigationDrawer";
+import type { DrawerSection } from "@/components/ui/NavigationDrawer";
+import { Home, Settings, User } from "lucide-react";
+
+const SECTIONS: DrawerSection[] = [
+  {
+    items: [
+      { key: "home",     label: "홈",  icon: <Home size={24} /> },
+      { key: "profile",  label: "프로필", icon: <User size={24} /> },
+    ],
+  },
+  {
+    title: "관리",
+    items: [
+      { key: "settings", label: "설정", icon: <Settings size={24} /> },
+    ],
+  },
+];
+
+export function MyDrawer() {
+  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState("home");
+  return (
+    <NavigationDrawer
+      variant="modal"
+      open={open}
+      onClose={() => setOpen(false)}
+      sections={SECTIONS}
+      activeKey={active}
+      onItemClick={setActive}
+    />
+  );
+}`,
+  },
+  {
+    label: "Standard",
+    code: `import { useState } from "react";
+import NavigationDrawer from "@/components/ui/NavigationDrawer";
+import type { DrawerSection } from "@/components/ui/NavigationDrawer";
+import { Home, Settings } from "lucide-react";
+
+// Standard variant — collapses via width transition, no scrim
+export function MyLayout() {
+  const [open, setOpen] = useState(true);
+  return (
+    <div style={{ display: "flex" }}>
+      <NavigationDrawer
+        variant="standard"
+        open={open}
+        sections={SECTIONS}
+        activeKey={active}
+        onItemClick={setActive}
+      />
+      <main>{/* page content */}</main>
+    </div>
+  );
+}`,
+  },
+];
 
 // ── Demo nav sections ──────────────────────────────────────
 const SECTIONS: DrawerSection[] = [
@@ -508,6 +574,8 @@ export default function NavigationDrawerPage() {
           </div>
         </div>
       </section>
+
+      <CodeBlock snippets={DRAWER_SNIPPETS} />
     </div>
   );
 }

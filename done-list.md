@@ -1,7 +1,7 @@
 # OPENPATH Design System — Done List
 
-> 마지막 업데이트: 2026-04-11
-> 기준 브랜치: `main` / 최신 커밋: `cdd82e2`
+> 마지막 업데이트: 2026-04-13
+> 기준 브랜치: `main` / 최신 커밋: 미커밋 (로컬 작업 중)
 > 저장소: https://github.com/PMgomdol/openpath-ds
 > 배포: Vercel (GitHub main push → 자동 배포)
 
@@ -109,6 +109,25 @@ Components  UI 구성   — 16종 컴포넌트
 | `--color-scrim` | `rgba(0,0,0,0.40)` |
 | `--color-track-tick-active` | `rgba(255,255,255,0.75)` |
 
+**Code Block** (2026-04-13 추가)
+
+| 변수 | Value |
+|---|---|
+| `--color-code-bg` | `#1a2028` |
+| `--color-code-text` | `#e2e8f0` |
+| `--color-code-copy-idle-bg` | `rgba(255,255,255,0.08)` |
+| `--color-code-copy-idle-text` | `rgba(255,255,255,0.60)` |
+| `--color-code-copy-idle-border` | `rgba(255,255,255,0.12)` |
+| `--color-code-copy-done-bg` | `rgba(40,215,210,0.15)` |
+| `--color-code-copy-done-border` | `rgba(40,215,210,0.30)` |
+
+**Selection** (2026-04-13 추가)
+
+| 변수 | Value |
+|---|---|
+| `--color-selection-bg` | `#A8EBEA` |
+| `--color-selection-text` | `#156565` |
+
 ### 1-2. Shape 토큰
 
 | 변수 | Value | M3 이름 | 주요 사용처 |
@@ -190,7 +209,7 @@ Components  UI 구성   — 16종 컴포넌트
 | Shape | `shape/full` (9999px — M3 Pill) |
 | 크기 | sm 32px / md 40px / lg 48px |
 | 터치 영역 | `::after { height: 48px }` |
-| Focus ring | `outline: 3px solid var(--color-border-brand)` |
+| Focus ring | `outline: 2px solid var(--color-border-brand)` |
 | Loading | 내장 스피너 (`op-btn__spinner`, spin 0.65s) |
 | Disabled | `--color-interactive-disabled` bg + `--color-text-disabled` text (opacity 아님) |
 
@@ -229,14 +248,14 @@ Components  UI 구성   — 16종 컴포넌트
 
 - 숨겨진 input 48×48 + icon-wrap 48×48 → 시각 아이콘은 20px 유지
 - Checked: 내부 dot `transform: scale(1)`
-- Focus: `outline: 3px solid var(--color-border-brand)`
+- Focus: `outline: 2px solid var(--color-border-brand)`
 
 ### 2-6. Checkbox (`Checkbox.tsx`)
 
 **CSS:** `.op-checkbox` / `__input(48×48)` / `__icon-wrap(48×48)` / `__box(20×20)` / `__check` / `__dash` / `__label`
 
 - `indeterminate` prop: `useEffect`로 `inputRef.current.indeterminate` 명령형 설정
-- Focus: `outline: 3px solid; border-radius: 8px`
+- Focus: `outline: 2px solid; border-radius: 8px`
 
 ### 2-7. Switch (`Switch.tsx`)
 
@@ -282,7 +301,9 @@ Components  UI 구성   — 16종 컴포넌트
 | `Header.tsx` | Fixed top h-14, 로고 + ThemeToggle + 햄버거(md 미만), backdrop-blur |
 | `Sidebar.tsx` | Desktop(Fixed left 220px) + Mobile(Modal overlay 280px, slide-in 300ms) |
 | `SidebarContext.tsx` | React Context — open/toggle/close 상태 공유 |
-| `Providers.tsx` | `<ThemeProvider>` + `<SidebarProvider>` 래퍼 |
+| `Providers.tsx` | `<ThemeProvider>` + `<SidebarProvider>` + `<SnackbarProvider>` + `<SnackbarStack />` 래퍼 |
+| `SnackbarContext.tsx` | Snackbar 큐 상태 — `show()` / `dismiss()` / `useSnackbar()` hook |
+| `SnackbarStack.tsx` | 전역 Snackbar 렌더러 — `position:fixed` 하단 중앙, 큐 아이템 자동 타이머 |
 | `ThemeToggle.tsx` | Sun/Moon 아이콘 버튼, Light/Dark 전환 |
 | `ColorChip.tsx` | 색상 스와치 카드, 토큰명 + hex 클립보드 복사 |
 | `SemanticTable.tsx` | Semantic 토큰 그룹 테이블 (Light/Dark 병렬 표시) |
@@ -310,7 +331,7 @@ Components  UI 구성   — 16종 컴포넌트
 | `/foundation/principles` | Clarity / Scalability / Autonomy 원칙 + Do/Don't 테이블 |
 | `/foundation/naming` | 토큰 슬래시 → CSS 변수 하이픈 / BEM / TypeScript / 라우트 네이밍 코드블록 |
 | `/foundation/design-token` | Global→Semantic→Component 3단계 구조 + 매핑 테이블 + 테마 전환 예시 |
-| `/foundation/accessibility` | WCAG AA 대비율 표 + 터치 48dp 구현표 + Focus 3dp + ARIA 테이블 + 체크리스트 |
+| `/foundation/accessibility` | WCAG AA 대비율 표 + 터치 48dp 구현표 + Focus 2px + ARIA 테이블 + 체크리스트 |
 | `/foundation/motion` | Easing 4종 + Duration 8단계 테이블 + CSS 변수 + 상황별 규칙 |
 
 ### Components 섹션 (16페이지)
@@ -323,14 +344,14 @@ Components  UI 구성   — 16종 컴포넌트
 | `/components/chips` | ✅ 실제 컴포넌트 + 4타입 데모 |
 | `/components/card` | ✅ 실제 컴포넌트 + 풀 슬롯 데모 (미디어/오버플로우/별점/슬라이더) |
 | `/components/modal` | ✅ 라이브 오버레이 데모 (Default/Destructive) + Spec 테이블 |
-| `/components/fab` | 📄 페이지 존재 — 실제 컴포넌트 연결 필요 |
-| `/components/bottom-navigation` | 📄 페이지 존재 — 실제 컴포넌트 연결 필요 |
-| `/components/app-bar` | 📄 스펙 문서 — 컴포넌트 미구현 |
-| `/components/tab` | 📄 스펙 문서 — 컴포넌트 미구현 |
-| `/components/menu` | 📄 스펙 문서 — 컴포넌트 미구현 |
-| `/components/snackbar` | 📄 스펙 문서 — 컴포넌트 미구현 |
+| `/components/fab` | ✅ 실제 컴포넌트 — sm(40dp) / md(56dp) / lg(96dp) / extended, shape/lg |
+| `/components/bottom-navigation` | ✅ 실제 컴포넌트 — 최대 5탭, Active Indicator, Badge, role="tablist" |
+| `/components/app-bar` | ✅ 실제 컴포넌트 — Center-aligned / Small 2종, scroll elevation |
+| `/components/tab` | ✅ 실제 컴포넌트 — Primary(indicator bar) / Secondary(pill bg) |
+| `/components/menu` | ✅ 실제 컴포넌트 — Dropdown / Context menu, keyboard nav |
+| `/components/snackbar` | ✅ 실제 컴포넌트 — Text / Action / Close 3종, 큐 스택, `useSnackbar()` hook |
 | `/components/slider` | ✅ 실제 컴포넌트 — Continuous / Discrete / Range 3종, value label, 48dp |
-| `/components/navigation-drawer` | 📄 스펙 문서 — 컴포넌트 미구현 |
+| `/components/navigation-drawer` | ✅ 실제 컴포넌트 — Modal(scrim+ESC) / Standard(width collapse) |
 | `/components/list` | ✅ 실제 컴포넌트 — Single-line(48dp) / Two-line(64dp) / Three-line(88dp), Leading+Trailing |
 | `/components/banner` | ✅ 실제 컴포넌트 — Info / Warning / Error / Success, 4px accent border, role="alert" |
 
@@ -348,7 +369,7 @@ Components  UI 구성   — 16종 컴포넌트
 | 항목 | 기준 | 상태 |
 |---|---|---|
 | 터치 영역 | 48×48dp | ✅ 전체 인터랙티브 요소 (`::after` 또는 `min-height`) |
-| Focus ring | `3dp solid --color-border-brand` | ✅ 전역 `:focus-visible` + 컴포넌트별 동일 적용 |
+| Focus ring | `2px solid --color-border-brand` | ✅ 전역 `:focus-visible` + 컴포넌트별 동일 적용 (2026-04-13 `3px→2px` 수정) |
 | 색상 대비 | WCAG AA 4.5:1 | ✅ `--color-text-on-brand: #29363D` (N600 on M300 = 4.8:1) |
 | Switch ARIA | `role="switch"` + `aria-checked` | ✅ Switch.tsx |
 | Icon Button aria-label | 필수 | ✅ TypeScript `required`로 강제 |
@@ -362,7 +383,7 @@ Components  UI 구성   — 16종 컴포넌트
 | Disabled 처리 | opacity 아닌 변수 사용 | ✅ `--color-interactive-disabled` / `--color-text-disabled` |
 | 다크모드 Shadow | `none` | ✅ `.dark { --shadow-*: none }` |
 | 색상만으로 상태 표현 금지 | 아이콘·텍스트 병행 | ✅ 컴포넌트별 구현 |
-| 하드코딩 색상 0건 | CSS 변수 전용 | ✅ 전수 점검 완료 (`cdd82e2`) |
+| 하드코딩 색상 0건 | CSS 변수 전용 | ✅ 2026-04-13 전수 재점검 — 5건 발견·수정 (globals.css `::selection` 2건, `button/page.tsx` 3건 → CSS 변수 토큰화) |
 
 ---
 
@@ -390,7 +411,7 @@ Components  UI 구성   — 16종 컴포넌트
 
 ### CLAUDE.md (Claude Code 세션 규칙)
 - 절대 규칙: 하드코딩 금지, disabled = 변수 처리, Primary 버튼 1개 제한
-- 접근성 규칙: 48dp 터치, aria-label, Focus 3dp
+- 접근성 규칙: 48dp 터치, aria-label, Focus 2px (2026-04-13 수정)
 - 전체 CSS 변수 목록 (참조용)
 - Duotone 테마 교체 변수, 다크모드 변수
 
@@ -417,25 +438,31 @@ Components  UI 구성   — 16종 컴포넌트
 
 ## 7. 미구현 / 다음 단계
 
-### 컴포넌트 — 실제 구현 필요 (현재 스펙 문서만 존재)
+### 컴포넌트 — 전체 16종 구현 완료 ✅
 
-| 컴포넌트 | 비고 |
-|---|---|
-| App Bar | M3 Center-aligned / Small 2종 |
-| Tab | Primary Tab (상단 indicator) / Secondary Tab (Pill 배경) |
-| Navigation Drawer | Modal / Standard 2종 |
-| Menu | Dropdown / Context menu |
-| Snackbar | Text only / With Action / With Close |
-| FAB 페이지 | 컴포넌트 연결만 필요 |
-| Bottom Navigation 페이지 | 컴포넌트 연결만 필요 |
-| Slider 데모 페이지 | 컴포넌트 구현 완료 → 페이지 라이브 데모 연결 필요 |
-| Banner 데모 페이지 | 컴포넌트 구현 완료 → 페이지 라이브 데모 연결 필요 |
-| List 데모 페이지 | 컴포넌트 구현 완료 → 페이지 라이브 데모 연결 필요 |
+2026-04-13 기준, 16종 컴포넌트 모두 실제 구현 + 라이브 데모 페이지 연결 완료.
 
-### 기능 추가
+### 기능 추가 (선택)
 
-- 컴포넌트 코드 스니펫 복사 기능 (현재 일부만)
-- Storybook 연동 (선택)
+- 컴포넌트 코드 스니펫 복사 기능 (현재 Button 페이지만)
+- Storybook 연동
+
+---
+
+## 8. CLAUDE.md 규칙 위반 감사 이력
+
+### 2026-04-13 전수 점검
+
+| 파일 | 줄 | 위반 내용 | 수정 |
+|---|---|---|---|
+| `globals.css` | 246 | `:focus-visible` outline `3px` (규정 `2px`) | `2px` 변경 |
+| `globals.css` | 265 | `::selection` `#A8EBEA` 하드코딩 | `var(--color-selection-bg)` |
+| `globals.css` | 266 | `::selection` `#156565` 하드코딩 | `var(--color-selection-text)` |
+| `button/page.tsx` | 775 | `background: "#1a2028"` 하드코딩 | `var(--color-code-bg)` |
+| `button/page.tsx` | 780–782 | `rgba(40,215,210,…)` / `#28D7D2` / `rgba(255,255,255,…)` 하드코딩 | code-copy 변수군으로 토큰화 |
+| `button/page.tsx` | 797 | `color: "#e2e8f0"` 하드코딩 | `var(--color-code-text)` |
+
+새 CSS 변수 7종 추가: `--color-code-bg`, `--color-code-text`, `--color-code-copy-idle-{bg|text|border}`, `--color-code-copy-done-{bg|border}`, `--color-selection-bg`, `--color-selection-text`
 
 ---
 

@@ -772,14 +772,16 @@ function ButtonCodeSection() {
       </div>
 
       {/* Code block */}
-      <div className="relative rounded-b-xl rounded-tr-xl overflow-hidden border border-t-0 border-[var(--color-border)]" style={{ background: "#1a2028" }}>
+      <div className="relative rounded-b-xl rounded-tr-xl overflow-hidden border border-t-0 border-[var(--color-border)]" style={{ background: "var(--color-code-bg)" }}>
         <button
           onClick={copy}
           className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[12px] font-medium transition-all"
           style={{
-            background: copied ? "rgba(40,215,210,0.15)" : "rgba(255,255,255,0.08)",
-            color: copied ? "#28D7D2" : "rgba(255,255,255,0.6)",
-            border: `1px solid ${copied ? "rgba(40,215,210,0.3)" : "rgba(255,255,255,0.12)"}`,
+            background: copied ? "var(--color-code-copy-done-bg)" : "var(--color-code-copy-idle-bg)",
+            color: copied ? "var(--color-brand-primary)" : "var(--color-code-copy-idle-text)",
+            border: copied
+              ? "1px solid var(--color-code-copy-done-border)"
+              : "1px solid var(--color-code-copy-idle-border)",
           }}
         >
           {copied ? (
@@ -794,7 +796,7 @@ function ButtonCodeSection() {
             </>
           )}
         </button>
-        <pre className="p-5 text-[13px] leading-relaxed overflow-x-auto" style={{ color: "#e2e8f0", fontFamily: "'SF Mono', 'Fira Code', monospace" }}>
+        <pre className="p-5 text-[13px] leading-relaxed overflow-x-auto" style={{ color: "var(--color-code-text)", fontFamily: "'SF Mono', 'Fira Code', monospace" }}>
           <code>{BUTTON_SNIPPETS[active].code}</code>
         </pre>
       </div>

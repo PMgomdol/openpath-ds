@@ -18,6 +18,71 @@ import {
 import { List } from "@/components/ui/List";
 import ListItem from "@/components/ui/List";
 import type { ListLeading, ListTrailing } from "@/components/ui/List";
+import CodeBlock from "@/components/ui/CodeBlock";
+
+// ── Code snippets ──────────────────────────────────────────────
+const LIST_SNIPPETS = [
+  {
+    label: "Single-line",
+    code: `import { List } from "@/components/ui/List";
+import ListItem from "@/components/ui/List";
+import { Inbox, Star, Send, Trash2 } from "lucide-react";
+import { ChevronRight } from "lucide-react";
+
+<List>
+  <ListItem
+    primary="받은 편지함"
+    leading={{ type: "icon", node: <Inbox size={24} /> }}
+    trailing={{ type: "text", text: "14" }}
+    onClick={() => navigate("inbox")}
+  />
+  <ListItem
+    primary="즐겨찾기"
+    leading={{ type: "icon", node: <Star size={24} /> }}
+    trailing={{ type: "icon", node: <ChevronRight size={20} /> }}
+    selected
+    divider
+  />
+  <ListItem
+    primary="보낸 편지함"
+    leading={{ type: "icon", node: <Send size={24} /> }}
+    disabled
+  />
+</List>`,
+  },
+  {
+    label: "Two-line",
+    code: `import { List } from "@/components/ui/List";
+import ListItem from "@/components/ui/List";
+import { useState } from "react";
+
+export function SettingsList() {
+  const [wifi, setWifi] = useState(true);
+
+  return (
+    <List>
+      <ListItem
+        variant="two"
+        primary="Wi-Fi"
+        secondary="OpenPath_5G에 연결됨"
+        trailing={{
+          type: "switch",
+          on: wifi,
+          onToggle: setWifi,
+          label: "Wi-Fi 토글",
+        }}
+      />
+      <ListItem
+        variant="two"
+        primary="사용자 이름"
+        secondary="user@openpath.com"
+        leading={{ type: "avatar", text: "OP" }}
+      />
+    </List>
+  );
+}`,
+  },
+];
 
 // ── Single-line + Leading Icon ──────────────────────────────────
 
@@ -578,6 +643,8 @@ export default function ListPage() {
           </div>
         </div>
       </section>
+
+      <CodeBlock snippets={LIST_SNIPPETS} />
     </div>
   );
 }

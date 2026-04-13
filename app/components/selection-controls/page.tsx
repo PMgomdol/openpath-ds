@@ -4,6 +4,88 @@ import { useState } from "react";
 import Radio from "@/components/ui/Radio";
 import Checkbox from "@/components/ui/Checkbox";
 import Switch from "@/components/ui/Switch";
+import CodeBlock from "@/components/ui/CodeBlock";
+
+// ── Code snippets ──────────────────────────────────────────────
+const SELECTION_SNIPPETS = [
+  {
+    label: "Radio",
+    code: `import { useState } from "react";
+import Radio from "@/components/ui/Radio";
+
+export function PlanSelector() {
+  const [plan, setPlan] = useState("basic");
+  return (
+    <fieldset>
+      <legend>요금제 선택</legend>
+      <Radio
+        name="plan"
+        value="basic"
+        checked={plan === "basic"}
+        onChange={() => setPlan("basic")}
+        label="기본 플랜"
+      />
+      <Radio
+        name="plan"
+        value="pro"
+        checked={plan === "pro"}
+        onChange={() => setPlan("pro")}
+        label="프로 플랜"
+      />
+    </fieldset>
+  );
+}`,
+  },
+  {
+    label: "Checkbox",
+    code: `import { useState } from "react";
+import Checkbox from "@/components/ui/Checkbox";
+
+export function AgreementForm() {
+  const [agreed, setAgreed] = useState(false);
+  const [marketing, setMarketing] = useState(false);
+  return (
+    <>
+      <Checkbox
+        checked={agreed}
+        onChange={(e) => setAgreed(e.target.checked)}
+        label="이용약관에 동의합니다 (필수)"
+      />
+      <Checkbox
+        checked={marketing}
+        onChange={(e) => setMarketing(e.target.checked)}
+        label="마케팅 수신에 동의합니다 (선택)"
+      />
+    </>
+  );
+}`,
+  },
+  {
+    label: "Switch",
+    code: `import { useState } from "react";
+import Switch from "@/components/ui/Switch";
+
+export function NotificationSettings() {
+  const [push, setPush]   = useState(true);
+  const [email, setEmail] = useState(false);
+  return (
+    <>
+      <Switch
+        checked={push}
+        onChange={(e) => setPush(e.target.checked)}
+        label="푸시 알림"
+      />
+      <Switch
+        checked={email}
+        onChange={(e) => setEmail(e.target.checked)}
+        label="이메일 알림"
+        disabled
+      />
+    </>
+  );
+}`,
+  },
+];
 
 // ─── Helpers ──────────────────────────────────────────────────
 
@@ -271,6 +353,8 @@ export default function SelectionControlsPage() {
           />
         </div>
       </section>
+
+      <CodeBlock snippets={SELECTION_SNIPPETS} />
     </div>
   );
 }

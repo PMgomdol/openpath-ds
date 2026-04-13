@@ -2,6 +2,74 @@
 
 import { useState } from "react";
 import TextField from "@/components/ui/TextField";
+import CodeBlock from "@/components/ui/CodeBlock";
+
+// ── Code snippets ──────────────────────────────────────────────
+const INPUT_SNIPPETS = [
+  {
+    label: "Filled",
+    code: `import { useState } from "react";
+import TextField from "@/components/ui/TextField";
+
+export function SearchField() {
+  const [value, setValue] = useState("");
+  return (
+    <TextField
+      variant="filled"
+      label="검색어 입력"
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      clearable
+      helperText="Enter 키로 검색"
+    />
+  );
+}`,
+  },
+  {
+    label: "Outlined",
+    code: `import { useState } from "react";
+import TextField from "@/components/ui/TextField";
+
+export function EmailField() {
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+
+  const validate = () => {
+    if (!email.includes("@")) setError("유효한 이메일 주소를 입력하세요.");
+    else setError("");
+  };
+
+  return (
+    <TextField
+      variant="outlined"
+      label="이메일"
+      type="email"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      onBlur={validate}
+      error={error}
+      prefix="✉"
+    />
+  );
+}`,
+  },
+  {
+    label: "Prefix / Suffix",
+    code: `import TextField from "@/components/ui/TextField";
+
+// Prefix text
+<TextField variant="outlined" label="가격" prefix="₩" />
+
+// Suffix text
+<TextField variant="outlined" label="무게" suffix="kg" />
+
+// Dropdown indicator
+<TextField variant="filled" label="카테고리" dropdown />
+
+// Clearable
+<TextField variant="filled" label="검색" clearable />`,
+  },
+];
 
 // ─── TokenBadge ───────────────────────────────────────────────
 
@@ -517,6 +585,7 @@ export default function InputPage() {
       <AccessibilitySection />
       <SpecTable />
       <DosDonts />
+      <CodeBlock snippets={INPUT_SNIPPETS} />
     </div>
   );
 }

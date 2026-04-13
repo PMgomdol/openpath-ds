@@ -11,6 +11,41 @@ import {
   Trash2,
   MoreVertical,
 } from "lucide-react";
+import CodeBlock from "@/components/ui/CodeBlock";
+
+// ── Code snippets ──────────────────────────────────────────────
+const MENU_SNIPPETS = [
+  {
+    label: "사용 예시",
+    code: `import { useState } from "react";
+import Menu from "@/components/ui/Menu";
+import type { MenuEntry } from "@/components/ui/Menu";
+import { Edit3, Copy, Trash2 } from "lucide-react";
+
+const ITEMS: MenuEntry[] = [
+  { key: "edit",   label: "편집하기", icon: <Edit3  size={20} />, shortcut: "⌘E" },
+  { key: "copy",   label: "복제하기", icon: <Copy   size={20} />, shortcut: "⌘D" },
+  { key: "div-1",  divider: true },
+  { key: "delete", label: "삭제하기", icon: <Trash2 size={20} />, destructive: true },
+];
+
+export function MyMenu() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ position: "relative" }}>
+      <button onClick={() => setOpen(true)}>더보기</button>
+      {open && (
+        <Menu
+          items={ITEMS}
+          onAction={(key) => console.log(key)}
+          onClose={() => setOpen(false)}
+        />
+      )}
+    </div>
+  );
+}`,
+  },
+];
 
 // ── Demo items ─────────────────────────────────────────────
 const BASE_ITEMS: MenuEntry[] = [
@@ -424,6 +459,8 @@ export default function MenuPage() {
           </div>
         </div>
       </section>
+
+      <CodeBlock snippets={MENU_SNIPPETS} />
     </div>
   );
 }

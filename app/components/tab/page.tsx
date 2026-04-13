@@ -11,6 +11,62 @@ import {
   Star,
   BookOpen,
 } from "lucide-react";
+import CodeBlock from "@/components/ui/CodeBlock";
+
+// ── Code snippets ──────────────────────────────────────────────
+const TAB_SNIPPETS = [
+  {
+    label: "Primary",
+    code: `import { useState } from "react";
+import Tabs from "@/components/ui/Tabs";
+import type { TabItem } from "@/components/ui/Tabs";
+
+const TABS: TabItem[] = [
+  { key: "overview", label: "개요" },
+  { key: "settings", label: "설정" },
+  { key: "info",     label: "정보", badge: 2 },
+];
+
+export function MyTabs() {
+  const [active, setActive] = useState("overview");
+  return (
+    <Tabs
+      variant="primary"
+      items={TABS}
+      activeKey={active}
+      onChange={setActive}
+    />
+  );
+}`,
+  },
+  {
+    label: "Secondary",
+    code: `import { useState } from "react";
+import Tabs from "@/components/ui/Tabs";
+import type { TabItem } from "@/components/ui/Tabs";
+import { Map, Star, Calendar } from "lucide-react";
+
+// Secondary tabs — pill background, often used as filters
+const TABS: TabItem[] = [
+  { key: "all",      label: "전체" },
+  { key: "map",      label: "지도", icon: <Map size={18} /> },
+  { key: "favorites",label: "즐겨찾기", icon: <Star size={18} /> },
+  { key: "schedule", label: "일정", icon: <Calendar size={18} />, disabled: true },
+];
+
+export function MyFilterTabs() {
+  const [active, setActive] = useState("all");
+  return (
+    <Tabs
+      variant="secondary"
+      items={TABS}
+      activeKey={active}
+      onChange={setActive}
+    />
+  );
+}`,
+  },
+];
 
 // ── Demo data sets ─────────────────────────────────────────
 
@@ -380,6 +436,8 @@ export default function TabPage() {
           </div>
         </div>
       </section>
+
+      <CodeBlock snippets={TAB_SNIPPETS} />
     </div>
   );
 }

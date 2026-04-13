@@ -180,6 +180,19 @@
     --shadow-02: 0 2px 8px rgba(21,27,30,0.12);
     --shadow-03: 0 4px 16px rgba(21,27,30,0.12);
     --shadow-04: 0 8px 24px rgba(21,27,30,0.20);
+
+    /* ── Code block ── */
+    --color-code-bg:               #1a2028;
+    --color-code-text:             #e2e8f0;
+    --color-code-copy-idle-bg:     rgba(255,255,255,0.08);
+    --color-code-copy-idle-text:   rgba(255,255,255,0.60);
+    --color-code-copy-idle-border: rgba(255,255,255,0.12);
+    --color-code-copy-done-bg:     rgba(40,215,210,0.15);
+    --color-code-copy-done-border: rgba(40,215,210,0.30);
+
+    /* ── Selection ── */
+    --color-selection-bg:          #A8EBEA;
+    --color-selection-text:        #156565;
   }
 
   .dark {
@@ -243,7 +256,7 @@
 
   /* ── Accessibility: global focus ring ── */
   :focus-visible {
-    outline: 3px solid var(--color-border-brand);
+    outline: 2px solid var(--color-border-brand);
     outline-offset: 2px;
     border-radius: inherit;
   }
@@ -262,8 +275,8 @@
   }
 
   ::selection {
-    background-color: #A8EBEA;
-    color: #156565;
+    background-color: var(--color-selection-bg);
+    color: var(--color-selection-text);
   }
 }
 
