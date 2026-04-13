@@ -1,6 +1,113 @@
 "use client";
 
 import { useState } from "react";
+import CodeBlock from "@/components/ui/CodeBlock";
+
+// ── Code snippets ──────────────────────────────────────────────
+const MODAL_SNIPPETS = [
+  {
+    label: "Default",
+    code: `import { useState } from "react";
+
+export function ConfirmModal() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <button onClick={() => setOpen(true)}>저장</button>
+
+      {open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          {/* Scrim */}
+          <div
+            className="absolute inset-0"
+            style={{ background: "var(--color-scrim)" }}
+            onClick={() => setOpen(false)}
+            aria-hidden="true"
+          />
+          {/* Dialog */}
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-title"
+            className="relative z-10 w-full max-w-sm mx-4 rounded-xl p-7"
+            style={{
+              background: "var(--color-bg-default)",
+              boxShadow: "var(--shadow-04)",
+              border: "1px solid var(--color-border-default)",
+            }}
+          >
+            <h3 id="modal-title" style={{ fontSize: 18, fontWeight: 700 }}>
+              변경 사항을 저장할까요?
+            </h3>
+            <p style={{ fontSize: 14, color: "var(--color-text-subtle)", marginTop: 8 }}>
+              저장하지 않으면 작성한 내용이 사라집니다.
+            </p>
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: 12, marginTop: 24 }}>
+              <button onClick={() => setOpen(false)}>취소</button>
+              <button onClick={() => { save(); setOpen(false); }}>저장하기</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}`,
+  },
+  {
+    label: "Destructive",
+    code: `import { useState } from "react";
+
+export function DeleteModal() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <button onClick={() => setOpen(true)}>삭제</button>
+
+      {open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div
+            className="absolute inset-0"
+            style={{ background: "var(--color-scrim)" }}
+            onClick={() => setOpen(false)}
+            aria-hidden="true"
+          />
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-title"
+            className="relative z-10 w-full max-w-sm mx-4 rounded-xl p-7"
+            style={{
+              background: "var(--color-bg-default)",
+              boxShadow: "var(--shadow-04)",
+              border: "1px solid var(--color-border-default)",
+            }}
+          >
+            <h3 id="modal-title" style={{ fontSize: 18, fontWeight: 700 }}>
+              정말 삭제하시겠어요?
+            </h3>
+            <p style={{ fontSize: 14, color: "var(--color-text-subtle)", marginTop: 8 }}>
+              삭제된 데이터는 복구할 수 없습니다.
+            </p>
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: 12, marginTop: 24 }}>
+              <button onClick={() => setOpen(false)}>취소</button>
+              {/* Destructive action — color/status/error */}
+              <button
+                onClick={() => { deleteItem(); setOpen(false); }}
+                style={{ color: "var(--color-bg-default)", background: "var(--color-status-error)" }}
+              >
+                삭제
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}`,
+  },
+];
 
 function TokenBadge({ token, value }: { token: string; value: string }) {
   const [copied, setCopied] = useState(false);
@@ -165,6 +272,7 @@ export default function ModalPage() {
       </div>
       <ModalDemo />
       <SpecTable />
+      <CodeBlock snippets={MODAL_SNIPPETS} />
     </div>
   );
 }

@@ -444,7 +444,7 @@ Components  UI 구성   — 16종 컴포넌트
 
 ### 기능 추가 (선택)
 
-- 컴포넌트 코드 스니펫 복사 기능 (현재 Button 페이지만)
+- ~~컴포넌트 코드 스니펫 복사 기능~~ ✅ 전체 16개 컴포넌트 페이지 완료 (2026-04-13, 공유 `CodeBlock` 컴포넌트 — `components/ui/CodeBlock.tsx`)
 - Storybook 연동
 
 ---
