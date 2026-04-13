@@ -80,6 +80,13 @@ const NavigationDrawer = forwardRef<HTMLElement, NavigationDrawerProps>(
       return () => clearTimeout(t);
     }, [variant, open]);
 
+    /* ── Body scroll-lock (modal only) ───────────────── */
+    useEffect(() => {
+      if (variant !== "modal") return;
+      document.body.style.overflow = open ? "hidden" : "";
+      return () => { document.body.style.overflow = ""; };
+    }, [variant, open]);
+
     /* ── Shared nav content ───────────────────────────── */
     const navContent = (
       <>
