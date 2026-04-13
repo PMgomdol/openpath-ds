@@ -316,7 +316,7 @@ export default function MenuPage() {
                 { attr: "최대 너비",      state: "—", value: "280px",                  token: "—" },
                 { attr: "아이템 높이",    state: "—", value: "48px",                   token: "—" },
                 { attr: "좌우 패딩",      state: "—", value: "16px",                   token: "space/04" },
-                { attr: "Radius",         state: "—", value: "8px",                    token: "shape/sm" },
+                { attr: "Radius",         state: "—", value: "4px",                    token: "shape/xs" },
                 { attr: "라벨 폰트",      state: "—", value: "16px Regular",           token: "type/body/md" },
                 { attr: "Shadow",         state: "—", value: "0 2px 8px",              token: "elevation/surface/overlay → shadow/02" },
                 { attr: "Background",     state: "—", value: "White / N600",           token: "color/bg/default" },
